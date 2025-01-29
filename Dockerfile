@@ -1,7 +1,9 @@
 FROM ollama/ollama
 
-# Install models during build
-RUN ollama pull mxbai-embed-large && \
+# Start Ollama service and pull models
+RUN ollama serve & \
+    sleep 5 && \
+    ollama pull mxbai-embed-large && \
     ollama pull minicpm-v && \
     ollama pull qwen2.5-coder && \
     ollama pull codegemma && \
