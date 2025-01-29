@@ -1,0 +1,1043 @@
+# Basic Syntax Draft
+
+## Data Types:
+- Numeric (integers, floats)
+- Boolean (true, false)
+- String
+- Series (representing time series data, like price, volume)
+
+## Variable Declaration:
+- Use the keyword `let` followed by the variable name and an optional assignment.
+  Example: `let closePrice = close`
+
+## Operators:
+- Arithmetic: +, -, *, /, %
+- Comparison: ==, !=, >, <, >=, <=
+- Logical: and, or, not
+- Min/Max: `minvalue(a, b)`, `maxvalue(a, b)`
+
+## Built-in Variables (similar to Pine Script):
+- open: Represents the open price of the current bar.
+- high: Represents the high price of the current bar.
+- low: Represents the low price of the current bar.
+- close: Represents the close price of the current bar.
+- volume: Represents the volume of the current bar.
+- barIndex: Represents the index of the current bar.
+- barStateIsConfirmed: Indicates if the bar state is confirmed.
+- barStateIsFirst: Indicates if the bar state is the first.
+- barStateIsHistory: Indicates if the bar state is history.
+- barStateIsLast: Indicates if the bar state is the last.
+- barStateIsLastConfirmedHistory: Indicates if the bar state is the last confirmed history.
+- barStateIsNew: Indicates if the bar state is new.
+- barStateIsRealtime: Indicates if the bar state is real-time.
+- boxAll: Represents all boxes.
+- chartBgCol: Represents the background color of the chart.
+- chartFgCol: Represents the foreground color of the chart.
+- chartIsHeikinAshi: Indicates if the chart is Heikin Ashi.
+- chartIsKagi: Indicates if the chart is Kagi.
+- chartIsLineBreak: Indicates if the chart is Line Break.
+- chartIsPnf: Indicates if the chart is Point and Figure.
+- chartIsRange: Indicates if the chart is Range.
+- chartIsRenko: Indicates if the chart is Renko.
+- chartIsStandard: Indicates if the chart is Standard.
+- chartLeftVisibleBarTime: Represents the time of the left visible bar.
+- chartRightVisibleBarTime: Represents the time of the right visible bar.
+- dayOfMonth: Represents the day of the month.
+- dayOfWeek: Represents the day of the week.
+- dividendsFutureAmount: Represents the future amount of dividends.
+- dividendsFutureExDate: Represents the future ex-date of dividends.
+- dividendsFuturePayDate: Represents the future pay date of dividends.
+- earningsFutureEps: Represents the future EPS of earnings.
+- earningsFuturePeriodEndTime: Represents the future period end time of earnings.
+- earningsFutureRevenue: Represents the future revenue of earnings.
+- earningsFutureTime: Represents the future time of earnings.
+- hl2: Represents the average of high and low prices.
+- hlc3: Represents the average of high, low, and close prices.
+- hlcc4: Represents the average of high, low, and two times close prices.
+- hour: Represents the current hour.
+- labelAll: Represents all labels.
+- lastBarIndex: Represents the index of the last bar.
+- lastBarTime: Represents the time of the last bar.
+- lineAll: Represents all lines.
+- lineFillAll: Represents all line fills.
+- minute: Represents the current minute.
+- month: Represents the current month.
+- na: Represents a not available value.
+- ohlc4: Represents the average of open, high, low, and close prices.
+- polylineAll: Represents all polylines.
+- second: Represents the current second.
+- sessionIsFirstBar: Indicates if the session is the first bar.
+- sessionIsFirstBarRegular: Indicates if the session is the first regular bar.
+- sessionIsLastBar: Indicates if the session is the last bar.
+- sessionIsLastBarRegular: Indicates if the session is the last regular bar.
+- sessionIsMarket: Indicates if the session is market.
+- sessionIsPostMarket: Indicates if the session is post-market.
+- sessionIsPreMarket: Indicates if the session is pre-market.
+- strategyAccountCurrency: Represents the account currency of the strategy.
+- strategyAvgLosingTrade: Represents the average losing trade of the strategy.
+- strategyAvgLosingTradePercent: Represents the average losing trade percentage of the strategy.
+- strategyAvgTrade: Represents the average trade of the strategy.
+- strategyAvgTradePercent: Represents the average trade percentage of the strategy.
+- strategyAvgWinningTrade: Represents the average winning trade of the strategy.
+- strategyAvgWinningTradePercent: Represents the average winning trade percentage of the strategy.
+- strategyClosedTrades: Represents the closed trades of the strategy.
+- strategyClosedTradesFirstIndex: Represents the first index of closed trades of the strategy.
+- strategyEquity: Represents the equity of the strategy.
+- strategyEvenTrades: Represents the even trades of the strategy.
+- strategyGrossLoss: Represents the gross loss of the strategy.
+- strategyGrossLossPercent: Represents the gross loss percentage of the strategy.
+- strategyGrossProfit: Represents the gross profit of the strategy.
+- strategyGrossProfitPercent: Represents the gross profit percentage of the strategy.
+- strategyInitialCapital: Represents the initial capital of the strategy.
+- strategyLossTrades: Represents the loss trades of the strategy.
+- strategyMarginLiquidationPrice: Represents the margin liquidation price of the strategy.
+- strategyMaxContractsHeldAll: Represents the maximum contracts held (all) of the strategy.
+- strategyMaxContractsHeldLong: Represents the maximum contracts held (long) of the strategy.
+- strategyMaxContractsHeldShort: Represents the maximum contracts held (short) of the strategy.
+- strategyMaxDrawdown: Represents the maximum drawdown of the strategy.
+- strategyMaxDrawdownPercent: Represents the maximum drawdown percentage of the strategy.
+- strategyMaxRunup: Represents the maximum runup of the strategy.
+- strategyMaxRunupPercent: Represents the maximum runup percentage of the strategy.
+- strategyNetProfit: Represents the net profit of the strategy.
+- strategyNetProfitPercent: Represents the net profit percentage of the strategy.
+- strategyOpenProfit: Represents the open profit of the strategy.
+- strategyOpenProfitPercent: Represents the open profit percentage of the strategy.
+- strategyOpenTrades: Represents the open trades of the strategy.
+- strategyOpenTradesCapitalHeld: Represents the capital held by open trades of the strategy.
+- strategyPositionAvgPrice: Represents the average price of the strategy's position.
+- strategyPositionEntryName: Represents the entry name of the strategy's position.
+- strategyPositionSize: Represents the size of the strategy's position.
+- strategyWinTrades: Represents the win trades of the strategy.
+- symInfoBaseCurrency: Represents the base currency of the symbol.
+- symInfoCountry: Represents the country of the symbol.
+- symInfoCurrency: Represents the currency of the symbol.
+- symInfoDescription: Represents the description of the symbol.
+- symInfoEmployees: Represents the number of employees of the symbol.
+- symInfoExpirationDate: Represents the expiration date of the symbol.
+- symInfoIndustry: Represents the industry of the symbol.
+- symInfoMainTickerId: Represents the main ticker ID of the symbol.
+- symInfoMinContract: Represents the minimum contract of the symbol.
+- symInfoMinMove: Represents the minimum move of the symbol.
+- symInfoMinTick: Represents the minimum tick of the symbol.
+- symInfoPointValue: Represents the point value of the symbol.
+- symInfoPrefix: Represents the prefix of the symbol.
+- symInfoPriceScale: Represents the price scale of the symbol.
+- symInfoRecommendationsBuy: Represents the buy recommendations of the symbol.
+- symInfoRecommendationsBuyStrong: Represents the strong buy recommendations of the symbol.
+- symInfoRecommendationsDate: Represents the recommendations date of the symbol.
+- symInfoRecommendationsHold: Represents the hold recommendations of the symbol.
+- symInfoRecommendationsSell: Represents the sell recommendations of the symbol.
+- symInfoRecommendationsSellStrong: Represents the strong sell recommendations of the symbol.
+- symInfoRecommendationsTotal: Represents the total recommendations of the symbol.
+- symInfoRoot: Represents the root of the symbol.
+- symInfoSector: Represents the sector of the symbol.
+- symInfoSession: Represents the session of the symbol.
+- symInfoShareholders: Represents the shareholders of the symbol.
+- symInfoSharesOutstandingFloat: Represents the shares outstanding (float) of the symbol.
+- symInfoSharesOutstandingTotal: Represents the shares outstanding (total) of the symbol.
+- symInfoTargetPriceAverage: Represents the average target price of the symbol.
+- symInfoTargetPriceDate: Represents the target price date of the symbol.
+- symInfoTargetPriceEstimates: Represents the target price estimates of the symbol.
+- symInfoTargetPriceHigh: Represents the high target price of the symbol.
+- symInfoTargetPriceLow: Represents the low target price of the symbol.
+- symInfoTargetPriceMedian: Represents the median target price of the symbol.
+- symInfoTicker: Represents the ticker of the symbol.
+- symInfoTickerId: Represents the ticker ID of the symbol.
+- symInfoTimezone: Represents the timezone of the symbol.
+- symInfoType: Represents the type of the symbol.
+- symInfoVolumeType: Represents the volume type of the symbol.
+- taAccDist: Represents the Accumulation/Distribution indicator.
+- taIII: Represents the Intraday Intensity Index.
+- taNVI: Represents the Negative Volume Index.
+- taOBV: Represents the On-Balance Volume.
+- taPVI: Represents the Positive Volume Index.
+- taPVT: Represents the Price Volume Trend.
+- taTR: Represents the True Range.
+- taVWAP: Represents the Volume Weighted Average Price.
+- taWAD: Represents the Williams Accumulation/Distribution.
+- taWVAD: Represents the Williams Variable Accumulation/Distribution.
+- tableAll: Represents all tables.
+- time: Represents the current time.
+- timeClose: Represents the close time.
+- timeTradingDay: Represents the trading day time.
+- timeframeIsDaily: Indicates if the timeframe is daily.
+- timeframeIsDWM: Indicates if the timeframe is daily, weekly, or monthly.
+- timeframeIsIntraday: Indicates if the timeframe is intraday.
+- timeframeIsMinutes: Indicates if the timeframe is in minutes.
+- timeframeIsMonthly: Indicates if the timeframe is monthly.
+- timeframeIsSeconds: Indicates if the timeframe is in seconds.
+- timeframeIsTicks: Indicates if the timeframe is in ticks.
+- timeframeIsWeekly: Indicates if the timeframe is weekly.
+- timeframeMainPeriod: Represents the main period of the timeframe.
+- timeframeMultiplier: Represents the multiplier of the timeframe.
+- timeframePeriod: Represents the period of the timeframe.
+- timeNow: Represents the current time.
+- weekOfYear: Represents the week of the year.
+- year: Represents the current year.
+
+## Control Flow:
+- `if` statements:
+  ```
+  if condition
+      // code to execute if condition is true
+  ```
+- `if-else` statements:
+  ```
+  if condition
+      // code to execute if condition is true
+  else
+      // code to execute if condition is false
+  ```
+
+## Loops:
+- `for` loop:
+  ```
+  for i = 0 to n
+      // code to execute n times
+  ```
+- `while` loop:
+  ```
+  while condition
+      // code to execute while condition is true
+  ```
+
+## Arrays:
+- Declare arrays using square brackets `[]`.
+  Example: `let prices = [open, high, low, close]`
+- Access elements using indices.
+  Example: `let firstPrice = prices[0]`
+
+## Functions:
+- Define functions using the keyword `define`, followed by the function name, parameters in parentheses, and the function body.
+  Example:
+  ```
+  define calculateAverage(a, b)
+      return (a + b) / 2
+  ```
+
+## Built-in Functions:
+- `sma(series, length)`: Simple Moving Average
+- `ema(series, length)`: Exponential Moving Average
+- `rsi(series, length)`: Relative Strength Index
+- Example: `let avgPrice = sma(close, 14)`
+
+## Comments:
+- Use `//` for single-line comments.
+  Example: `// This is a comment`
+
+## Input Declarations:
+- Use the keyword `param` to declare input variables that can be configured by the user.
+- Syntax: `param <name> = <default_value>`
+- Example: `param length = 14`
+- `title`: A string that specifies the title of the indicator or strategy.
+  - Syntax: `param title = "My Script"`
+- `onchart`: A boolean value indicating whether the indicator should be displayed on the main chart pane.
+  - Syntax: `param onchart = true`
+- `timeframe`: A string that specifies the timeframe for the indicator or strategy.
+  - Syntax: `param timeframe = "D"`
+- `timeframe_gaps`: A string that specifies how gaps in the timeframe should be handled.
+  - Syntax: `param timeframe_gaps = "barmerge"`
+
+## Colors:
+- Use the keyword `col` to specify colors in the `show` function.
+- Available colors: `red`, `blue`, `green`, `yellow`, `black`, `white`.
+- Hexadecimal codes can also be used (e.g., `#FF0000`).
+
+## Plotting:
+- Use the `show` function to display data on the chart.
+- Syntax: `show(<series>, col=<color>, linewidth=<width>)`
+- `<series>`: The series data to plot.
+- `col`: (Optional) The color of the plot.
+- `linewidth`: (Optional) The width of the plot line.
+- Example: `show(close, col=blue, linewidth=2)`
+- Use the `showshape` function to display shapes on the chart.
+- Syntax: `showshape(<shape>, x=<x_series>, y=<y_series>, col=<color>, size=<size>)`
+- `<shape>`: The shape to plot (e.g., "circle", "square", "triangle").
+- `x`: The x-coordinate series for the shape.
+- `y`: The y-coordinate series for the shape.
+- `col`: (Optional) The color of the shape.
+- `size`: (Optional) The size of the shape.
+- Example: `showshape("circle", x=time, y=close, col=red, size=5)`
+- Use the `showcond` function to conditionally display data on the chart.
+- Syntax: `showcond(<condition>, <show_command>)`
+- `<condition>`: A boolean expression that determines whether to plot.
+- `<show_command>`: A plotting command (e.g., `show(...)`, `showshape(...)`).
+- Example: `showcond(close > open, show(close, col=green))`
+- Example: `showcond(volume > 1000, showshape("circle", x=time, y=close, col=blue, size=3))`
+
+## Drawing Tools:
+- `drawline(x1, y1, x2, y2, col=<color>, width=<width>)`: Draw a line
+  Example: `drawline(time[0], low[0], time[1], high[1], col=red, width=2)`
+- `drawrect(x1, y1, x2, y2, col=<color>, fill=<boolean>)`: Draw a rectangle
+  Example: `drawrect(time[0], low[0], time[1], high[1], col=blue, fill=true)`
+
+## Alerts:
+- Use the `alert` function to trigger alerts based on a condition.
+- Syntax: `alert(condition, message)`
+- `condition`: A boolean expression that triggers the alert when true.
+- `message`: A string message to display when the alert is triggered.
+- Example: `alert(close > open, "Price is up!")`
+
+## Events:
+- `onTick`: Code to execute on every tick
+  ```
+  onTick
+      // code to execute on every tick
+  ```
+- `onBar`: Code to execute on every new bar
+  ```
+  onBar
+      // code to execute on every new bar
+  ```
+
+## Error Handling:
+- `try-catch` block:
+  ```
+  try
+      // code that may throw an error
+  catch error
+      // code to execute if an error occurs
+  ```
+
+## Indicator Declaration:
+- Use the `script` keyword to declare the script as an indicator.
+- Syntax: `script("<title>")`
+- Example: `script("My Awesome Indicator")`
+
+## Line Style:
+### Thickness:
+- Use the `linewidth` parameter in the `show` function to specify the thickness of the line.
+- Syntax: `show(<series>, linewidth=<number>)`
+- Example: `show(close, linewidth=3)`
+
+### Width:
+- For shapes, use the `size` parameter in the `showshape` function to specify the width (or size) of the shape.
+- Syntax: `showshape("<shape>", size=<number>)`
+- Example: `showshape("square", size=7)`
+
+### Line Type:
+- Use the `linestyle` parameter in the `show` function to define the type of line.
+- Available line types: `solid`, `dotted`, `dashed`.
+- Syntax: `show(<series>, linestyle=<type>)`
+- Example: `show(close, linestyle=dashed)`
+
+### Color:
+- Use the `col` parameter in the `show` and `showshape` functions to specify the color.
+- Syntax: `show(<series>, col=<color>)` or `showshape("<shape>", col=<color>)`
+- Example: `show(close, col=red)`
+- Example: `showshape("circle", col=blue)`
+
+## Shape Style:
+### Size:
+  - Use the `size` parameter in the `showshape` function to specify the size of the shape.
+  - Syntax: `showshape("<shape>", size=<number>)`
+  - Example: `showshape("circle", size=5)`
+
+# Semantics
+## Series Data Type:
+- The `Series` data type is fundamental for time-series analysis. Variables of this type hold a sequence of values indexed by time (e.g., historical prices).
+- When an operation is performed on a `Series`, it is typically applied element-wise to the entire series.
+  Example: If `close` is a `Series` representing closing prices, then `close > close[1]` would return a boolean `Series` where each element indicates whether the current closing price is greater than the previous closing price.
+- `Series` can be accessed using square brackets `[]` to refer to past values. `close[0]` refers to the current value, `close[1]` refers to the value from the previous time step, and so on.
+
+## Variable Declaration:
+- Variables declared with `let` are typically local to the current scope (e.g., within a function or a block of code).
+
+- Parentheses `()`: Used for grouping expressions and function calls.
+- Square brackets `[]`: Used for accessing elements in a `Series`.
+- Question mark `?`: Used in ternary conditional expressions.
+- Comma `,`: Used to separate parameters in function calls and elements in lists.
+- Double quotes `""`: Used to define string literals.
+
+## Constants:
+- adjustmentDividends: Represents dividend adjustments.
+- adjustmentNone: Represents no adjustments.
+- adjustmentSplits: Represents split adjustments.
+- alertFreqAll: Represents alert frequency for all.
+- alertFreqOncePerBar: Represents alert frequency once per bar.
+- alertFreqOncePerBarClose: Represents alert frequency once per bar close.
+- backAdjustmentInherit: Represents inherited back adjustment.
+- backAdjustmentOff: Represents back adjustment off.
+- backAdjustmentOn: Represents back adjustment on.
+- barMergeGapsOff: Represents bar merge gaps off.
+- barMergeGapsOn: Represents bar merge gaps on.
+- barMergeLookaheadOff: Represents bar merge lookahead off.
+- barMergeLookaheadOn: Represents bar merge lookahead on.
+- colAqua: Represents the color aqua.
+- colBlack: Represents the color black.
+- colBlue: Represents the color blue.
+- colFuchsia: Represents the color fuchsia.
+- colGray: Represents the color gray.
+- colGreen: Represents the color green.
+- colLime: Represents the color lime.
+- colMaroon: Represents the color maroon.
+- colNavy: Represents the color navy.
+- colOlive: Represents the color olive.
+- colOrange: Represents the color orange.
+- colPurple: Represents the color purple.
+- colRed: Represents the color red.
+- colSilver: Represents the color silver.
+- colTeal: Represents the color teal.
+- colWhite: Represents the color white.
+- colYellow: Represents the color yellow.
+- currencyAUD: Represents the currency AUD.
+- currencyBTC: Represents the currency BTC.
+- currencyCAD: Represents the currency CAD.
+- currencyCHF: Represents the currency CHF.
+- currencyETH: Represents the currency ETH.
+- currencyEUR: Represents the currency EUR.
+- currencyGBP: Represents the currency GBP.
+- currencyHKD: Represents the currency HKD.
+- currencyINR: Represents the currency INR.
+- currencyJPY: Represents the currency JPY.
+- currencyKRW: Represents the currency KRW.
+- currencyMYR: Represents the currency MYR.
+- currencyNOK: Represents the currency NOK.
+- currencyNone: Represents no currency.
+- currencyNZD: Represents the currency NZD.
+- currencyRUB: Represents the currency RUB.
+- currencySEK: Represents the currency SEK.
+- currencySGD: Represents the currency SGD.
+- currencyTRY: Represents the currency TRY.
+- currencyUSD: Represents the currency USD.
+- currencyUSDT: Represents the currency USDT.
+- currencyZAR: Represents the currency ZAR.
+- dayOfWeekFriday: Represents Friday.
+- dayOfWeekMonday: Represents Monday.
+- dayOfWeekSaturday: Represents Saturday.
+- dayOfWeekSunday: Represents Sunday.
+- dayOfWeekThursday: Represents Thursday.
+- dayOfWeekTuesday: Represents Tuesday.
+- dayOfWeekWednesday: Represents Wednesday.
+- displayAll: Represents all displays.
+- displayDataWindow: Represents the data window display.
+- displayNone: Represents no display.
+- displayPane: Represents the pane display.
+- displayPriceScale: Represents the price scale display.
+- displayStatusLine: Represents the status line display.
+- dividendsGross: Represents gross dividends.
+- dividendsNet: Represents net dividends.
+- earningsActual: Represents actual earnings.
+- earningsEstimate: Represents estimated earnings.
+- earningsStandardized: Represents standardized earnings.
+- extendBoth: Represents both extensions.
+- extendLeft: Represents left extension.
+- extendNone: Represents no extension.
+- extendRight: Represents right extension.
+- falseValue: Represents the boolean value false.
+- fontFamilyDefault: Represents the default font family.
+- fontFamilyMonospace: Represents the monospace font family.
+- formatInherit: Represents inherited format.
+- formatMinTick: Represents minimum tick format.
+- formatPercent: Represents percent format.
+- formatPrice: Represents price format.
+- formatVolume: Represents volume format.
+- hlineStyleDashed: Represents dashed horizontal line style.
+- hlineStyleDotted: Represents dotted horizontal line style.
+- hlineStyleSolid: Represents solid horizontal line style.
+- labelStyleArrowDown: Represents arrow down label style.
+- labelStyleArrowUp: Represents arrow up label style.
+- labelStyleCircle: Represents circle label style.
+- labelStyleCross: Represents cross label style.
+- labelStyleDiamond: Represents diamond label style.
+- labelStyleFlag: Represents flag label style.
+- labelStyleLabelCenter: Represents center label style.
+- labelStyleLabelDown: Represents down label style.
+- labelStyleLabelLeft: Represents left label style.
+- labelStyleLabelLowerLeft: Represents lower left label style.
+- labelStyleLabelLowerRight: Represents lower right label style.
+- labelStyleLabelRight: Represents right label style.
+- labelStyleLabelUp: Represents up label style.
+- labelStyleLabelUpperLeft: Represents upper left label style.
+- labelStyleLabelUpperRight: Represents upper right label style.
+- labelStyleNone: Represents no label style.
+- labelStyleSquare: Represents square label style.
+- labelStyleTextOutline: Represents text outline label style.
+- labelStyleTriangleDown: Represents triangle down label style.
+- labelStyleTriangleUp: Represents triangle up label style.
+- labelStyleXCross: Represents cross label style.
+- lineStyleArrowBoth: Represents both arrow line style.
+- lineStyleArrowLeft: Represents left arrow line style.
+- lineStyleArrowRight: Represents right arrow line style.
+- lineStyleDashed: Represents dashed line style.
+- lineStyleDotted: Represents dotted line style.
+- lineStyleSolid: Represents solid line style.
+- locationAboveBar: Represents above bar location.
+- locationAbsolute: Represents absolute location.
+- locationBelowBar: Represents below bar location.
+- locationBottom: Represents bottom location.
+- locationTop: Represents top location.
+- mathE: Represents the mathematical constant e.
+- mathPhi: Represents the mathematical constant phi.
+- mathPi: Represents the mathematical constant pi.
+- mathRPhi: Represents the mathematical constant rphi.
+- orderAscending: Represents ascending order.
+- orderDescending: Represents descending order.
+- showStyleArea: Represents area show style.
+- showStyleAreaBr: Represents area break show style.
+- showStyleCircles: Represents circles show style.
+- showStyleColumns: Represents columns show style.
+- showStyleCross: Represents cross show style.
+- showStyleHistogram: Represents histogram show style.
+- showStyleLine: Represents line show style.
+- showStyleLineBr: Represents line break show style.
+- showStyleStepLine: Represents step line show style.
+- showStyleStepLineDiamond: Represents step line diamond show style.
+- showStyleStepLineBr: Represents step line break show style.
+- positionBottomCenter: Represents bottom center position.
+- positionBottomLeft: Represents bottom left position.
+- positionBottomRight: Represents bottom right position.
+- positionMiddleCenter: Represents middle center position.
+- positionMiddleLeft: Represents middle left position.
+- positionMiddleRight: Represents middle right position.
+- positionTopCenter: Represents top center position.
+- positionTopLeft: Represents top left position.
+- positionTopRight: Represents top right position.
+- scaleLeft: Represents left scale.
+- scaleNone: Represents no scale.
+- scaleRight: Represents right scale.
+- sessionExtended: Represents extended session.
+- sessionRegular: Represents regular session.
+- settlementAsCloseInherit: Represents inherited settlement as close.
+- settlementAsCloseOff: Represents settlement as close off.
+- settlementAsCloseOn: Represents settlement as close on.
+- shapeArrowDown: Represents arrow down shape.
+- shapeArrowUp: Represents arrow up shape.
+- shapeCircle: Represents circle shape.
+- shapeCross: Represents cross shape.
+- shapeDiamond: Represents diamond shape.
+- shapeFlag: Represents flag shape.
+- shapeLabelDown: Represents label down shape.
+- shapeLabelUp: Represents label up shape.
+- shapeSquare: Represents square shape.
+- shapeTriangleDown: Represents triangle down shape.
+- shapeTriangleUp: Represents triangle up shape.
+- shapeXCross: Represents cross shape.
+- sizeAuto: Represents auto size.
+- sizeHuge: Represents huge size.
+- sizeLarge: Represents large size.
+- sizeNormal: Represents normal size.
+- sizeSmall: Represents small size.
+- sizeTiny: Represents tiny size.
+- splitsDenominator: Represents splits denominator.
+- splitsNumerator: Represents splits numerator.
+- strategyCash: Represents cash strategy.
+- strategyCommissionCashPerContract: Represents cash per contract commission strategy.
+- strategyCommissionCashPerOrder: Represents cash per order commission strategy.
+- strategyCommissionPercent: Represents percent commission strategy.
+- strategyDirectionAll: Represents all direction strategy.
+- strategyDirectionLong: Represents long direction strategy.
+- strategyDirectionShort: Represents short direction strategy.
+- strategyFixed: Represents fixed strategy.
+- strategyLong: Represents long strategy.
+- strategyOcaCancel: Represents OCA cancel strategy.
+- strategyOcaNone: Represents no OCA strategy.
+- strategyOcaReduce: Represents OCA reduce strategy.
+- strategyPercentOfEquity: Represents percent of equity strategy.
+- strategyShort: Represents short strategy.
+- textAlignBottom: Represents bottom text alignment.
+- textAlignCenter: Represents center text alignment.
+- textAlignLeft: Represents left text alignment.
+- textAlignRight: Represents right text alignment.
+- textAlignTop: Represents top text alignment.
+- textWrapAuto: Represents auto text wrap.
+- textWrapNone: Represents no text wrap.
+- trueValue: Represents the boolean value true.
+- xLocBarIndex: Represents bar index x location.
+- xLocBarTime: Represents bar time x location.
+- yLocAboveBar: Represents above bar y location.
+- yLocBelowBar: Represents below bar y location.
+- yLocPrice: Represents price y location.
+
+## Functions:
+- alertFunc(): Triggers an alert.
+- alertConditionFunc(): Sets an alert condition.
+- arrAbs(): Returns the absolute value of each element in the array.
+- arrAvg(): Returns the average of the array elements.
+- arrBinarySearch(): Performs a binary search on the array.
+- arrBinarySearchLeftmost(): Performs a binary search for the leftmost element.
+- arrBinarySearchRightmost(): Performs a binary search for the rightmost element.
+- arrClear(): Clears the array.
+- arrConcat(): Concatenates arrays.
+- arrCopy(): Copies the array.
+- arrCovariance(): Calculates the covariance of two arrays.
+- arrEvery(): Checks if every element in the array satisfies a condition.
+- arrFill(): Fills the array with a value.
+- arrFirst(): Returns the first element of the array.
+- arrFrom(): Creates an array from a value.
+- arrGet(): Gets an element from the array.
+- arrIncludes(): Checks if the array includes a value.
+- arrIndexOf(): Returns the index of a value in the array.
+- arrInsert(): Inserts a value into the array.
+- arrJoin(): Joins the array elements into a string.
+- arrLast(): Returns the last element of the array.
+- arrLastIndexOf(): Returns the last index of a value in the array.
+- arrMax(): Returns the maximum value in the array.
+- arrMedian(): Returns the median value of the array.
+- arrMin(): Returns the minimum value in the array.
+- arrMode(): Returns the mode of the array.
+- arrNewBool(): Creates a new boolean array.
+- arrNewBox(): Creates a new box array.
+- arrNewCol(): Creates a new color array.
+- arrNewFloat(): Creates a new float array.
+- arrNewInt(): Creates a new integer array.
+- arrNewLabel(): Creates a new label array.
+- arrNewLine(): Creates a new line array.
+- arrNewLineFill(): Creates a new line fill array.
+- arrNewString(): Creates a new string array.
+- arrNewTable(): Creates a new table array.
+- arrNewType(): Creates a new array of a specified type.
+- arrPercentileLinearInterpolation(): Calculates the percentile using linear interpolation.
+- arrPercentileNearestRank(): Calculates the percentile using the nearest rank method.
+- arrPercentRank(): Calculates the percent rank of the array.
+- arrPop(): Removes the last element from the array.
+- arrPush(): Adds an element to the end of the array.
+- arrRange(): Returns the range of the array.
+- arrRemove(): Removes an element from the array.
+- arrReverse(): Reverses the array.
+- arrSet(): Sets an element in the array.
+- arrShift(): Removes the first element from the array.
+- arrSize(): Returns the size of the array.
+- arrSlice(): Returns a slice of the array.
+- arrSome(): Checks if some elements in the array satisfy a condition.
+- arrSort(): Sorts the array.
+- arrSortIndices(): Returns the indices that would sort the array.
+- arrStandardize(): Standardizes the array.
+- arrStdev(): Calculates the standard deviation of the array.
+- arrSum(): Calculates the sum of the array elements.
+- arrUnshift(): Adds an element to the beginning of the array.
+- arrVariance(): Calculates the variance of the array.
+- barColFunc(): Sets the color of the bar.
+- bgColFunc(): Sets the background color.
+- boolFunc(): Converts a value to boolean.
+- boxFunc(): Creates a new box.
+- boxCopyFunc(): Copies a box.
+- boxDeleteFunc(): Deletes a box.
+- boxGetBottomFunc(): Gets the bottom of a box.
+- boxGetLeftFunc(): Gets the left side of a box.
+- boxGetRightFunc(): Gets the right side of a box.
+- boxGetTopFunc(): Gets the top of a box.
+- boxNewFunc(): Creates a new box.
+- boxSetBgColFunc(): Sets the background color of a box.
+- boxSetBorderColFunc(): Sets the border color of a box.
+- boxSetBorderStyleFunc(): Sets the border style of a box.
+- boxSetBorderWidthFunc(): Sets the border width of a box.
+- boxSetBottomFunc(): Sets the bottom of a box.
+- boxSetBottomRightPointFunc(): Sets the bottom right point of a box.
+- boxSetExtendFunc(): Sets the extend property of a box.
+- boxSetLeftFunc(): Sets the left side of a box.
+- boxSetLeftTopFunc(): Sets the left top point of a box.
+- boxSetRightFunc(): Sets the right side of a box.
+- boxSetRightBottomFunc(): Sets the right bottom point of a box.
+- boxSetTextFunc(): Sets the text of a box.
+- boxSetTextColFunc(): Sets the text color of a box.
+- boxSetTextFontFamilyFunc(): Sets the text font family of a box.
+- boxSetTextHAlignFunc(): Sets the horizontal alignment of the text in a box.
+- boxSetTextSizeFunc(): Sets the text size of a box.
+- boxSetTextVAlignFunc(): Sets the vertical alignment of the text in a box.
+- boxSetTextWrapFunc(): Sets the text wrap property of a box.
+- boxSetTopFunc(): Sets the top of a box.
+- boxSetTopLeftPointFunc(): Sets the top left point of a box.
+- chartPointCopyFunc(): Copies a chart point.
+- chartPointFromIndexFunc(): Creates a chart point from an index.
+- chartPointFromTimeFunc(): Creates a chart point from a time.
+- chartPointNewFunc(): Creates a new chart point.
+- chartPointNowFunc(): Gets the current chart point.
+- colFunc(): Creates a new color.
+- colBFunc(): Gets the blue component of a color.
+- colFromGradientFunc(): Creates a color from a gradient.
+- colGFunc(): Gets the green component of a color.
+- colNewFunc(): Creates a new color.
+- colRFunc(): Gets the red component of a color.
+- colRgbFunc(): Creates a color from RGB values.
+- colTFunc(): Gets the transparency of a color.
+- dayOfMonthFunc(): Gets the day of the month.
+- dayOfWeekFunc(): Gets the day of the week.
+- fillFunc(): Fills an area with color.
+- fixNanFunc(): Fixes NaN values.
+- floatFunc(): Converts a value to float.
+- hLineFunc(): Creates a horizontal line.
+- hourFunc(): Gets the current hour.
+- indicatorFunc(): Creates a new indicator.
+- inputFunc(): Creates a new input.
+- inputBoolFunc(): Creates a new boolean input.
+- inputColFunc(): Creates a new color input.
+- inputEnumFunc(): Creates a new enum input.
+- inputFloatFunc(): Creates a new float input.
+- inputIntFunc(): Creates a new integer input.
+- inputPriceFunc(): Creates a new price input.
+- inputSessionFunc(): Creates a new session input.
+- inputSourceFunc(): Creates a new source input.
+- inputStringFunc(): Creates a new string input.
+- inputSymbolFunc(): Creates a new symbol input.
+- inputTextAreaFunc(): Creates a new text area input.
+- inputTimeFunc(): Creates a new time input.
+- inputTimeFrameFunc(): Creates a new timeframe input.
+- intFunc(): Converts a value to integer.
+- labelFunc(): Creates a new label.
+- labelCopyFunc(): Copies a label.
+- labelDeleteFunc(): Deletes a label.
+- labelGetTextFunc(): Gets the text of a label.
+- labelGetXFunc(): Gets the x-coordinate of a label.
+- labelGetYFunc(): Gets the y-coordinate of a label.
+- labelNewFunc(): Creates a new label.
+- labelSetColFunc(): Sets the color of a label.
+- labelSetPointFunc(): Sets the point of a label.
+- labelSetSizeFunc(): Sets the size of a label.
+- labelSetStyleFunc(): Sets the style of a label.
+- labelSetTextFunc(): Sets the text of a label.
+- labelSetTextFontFamilyFunc(): Sets the text font family of a label.
+- labelSetTextAlignFunc(): Sets the text alignment of a label.
+- labelSetTextColFunc(): Sets the text color of a label.
+- labelSetToolTipFunc(): Sets the tooltip of a label.
+- labelSetXFunc(): Sets the x-coordinate of a label.
+- labelSetXLocFunc(): Sets the x-location of a label.
+- labelSetXYFunc(): Sets the x and y coordinates of a label.
+- labelSetYFunc(): Sets the y-coordinate of a label.
+- labelSetYLocFunc(): Sets the y-location of a label.
+- libraryFunc(): Creates a new library.
+- lineFunc(): Creates a new line.
+- lineCopyFunc(): Copies a line.
+- lineDeleteFunc(): Deletes a line.
+- lineGetPriceFunc(): Gets the price of a line.
+- lineGetX1Func(): Gets the x1-coordinate of a line.
+- lineGetX2Func(): Gets the x2-coordinate of a line.
+- lineGetY1Func(): Gets the y1-coordinate of a line.
+- lineGetY2Func(): Gets the y2-coordinate of a line.
+- lineNewFunc(): Creates a new line.
+- lineSetColFunc(): Sets the color of a line.
+- lineSetExtendFunc(): Sets the extend property of a line.
+- lineSetFirstPointFunc(): Sets the first point of a line.
+- lineSetSecondPointFunc(): Sets the second point of a line.
+- lineSetStyleFunc(): Sets the style of a line.
+- lineSetWidthFunc(): Sets the width of a line.
+- lineSetX1Func(): Sets the x1-coordinate of a line.
+- lineSetX2Func(): Sets the x2-coordinate of a line.
+- lineSetXLocFunc(): Sets the x-location of a line.
+- lineSetXY1Func(): Sets the x and y coordinates of the first point of a line.
+- lineSetXY2Func(): Sets the x and y coordinates of the second point of a line.
+- lineSetY1Func(): Sets the y1-coordinate of a line.
+- lineSetY2Func(): Sets the y2-coordinate of a line.
+- lineFillFunc(): Creates a new line fill.
+- lineFillDeleteFunc(): Deletes a line fill.
+- lineFillGetLine1Func(): Gets the first line of a line fill.
+- lineFillGetLine2Func(): Gets the second line of a line fill.
+- lineFillNewFunc(): Creates a new line fill.
+- lineFillSetColFunc(): Sets the color of a line fill.
+- logErrorFunc(): Logs an error message.
+- logInfoFunc(): Logs an info message.
+- logWarningFunc(): Logs a warning message.
+- mapClearFunc(): Clears a map.
+- mapContainsFunc(): Checks if a map contains a key.
+- mapCopyFunc(): Copies a map.
+- mapGetFunc(): Gets a value from a map.
+- mapKeysFunc(): Gets the keys of a map.
+- mapNewTypeFunc(): Creates a new map of specified types.
+- mapPutFunc(): Puts a value in a map.
+- mapPutAllFunc(): Puts all values in a map.
+- mapRemoveFunc(): Removes a value from a map.
+- mapSizeFunc(): Gets the size of a map.
+- mapValuesFunc(): Gets the values of a map.
+- mathAbsFunc(): Returns the absolute value.
+- mathAcosFunc(): Returns the arccosine.
+- mathAsinFunc(): Returns the arcsine.
+- mathAtanFunc(): Returns the arctangent.
+- mathAvgFunc(): Returns the average.
+- mathCeilFunc(): Returns the ceiling value.
+- mathCosFunc(): Returns the cosine.
+- mathExpFunc(): Returns the exponential value.
+- mathFloorFunc(): Returns the floor value.
+- mathLogFunc(): Returns the natural logarithm.
+- mathLog10Func(): Returns the base-10 logarithm.
+- mathMaxFunc(): Returns the maximum value.
+- mathMinFunc(): Returns the minimum value.
+- mathPowFunc(): Returns the power value.
+- mathRandomFunc(): Returns a random value.
+- mathRoundFunc(): Rounds a value.
+- mathRoundToMinTickFunc(): Rounds a value to the minimum tick.
+- mathSignFunc(): Returns the sign of a value.
+- mathSinFunc(): Returns the sine.
+- mathSqrtFunc(): Returns the square root.
+- mathSumFunc(): Returns the sum.
+- mathTanFunc(): Returns the tangent.
+- mathToDegreesFunc(): Converts radians to degrees.
+- mathToRadiansFunc(): Converts degrees to radians.
+- matrixAddColFunc(): Adds a column to a matrix.
+- matrixAddRowFunc(): Adds a row to a matrix.
+- matrixAvgFunc(): Returns the average of the matrix elements.
+- matrixColFunc(): Returns a column of the matrix.
+- matrixColumnsFunc(): Returns the number of columns in the matrix.
+- matrixConcatFunc(): Concatenates matrices.
+- matrixCopyFunc(): Copies a matrix.
+- matrixDetFunc(): Returns the determinant of the matrix.
+- matrixDiffFunc(): Returns the difference of matrices.
+- matrixEigenValuesFunc(): Returns the eigenvalues of the matrix.
+- matrixEigenVectorsFunc(): Returns the eigenvectors of the matrix.
+- matrixElementsCountFunc(): Returns the number of elements in the matrix.
+- matrixFillFunc(): Fills the matrix with a value.
+- matrixGetFunc(): Gets an element from the matrix.
+- matrixInvFunc(): Returns the inverse of the matrix.
+- matrixIsAntiDiagonalFunc(): Checks if the matrix is anti-diagonal.
+- matrixIsAntiSymmetricFunc(): Checks if the matrix is anti-symmetric.
+- matrixIsBinaryFunc(): Checks if the matrix is binary.
+- matrixIsDiagonalFunc(): Checks if the matrix is diagonal.
+- matrixIsIdentityFunc(): Checks if the matrix is an identity matrix.
+- matrixIsSquareFunc(): Checks if the matrix is square.
+- matrixIsStochasticFunc(): Checks if the matrix is stochastic.
+- matrixIsSymmetricFunc(): Checks if the matrix is symmetric.
+- matrixIsTriangularFunc(): Checks if the matrix is triangular.
+- matrixIsZeroFunc(): Checks if the matrix is a zero matrix.
+- matrixKronFunc(): Returns the Kronecker product of matrices.
+- matrixMaxFunc(): Returns the maximum value in the matrix.
+- matrixMedianFunc(): Returns the median value of the matrix.
+- matrixMinFunc(): Returns the minimum value in the matrix.
+- matrixModeFunc(): Returns the mode of the matrix.
+- matrixMultFunc(): Multiplies matrices.
+- matrixNewTypeFunc(): Creates a new matrix of a specified type.
+- matrixPinvFunc(): Returns the pseudo-inverse of the matrix.
+- matrixPowFunc(): Returns the power of the matrix.
+- matrixRankFunc(): Returns the rank of the matrix.
+- matrixRemoveColFunc(): Removes a column from the matrix.
+- matrixRemoveRowFunc(): Removes a row from the matrix.
+- matrixReshapeFunc(): Reshapes the matrix.
+- matrixReverseFunc(): Reverses the matrix.
+- matrixRowFunc(): Returns a row of the matrix.
+- matrixRowsFunc(): Returns the number of rows in the matrix.
+- matrixSetFunc(): Sets an element in the matrix.
+- matrixSortFunc(): Sorts the matrix.
+- matrixSubMatrixFunc(): Returns a submatrix.
+- matrixSumFunc(): Returns the sum of the matrix elements.
+- matrixSwapColumnsFunc(): Swaps columns in the matrix.
+- matrixSwapRowsFunc(): Swaps rows in the matrix.
+- matrixTraceFunc(): Returns the trace of the matrix.
+- matrixTransposeFunc(): Returns the transpose of the matrix.
+- maxBarsBackFunc(): Sets the maximum bars back.
+- minuteFunc(): Gets the current minute.
+- monthFunc(): Gets the current month.
+- naFunc(): Returns a not available value.
+- nzFunc(): Returns a non-zero value.
+- showFunc(): Displays data on the chart.
+- showArrowFunc(): Displays an arrow on the chart.
+- showBarFunc(): Displays a bar on the chart.
+- showCandleFunc(): Displays a candle on the chart.
+- showCharFunc(): Displays a character on the chart.
+- showShapeFunc(): Displays a shape on the chart.
+- polylineDeleteFunc(): Deletes a polyline.
+- polylineNewFunc(): Creates a new polyline.
+- requestCurrencyRateFunc(): Requests the currency rate.
+- requestDividendsFunc(): Requests dividends data.
+- requestEarningsFunc(): Requests earnings data.
+- requestEconomicFunc(): Requests economic data.
+- requestFinancialFunc(): Requests financial data.
+- requestQuandlFunc(): Requests data from Quandl.
+- requestSecurityFunc(): Requests security data.
+- requestSecurityLowerTfFunc(): Requests security data for a lower timeframe.
+- requestSeedFunc(): Requests a seed value.
+- requestSplitsFunc(): Requests splits data.
+- runtimeErrorFunc(): Logs a runtime error.
+- secondFunc(): Gets the current second.
+- strContainsFunc(): Checks if a string contains a substring.
+- strEndsWithFunc(): Checks if a string ends with a substring.
+- strFormatFunc(): Formats a string.
+- strFormatTimeFunc(): Formats a time string.
+- strLengthFunc(): Returns the length of a string.
+- strLowerFunc(): Converts a string to lowercase.
+- strMatchFunc(): Matches a string with a pattern.
+- strPosFunc(): Returns the position of a substring.
+- strRepeatFunc(): Repeats a string.
+- strReplaceFunc(): Replaces a substring in a string.
+- strReplaceAllFunc(): Replaces all occurrences of a substring in a string.
+- strSplitFunc(): Splits a string.
+- strStartsWithFunc(): Checks if a string starts with a substring.
+- strSubstringFunc(): Returns a substring.
+- strToNumberFunc(): Converts a string to a number.
+- strToStringFunc(): Converts a value to a string.
+- strTrimFunc(): Trims whitespace from a string.
+- strUpperFunc(): Converts a string to uppercase.
+- strategyFunc(): Creates a new strategy.
+- strategyCancelFunc(): Cancels a strategy.
+- strategyCancelAllFunc(): Cancels all strategies.
+- strategyCloseFunc(): Closes a strategy.
+- strategyCloseAllFunc(): Closes all strategies.
+- strategyClosedTradesCommissionFunc(): Gets the commission of closed trades.
+- strategyClosedTradesEntryBarIndexFunc(): Gets the entry bar index of closed trades.
+- strategyClosedTradesEntryCommentFunc(): Gets the entry comment of closed trades.
+- strategyClosedTradesEntryIdFunc(): Gets the entry ID of closed trades.
+- strategyClosedTradesEntryPriceFunc(): Gets the entry price of closed trades.
+- strategyClosedTradesEntryTimeFunc(): Gets the entry time of closed trades.
+- strategyClosedTradesExitBarIndexFunc(): Gets the exit bar index of closed trades.
+- strategyClosedTradesExitCommentFunc(): Gets the exit comment of closed trades.
+- strategyClosedTradesExitIdFunc(): Gets the exit ID of closed trades.
+- strategyClosedTradesExitPriceFunc(): Gets the exit price of closed trades.
+- strategyClosedTradesExitTimeFunc(): Gets the exit time of closed trades.
+- strategyClosedTradesMaxDrawdownFunc(): Gets the maximum drawdown of closed trades.
+- strategyClosedTradesMaxDrawdownPercentFunc(): Gets the maximum drawdown percentage of closed trades.
+- strategyClosedTradesMaxRunupFunc(): Gets the maximum runup of closed trades.
+- strategyClosedTradesMaxRunupPercentFunc(): Gets the maximum runup percentage of closed trades.
+- strategyClosedTradesProfitFunc(): Gets the profit of closed trades.
+- strategyClosedTradesProfitPercentFunc(): Gets the profit percentage of closed trades.
+- strategyClosedTradesSizeFunc(): Gets the size of closed trades.
+- strategyConvertToAccountFunc(): Converts to account.
+- strategyConvertToSymbolFunc(): Converts to symbol.
+- strategyDefaultEntryQtyFunc(): Sets the default entry quantity.
+- strategyEntryFunc(): Enters a strategy.
+- strategyExitFunc(): Exits a strategy.
+- strategyOpenTradesCommissionFunc(): Gets the commission of open trades.
+- strategyOpenTradesEntryBarIndexFunc(): Gets the entry bar index of open trades.
+- strategyOpenTradesEntryCommentFunc(): Gets the entry comment of open trades.
+- strategyOpenTradesEntryIdFunc(): Gets the entry ID of open trades.
+- strategyOpenTradesEntryPriceFunc(): Gets the entry price of open trades.
+- strategyOpenTradesEntryTimeFunc(): Gets the entry time of open trades.
+- strategyOpenTradesMaxDrawdownFunc(): Gets the maximum drawdown of open trades.
+- strategyOpenTradesMaxDrawdownPercentFunc(): Gets the maximum drawdown percentage of open trades.
+- strategyOpenTradesMaxRunupFunc(): Gets the maximum runup of open trades.
+- strategyOpenTradesMaxRunupPercentFunc(): Gets the maximum runup percentage of open trades.
+- strategyOpenTradesProfitFunc(): Gets the profit of open trades.
+- strategyOpenTradesProfitPercentFunc(): Gets the profit percentage of open trades.
+- strategyOpenTradesSizeFunc(): Gets the size of open trades.
+- strategyOrderFunc(): Places an order.
+- strategyRiskAllowEntryInFunc(): Allows entry in risk strategy.
+- strategyRiskMaxConsLossDaysFunc(): Sets the maximum consecutive loss days in risk strategy.
+- strategyRiskMaxDrawdownFunc(): Sets the maximum drawdown in risk strategy.
+- strategyRiskMaxIntradayFilledOrdersFunc(): Sets the maximum intraday filled orders in risk strategy.
+- strategyRiskMaxIntradayLossFunc(): Sets the maximum intraday loss in risk strategy.
+- strategyRiskMaxPositionSizeFunc(): Sets the maximum position size in risk strategy.
+- stringFunc(): Creates a new string.
+- symInfoPrefixFunc(): Gets the prefix of the symbol.
+- symInfoTickerFunc(): Gets the ticker of the symbol.
+- taAlmaFunc(): Calculates the Arnaud Legoux Moving Average.
+- taAtrFunc(): Calculates the Average True Range.
+- taBarsSinceFunc(): Calculates the number of bars since a condition was true.
+- taBbFunc(): Calculates the Bollinger Bands.
+- taBbwFunc(): Calculates the Bollinger Bands Width.
+- taCciFunc(): Calculates the Commodity Channel Index.
+- taChangeFunc(): Calculates the change.
+- taCmoFunc(): Calculates the Chande Momentum Oscillator.
+- taCogFunc(): Calculates the Center of Gravity.
+- taCorrelationFunc(): Calculates the correlation.
+- taCrossFunc(): Checks if two series cross.
+- taCrossoverFunc(): Checks if a series crosses over another.
+- taCrossunderFunc(): Checks if a series crosses under another.
+- taCumFunc(): Calculates the cumulative sum.
+- taDevFunc(): Calculates the deviation.
+- taDmiFunc(): Calculates the Directional Movement Index.
+- taEmaFunc(): Calculates the Exponential Moving Average.
+- taFallingFunc(): Checks if a series is falling.
+- taHighestFunc(): Gets the highest value.
+- taHighestBarsFunc(): Gets the number of bars since the highest value.
+- taHmaFunc(): Calculates the Hull Moving Average.
+- taKcFunc(): Calculates the Keltner Channels.
+- taKcwFunc(): Calculates the Keltner Channels Width.
+- taLinRegFunc(): Calculates the Linear Regression.
+- taLowestFunc(): Gets the lowest value.
+- taLowestBarsFunc(): Gets the number of bars since the lowest value.
+- taMacdFunc(): Calculates the Moving Average Convergence Divergence.
+- taMaxFunc(): Gets the maximum value.
+- taMedianFunc(): Gets the median value.
+- taMfiFunc(): Calculates the Money Flow Index.
+- taMinFunc(): Gets the minimum value.
+- taModeFunc(): Gets the mode.
+- taMomFunc(): Calculates the Momentum.
+- taPercentileLinearInterpolationFunc(): Calculates the percentile using linear interpolation.
+- taPercentileNearestRankFunc(): Calculates the percentile using the nearest rank method.
+- taPercentRankFunc(): Calculates the percent rank.
+- taPivotPointLevelsFunc(): Calculates the pivot point levels.
+- taPivotHighFunc(): Gets the pivot high.
+- taPivotLowFunc(): Gets the pivot low.
+- taRangeFunc(): Gets the range.
+- taRisingFunc(): Checks if a series is rising.
+- taRmaFunc(): Calculates the Rolling Moving Average.
+- taRocFunc(): Calculates the Rate of Change.
+- taRsiFunc(): Calculates the Relative Strength Index.
+- taSarFunc(): Calculates the Parabolic SAR.
+- taSmaFunc(): Calculates the Simple Moving Average.
+- taStdevFunc(): Calculates the standard deviation.
+- taStochFunc(): Calculates the Stochastic Oscillator.
+- taSuperTrendFunc(): Calculates the SuperTrend.
+- taSwmaFunc(): Calculates the Symmetrically Weighted Moving Average.
+- taTrFunc(): Calculates the True Range.
+- taTsiFunc(): Calculates the True Strength Index.
+- taValueWhenFunc(): Gets the value when a condition was true.
+- taVarianceFunc(): Calculates the variance.
+- taVwapFunc(): Calculates the Volume Weighted Average Price.
+- taVwmaFunc(): Calculates the Volume Weighted Moving Average.
+- taWmaFunc(): Calculates the Weighted Moving Average.
+- taWprFunc(): Calculates the Williams Percent Range.
+- tableFunc(): Creates a new table.
+- tableCellFunc(): Creates a new table cell.
+- tableCellSetBgColFunc(): Sets the background color of a table cell.
+- tableCellSetHeightFunc(): Sets the height of a table cell.
+- tableCellSetTextFunc(): Sets the text of a table cell.
+- tableCellSetTextColFunc(): Sets the text color of a table cell.
+- tableCellSetTextFontFamilyFunc(): Sets the text font family of a table cell.
+- tableCellSetTextHAlignFunc(): Sets the horizontal alignment of the text in a table cell.
+- tableCellSetTextSizeFunc(): Sets the text size of a table cell.
+- tableCellSetTextVAlignFunc(): Sets the vertical alignment of the text in a table cell.
+- tableCellSetToolTipFunc(): Sets the tooltip of a table cell.
+- tableCellSetWidthFunc(): Sets the width of a table cell.
+- tableClearFunc(): Clears a table.
+- tableDeleteFunc(): Deletes a table.
+- tableMergeCellsFunc(): Merges cells in a table.
+- tableNewFunc(): Creates a new table.
+- tableSetBgColFunc(): Sets the background color of a table.
+- tableSetBorderColFunc(): Sets the border color of a table.
+- tableSetBorderWidthFunc(): Sets the border width of a table.
+- tableSetFrameColFunc(): Sets the frame color of a table.
+- tableSetFrameWidthFunc(): Sets the frame width of a table.
+- tableSetPositionFunc(): Sets the position of a table.
+- tickerHeikinAshiFunc(): Creates a Heikin Ashi ticker.
+- tickerInheritFunc(): Inherits a ticker.
+- tickerKagiFunc(): Creates a Kagi ticker.
+- tickerLineBreakFunc(): Creates a Line Break ticker.
+- tickerModifyFunc(): Modifies a ticker.
+- tickerNewFunc(): Creates a new ticker.
+- tickerPointFigureFunc(): Creates a Point and Figure ticker.
+- tickerRenkoFunc(): Creates a Renko ticker.
+- tickerStandardFunc(): Creates a Standard ticker.
+- timeFunc(): Gets the current time.
+- timeCloseFunc(): Gets the close time.
+- timeframeChangeFunc(): Changes the timeframe.
+- timeframeFromSecondsFunc(): Converts seconds to a timeframe.
+- timeframeInSecondsFunc(): Converts a timeframe to seconds.
+- timestampFunc(): Gets the timestamp.
+- weekOfYearFunc(): Gets the week of the year.
+- yearFunc(): Gets the current year.
+
+## Keywords:
+- andOp: Logical AND operator.
+- enumType: Defines an enumeration.
+- exportFunc: Exports a module or function.
+- forLoop: Defines a for loop.
+- forInLoop: Defines a for...in loop.
+- ifCond: Defines an if statement.
+- importFunc: Imports a module or function.
+- methodFunc: Defines a method.
+- notOp: Logical NOT operator.
+- orOp: Logical OR operator.
+- switchCase: Defines a switch statement.
+- typeDef: Defines a type.
+- let: Declares a variable.
+- letip: Declares an input variable.
+- whileLoop: Defines a while loop.
+
+
+
+## Type Declarations:
+- arr: Represents an array .
+- bool: Represents a boolean typ.
+- box: Represents a box type.
+- chartPoint: Represents a chart point type.
+- col: Represents a color type.
+- const: Represents a constant type.
+- float: Represents a float type.
+- int: Represents an integer type.
+- label: Represents a label type.
+- line: Represents a line type.
+- lineFill: Represents a line fill type.
+- map: Represents a map type.
+- matrx: Represents a matrix type.
+- polyline: Represents a polyline type.
+- series: Represents a series .
+- simple: Represents a simple .
+- string: Represents a string .
+- table: Represents a table .

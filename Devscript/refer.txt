@@ -1,0 +1,3006 @@
+BUILT_IN_FUNCTIONS = [
+    'alertFunc', 'alertConditionFunc', 'arrayAbs', 'arrayAvg', 'arrayBinarySearch',
+    'arrayBinarySearchLeftmost', 'arrayBinarySearchRightmost', 'arrayClear', 'arrayConcat',
+    'arrayCopy', 'arrayCovariance', 'arrayEvery', 'arrayFill', 'arrayFirst', 'arrayFrom',
+    'arrayGet', 'arrayIncludes', 'arrayIndexOf', 'arrayInsert', 'arrayJoin', 'arrayLast',
+    'arrayLastIndexOf', 'arrayMax', 'arrayMedian', 'arrayMin', 'arrayMode', 'arrayNewBool',
+    'arrayNewBox', 'arrayNewCol', 'arrayNewFloat', 'arrayNewInt', 'arrayNewLabel',
+    'arrayNewLine', 'arrayNewLineFill', 'arrayNewString', 'arrayNewTable', 'arrayNewType',
+    'arrayPercentileLinearInterpolation', 'arrayPercentileNearestRank', 'arrayPercentRank',
+    'arrayPop', 'arrayPush', 'arrayRange', 'arrayRemove', 'arrayReverse', 'arraySet',
+    'arrayShift', 'arraySize', 'arraySlice', 'arraySome', 'arraySort', 'arraySortIndices',
+    'arrayStandardize', 'arrayStdev', 'arraySum', 'arrayUnshift', 'arrayVariance',
+    'barColFunc', 'bgColFunc', 'boolFunc', 'boxFunc', 'boxCopyFunc', 'boxDeleteFunc',
+    'boxGetBottomFunc', 'boxGetLeftFunc', 'boxGetRightFunc', 'boxGetTopFunc', 'boxNewFunc',
+    'boxSetBgColFunc', 'boxSetBorderColFunc', 'boxSetBorderStyleFunc', 'boxSetBorderWidthFunc',
+    'boxSetBottomFunc', 'boxSetBottomRightPointFunc', 'boxSetExtendFunc', 'boxSetLeftFunc',
+    'boxSetLeftTopFunc', 'boxSetRightFunc', 'boxSetRightBottomFunc', 'boxSetTextFunc',
+    'boxSetTextColFunc', 'boxSetTextFontFamilyFunc', 'boxSetTextHAlignFunc', 'boxSetTextSizeFunc',
+    'boxSetTextVAlignFunc', 'boxSetTextWrapFunc', 'boxSetTopFunc', 'boxSetTopLeftPointFunc',
+    'chartPointCopyFunc', 'chartPointFromIndexFunc', 'chartPointFromTimeFunc', 'chartPointNewFunc',
+    'chartPointNowFunc', 'colFunc', 'colBFunc', 'colFromGradientFunc', 'colGFunc', 'colNewFunc',
+    'colRFunc', 'colRgbFunc', 'colTFunc', 'dayOfMonthFunc', 'dayOfWeekFunc', 'fillFunc',
+    'fixNanFunc', 'floatFunc', 'hLineFunc', 'hourFunc', 'indicatorFunc', 'inputFunc',
+    'inputBoolFunc', 'inputColFunc', 'inputEnumFunc', 'inputFloatFunc', 'inputIntFunc',
+    'inputPriceFunc', 'inputSessionFunc', 'inputSourceFunc', 'inputStringFunc', 'inputSymbolFunc',
+    'inputTextAreaFunc', 'inputTimeFunc', 'inputTimeFrameFunc', 'intFunc', 'labelFunc',
+    'labelCopyFunc', 'labelDeleteFunc', 'labelGetTextFunc', 'labelGetXFunc', 'labelGetYFunc',
+    'labelNewFunc', 'labelSetColFunc', 'labelSetPointFunc', 'labelSetSizeFunc', 'labelSetStyleFunc',
+    'labelSetTextFunc', 'labelSetTextFontFamilyFunc', 'labelSetTextAlignFunc', 'labelSetTextColFunc',
+    'labelSetToolTipFunc', 'labelSetXFunc', 'labelSetXLocFunc', 'labelSetXYFunc', 'labelSetYFunc',
+    'labelSetYLocFunc', 'libraryFunc', 'lineFunc', 'lineCopyFunc', 'lineDeleteFunc',
+    'lineGetPriceFunc', 'lineGetX1Func', 'lineGetX2Func', 'lineGetY1Func', 'lineGetY2Func',
+    'lineNewFunc', 'lineSetColFunc', 'lineSetExtendFunc', 'lineSetFirstPointFunc',
+    'lineSetSecondPointFunc', 'lineSetStyleFunc', 'lineSetWidthFunc', 'lineSetX1Func',
+    'lineSetX2Func', 'lineSetXLocFunc', 'lineSetXY1Func', 'lineSetXY2Func', 'lineSetY1Func',
+    'lineSetY2Func', 'lineFillFunc', 'lineFillDeleteFunc', 'lineFillGetLine1Func',
+    'lineFillGetLine2Func', 'lineFillNewFunc', 'lineFillSetColFunc', 'logErrorFunc',
+    'logInfoFunc', 'logWarningFunc', 'mapClearFunc', 'mapContainsFunc', 'mapCopyFunc',
+    'mapGetFunc', 'mapKeysFunc', 'mapNewTypeFunc', 'mapPutFunc', 'mapPutAllFunc',
+    'mapRemoveFunc', 'mapSizeFunc', 'mapValuesFunc', 'mathAbsFunc', 'mathAcosFunc',
+    'mathAsinFunc', 'mathAtanFunc', 'mathAvgFunc', 'mathCeilFunc', 'mathCosFunc',
+    'mathExpFunc', 'mathFloorFunc', 'mathLogFunc', 'mathLog10Func', 'mathMaxFunc',
+    'mathMinFunc', 'mathPowFunc', 'mathRandomFunc', 'mathRoundFunc', 'mathRoundToMinTickFunc',
+    'mathSignFunc', 'mathSinFunc', 'mathSqrtFunc', 'mathSumFunc', 'mathTanFunc',
+    'mathToDegreesFunc', 'mathToRadiansFunc', 'matrixAddColFunc', 'matrixAddRowFunc',
+    'matrixAvgFunc', 'matrixColFunc', 'matrixColumnsFunc', 'matrixConcatFunc', 'matrixCopyFunc',
+    'matrixDetFunc', 'matrixDiffFunc', 'matrixEigenValuesFunc', 'matrixEigenVectorsFunc',
+    'matrixElementsCountFunc', 'matrixFillFunc', 'matrixGetFunc', 'matrixInvFunc',
+    'matrixIsAntiDiagonalFunc', 'matrixIsAntiSymmetricFunc', 'matrixIsBinaryFunc',
+    'matrixIsDiagonalFunc', 'matrixIsIdentityFunc', 'matrixIsSquareFunc', 'matrixIsStochasticFunc',
+    'matrixIsSymmetricFunc', 'matrixIsTriangularFunc', 'matrixIsZeroFunc', 'matrixKronFunc',
+    'matrixMaxFunc', 'matrixMedianFunc', 'matrixMinFunc', 'matrixModeFunc', 'matrixMultFunc',
+    'matrixNewTypeFunc', 'matrixPinvFunc', 'matrixPowFunc', 'matrixRankFunc', 'matrixRemoveColFunc',
+    'matrixRemoveRowFunc', 'matrixReshapeFunc', 'matrixReverseFunc', 'matrixRowFunc',
+    'matrixRowsFunc', 'matrixSetFunc', 'matrixSortFunc', 'matrixSubMatrixFunc', 'matrixSumFunc',
+    'matrixSwapColumnsFunc', 'matrixSwapRowsFunc', 'matrixTraceFunc', 'matrixTransposeFunc',
+    'maxBarsBackFunc', 'minuteFunc', 'monthFunc', 'naFunc', 'nzFunc', 'polylineDeleteFunc',
+    'polylineNewFunc', 'requestCurrencyRateFunc', 'requestDividendsFunc', 'requestEarningsFunc',
+    'requestEconomicFunc', 'requestFinancialFunc', 'requestQuandlFunc', 'requestSecurityFunc',
+    'requestSecurityLowerTfFunc', 'requestSeedFunc', 'requestSplitsFunc', 'runtimeErrorFunc',
+    'secondFunc', 'strContainsFunc', 'strEndsWithFunc', 'strFormatFunc', 'strFormatTimeFunc',
+    'strLengthFunc', 'strLowerFunc', 'strMatchFunc', 'strPosFunc', 'strRepeatFunc',
+    'strReplaceFunc', 'strReplaceAllFunc', 'strSplitFunc', 'strStartsWithFunc', 'strSubstringFunc',
+    'strToNumberFunc', 'strToStringFunc', 'strTrimFunc', 'strUpperFunc', 'strategyFunc',
+    'strategyCancelFunc', 'strategyCancelAllFunc', 'strategyCloseFunc', 'strategyCloseAllFunc',
+    'strategyClosedTradesCommissionFunc', 'strategyClosedTradesEntryBarIndexFunc',
+    'strategyClosedTradesEntryCommentFunc', 'strategyClosedTradesEntryIdFunc',
+    'strategyClosedTradesEntryPriceFunc', 'strategyClosedTradesEntryTimeFunc',
+    'strategyClosedTradesExitBarIndexFunc', 'strategyClosedTradesExitCommentFunc',
+    'strategyClosedTradesExitIdFunc', 'strategyClosedTradesExitPriceFunc',
+    'strategyClosedTradesExitTimeFunc', 'strategyClosedTradesMaxDrawdownFunc',
+    'strategyClosedTradesMaxDrawdownPercentFunc', 'strategyClosedTradesMaxRunupFunc',
+    'strategyClosedTradesMaxRunupPercentFunc', 'strategyClosedTradesProfitFunc',
+    'strategyClosedTradesProfitPercentFunc', 'strategyClosedTradesSizeFunc',
+    'strategyConvertToAccountFunc', 'strategyConvertToSymbolFunc', 'strategyDefaultEntryQtyFunc',
+    'strategyEntryFunc', 'strategyExitFunc', 'strategyOpenTradesCommissionFunc',
+    'strategyOpenTradesEntryBarIndexFunc', 'strategyOpenTradesEntryCommentFunc',
+    'strategyOpenTradesEntryIdFunc', 'strategyOpenTradesEntryPriceFunc',
+    'strategyOpenTradesEntryTimeFunc', 'strategyOpenTradesMaxDrawdownFunc',
+    'strategyOpenTradesMaxDrawdownPercentFunc', 'strategyOpenTradesMaxRunupFunc',
+    'strategyOpenTradesMaxRunupPercentFunc', 'strategyOpenTradesProfitFunc',
+    'strategyOpenTradesProfitPercentFunc', 'strategyOpenTradesSizeFunc', 'strategyOrderFunc',
+    'strategyRiskAllowEntryInFunc', 'strategyRiskMaxConsLossDaysFunc', 'strategyRiskMaxDrawdownFunc',
+    'strategyRiskMaxIntradayFilledOrdersFunc', 'strategyRiskMaxIntradayLossFunc',
+    'strategyRiskMaxPositionSizeFunc', 'symInfoPrefixFunc', 'symInfoTickerFunc', 'timeFunc',
+    'timeCloseFunc', 'timeframeChangeFunc', 'timeframeFromSecondsFunc', 'timeframeInSecondsFunc',
+    'timestampFunc', 'weekOfYearFunc', 'yearFunc'
+]
+
+
+
+
+def _evaluate_syntax(self, syntax_list):
+    results = []
+    for syntax in syntax_list:
+        result = self.calculate_syntax(syntax)
+        results.append(result)
+    return results
+
+
+
+
+def calculate_syntax(self, syntax):
+    # Market Data Calculations
+    if syntax.get('type') == 'market_data':
+        return self._calculate_market_data()
+    
+    # Bar State Calculations
+    elif syntax.get('type') == 'bar_state':
+        return self._calculate_bar_states()
+        
+    # Time Component Calculations
+    elif syntax.get('type') == 'time':
+        return self._calculate_time_components()
+        
+    # Price Component Calculations
+    elif syntax.get('type') == 'price':
+        return self._calculate_price_components()
+        
+    # Technical Indicator Calculations
+    elif syntax.get('type') == 'technical':
+        return self._calculate_technical_indicators()
+        
+    # Strategy Metrics Calculations
+    elif syntax.get('type') == 'strategy':
+        return self._calculate_strategy_metrics()
+        
+    # Session State Calculations
+    elif syntax.get('type') == 'session':
+        return self._calculate_session_states()
+        
+    # Timeframe State Calculations
+    elif syntax.get('type') == 'timeframe':
+        return self._calculate_timeframe_states()
+        
+    # Type Declaration Handling
+    elif syntax.get('type') == 'type_declaration':
+        return self._handle_type_declaration(syntax.get('node'), syntax.get('args', []))
+        
+    # Keyword Operation Handling
+    elif syntax.get('type') == 'keyword':
+        return self._handle_keyword_operation(syntax.get('operation'), syntax.get('args', []))
+        
+    # Built-in Function Handling
+    elif syntax.get('type') == 'builtin_function':
+        return self._evaluate_builtin_function(syntax)
+        
+    # Price Average Calculations
+    elif syntax.get('type') == 'price_average':
+        return self._calculate_price_averages(syntax.get('calc_type'))
+        
+    # Environment Variable Handling
+    elif syntax.get('type') == 'environment':
+        env = Environment()
+        if syntax.get('action') == 'get':
+            return env.get(syntax.get('key'))
+        elif syntax.get('action') == 'set':
+            return env.set(syntax.get('key'), syntax.get('value'))
+            
+    # Constant Handling
+    elif syntax.get('type') == 'constant':
+        return self.constant(syntax.get('name'))
+        
+    # Array Operations
+    elif syntax.get('type') == 'array':
+        return self._handle_array_operation(syntax.get('operation'), syntax.get('args', []))
+        
+    # Box Operations
+    elif syntax.get('type') == 'box':
+        return self._handle_box_operation(syntax.get('operation'), syntax.get('args', []))
+        
+    # Chart Operations
+    elif syntax.get('type') == 'chart':
+        return self._handle_chart_operation(syntax.get('operation'), syntax.get('args', []))
+        
+    # Color Operations
+    elif syntax.get('type') == 'color':
+        return self._handle_color_operation(syntax.get('operation'), syntax.get('args', []))
+        
+    # Input Operations
+    elif syntax.get('type') == 'input':
+        return self._handle_input_operation(syntax.get('operation'), syntax.get('args', []))
+        
+    # Label Operations
+    elif syntax.get('type') == 'label':
+        return self._handle_label_operation(syntax.get('operation'), syntax.get('args', []))
+        
+    # Line Operations
+    elif syntax.get('type') == 'line':
+        return self._handle_line_operation(syntax.get('operation'), syntax.get('args', []))
+        
+    # Log Operations
+    elif syntax.get('type') == 'log':
+        return self._handle_log_operation(syntax.get('operation'), syntax.get('args', []))
+        
+    # Map Operations
+    elif syntax.get('type') == 'map':
+        return self._handle_map_operation(syntax.get('operation'), syntax.get('args', []))
+        
+    # Math Operations
+    elif syntax.get('type') == 'math':
+        return self._handle_math_operation(syntax.get('operation'), syntax.get('args', []))
+        
+    # Matrix Operations
+    elif syntax.get('type') == 'matrix':
+        return self._handle_matrix_operation(syntax.get('operation'), syntax.get('args', []))
+        
+    # String Operations
+    elif syntax.get('type') == 'string':
+        return self._handle_str_operation(syntax.get('operation'), syntax.get('args', []))
+        
+    # Technical Analysis Operations
+    elif syntax.get('type') == 'ta':
+        return self._handle_ta_operation(syntax.get('operation'), syntax.get('args', []))
+        
+    # Table Operations
+    elif syntax.get('type') == 'table':
+        return self._handle_table_operation(syntax.get('operation'), syntax.get('args', []))
+        
+    # Ticker Operations
+    elif syntax.get('type') == 'ticker':
+        return self._handle_ticker_operation(syntax.get('operation'), syntax.get('args', []))
+        
+    # Utility Operations
+    elif syntax.get('type') == 'utility':
+        return self._handle_utility_operation(syntax.get('operation'), syntax.get('args', []))
+
+    return None
+
+
+continue by creating calculations for the list, avoid usign fucntions int eh calculations and make it as independent as possible ()
+'tableFunc ','tableCellFunc','tableCellSetBgColFunc','tableCellSetHeightFunc' ,'tableCellSetTextFunc','tableCellSetTextColFunc','tableCellSetTextFontFamily','tableCellSetTextHAlignFunc','tableCellSetTextSizeFunc','tableCellSetTextVAlignFunc','tableCellSetToolTipFunc','tableCellSetWidthFunc','tableClearFunc ','tableDeleteFunc ','tableMergeCellsFunc','tableNewFunc','tableSetBgColFunc','tableSetBorderColFunc','tableSetBorderWidthFunc','tableSetFrameColFunc ','tableSetFrameWidthFunc','tableSetPositionFunc '
+"
+def _handle_array_operation(self, syntax_list, args):
+    if syntax_list == 'arrAbs':
+        return [abs(x) for x in args[0]]
+        
+    elif syntax_list == 'arrAvg':
+        return sum(args[0]) / len(args[0]) if args[0] else 0
+        
+    elif syntax_list == 'arrBinarySearch':
+        target = args[1]
+        left, right = 0, len(args[0]) - 1
+        while left <= right:
+            mid = (left + right) // 2
+            if args[0][mid] == target:
+                return mid
+            elif args[0][mid] < target:
+                left = mid + 1
+            else:
+                right = mid - 1
+        return -1
+        
+    elif syntax_list == 'arrBinarySearchLeftmost':
+        target = args[1]
+        left, right = 0, len(args[0])
+        while left < right:
+            mid = (left + right) // 2
+            if args[0][mid] < target:
+                left = mid + 1
+            else:
+                right = mid
+        return left
+        
+    elif syntax_list == 'arrBinarySearchRightmost':
+        target = args[1]
+        left, right = 0, len(args[0])
+        while left < right:
+            mid = (left + right) // 2
+            if args[0][mid] <= target:
+                left = mid + 1
+            else:
+                right = mid
+        return left - 1
+        
+    elif syntax_list == 'arrClear':
+        args[0].clear()
+        return args[0]
+        
+    elif syntax_list == 'arrConcat':
+        return args[0] + args[1]
+        
+    elif syntax_list == 'arrCopy':
+        return args[0].copy()
+        
+    elif syntax_list == 'arrCovariance':
+        x, y = args[0], args[1]
+        if len(x) != len(y):
+            return None
+        n = len(x)
+        mean_x = sum(x) / n
+        mean_y = sum(y) / n
+        covariance = sum((x[i] - mean_x) * (y[i] - mean_y) for i in range(n)) / (n - 1)
+        return covariance
+        
+    elif syntax_list == 'arrEvery':
+        return all(args[1](x) for x in args[0])
+        
+    elif syntax_list == 'arrFill':
+        return [args[1]] * args[0]
+        
+    elif syntax_list == 'arrFirst':
+        return args[0][0] if args[0] else None
+        
+    elif syntax_list == 'arrFrom':
+        return list(args[0])
+        
+    elif syntax_list == 'arrGet':
+        return args[0][args[1]] if 0 <= args[1] < len(args[0]) else None
+        
+    elif syntax_list == 'arrIncludes':
+        return args[1] in args[0]
+        
+    elif syntax_list == 'arrIndexOf':
+        try:
+            return args[0].index(args[1])
+        except ValueError:
+            return -1
+            
+    elif syntax_list == 'arrInsert':
+        args[0].insert(args[1], args[2])
+        return args[0]
+        
+    elif syntax_list == 'arrJoin':
+        return args[1].join(str(x) for x in args[0])
+        
+    elif syntax_list == 'arrLast':
+        return args[0][-1] if args[0] else None
+        
+    elif syntax_list == 'arrLastIndexOf':
+        for i in range(len(args[0])-1, -1, -1):
+            if args[0][i] == args[1]:
+                return i
+        return -1
+        
+    elif syntax_list == 'arrMax':
+        return max(args[0]) if args[0] else None
+        
+    elif syntax_list == 'arrMedian':
+        sorted_arr = sorted(args[0])
+        n = len(sorted_arr)
+        if n % 2 == 0:
+            return (sorted_arr[n//2-1] + sorted_arr[n//2]) / 2
+        return sorted_arr[n//2]
+        
+    elif syntax_list == 'arrMin':
+        return min(args[0]) if args[0] else None
+        
+    elif syntax_list == 'arrMode':
+        from collections import Counter
+        if not args[0]:
+            return None
+        return Counter(args[0]).most_common(1)[0][0]
+        
+    elif syntax_list in ['arrNewBool', 'arrNewBox', 'arrNewCol', 'arrNewFloat', 
+                          'arrNewInt', 'arrNewLabel', 'arrNewLine', 'arrNewLineFill', 
+                          'arrNewString', 'arrNewTable', 'arrNewType']:
+        return []
+        
+    elif syntax_list == 'arrPercentileLinearInterpolation':
+        sorted_arr = sorted(args[0])
+        p = args[1]
+        if not 0 <= p <= 100:
+            return None
+        if len(sorted_arr) == 0:
+            return None
+        if len(sorted_arr) == 1:
+            return sorted_arr[0]
+        rank = p * (len(sorted_arr) - 1) / 100
+        lower_rank = int(rank)
+        rank_fraction = rank - lower_rank
+        if lower_rank == len(sorted_arr) - 1:
+            return sorted_arr[-1]
+        return sorted_arr[lower_rank] + rank_fraction * (sorted_arr[lower_rank + 1] - sorted_arr[lower_rank])
+        
+    elif syntax_list == 'arrPercentileNearestRank':
+        sorted_arr = sorted(args[0])
+        p = args[1]
+        if not 0 <= p <= 100:
+            return None
+        if len(sorted_arr) == 0:
+            return None
+        rank = round(p * (len(sorted_arr) - 1) / 100)
+        return sorted_arr[rank]
+        
+    elif syntax_list == 'arrPercentRank':
+        value = args[1]
+        sorted_arr = sorted(args[0])
+        if not sorted_arr:
+            return None
+        count = sum(1 for x in sorted_arr if x < value)
+        return count * 100 / len(sorted_arr)
+        
+    elif syntax_list == 'arrPop':
+        return args[0].pop() if args[0] else None
+        
+    elif syntax_list == 'arrPush':
+        args[0].append(args[1])
+        return len(args[0])
+        
+    elif syntax_list == 'arrRange':
+        start = args[0]
+        end = args[1]
+        step = args[2] if len(args) > 2 else 1
+        return list(range(start, end, step))
+        
+    elif syntax_list == 'arrRemove':
+        try:
+            args[0].remove(args[1])
+            return True
+        except ValueError:
+            return False
+            
+    elif syntax_list == 'arrReverse':
+        args[0].reverse()
+        return args[0]
+        
+    elif syntax_list == 'arrSet':
+        args[0][args[1]] = args[2]
+        return args[0]
+        
+    elif syntax_list == 'arrShift':
+        return args[0].pop(0) if args[0] else None
+        
+    elif syntax_list == 'arrSize':
+        return len(args[0])
+        
+    elif syntax_list == 'arrSlice':
+        start = args[1]
+        end = args[2] if len(args) > 2 else None
+        return args[0][start:end]
+        
+    elif syntax_list == 'arrSome':
+        return any(args[1](x) for x in args[0])
+        
+    elif syntax_list == 'arrSort':
+        args[0].sort(reverse=bool(args[1]) if len(args) > 1 else False)
+        return args[0]
+        
+    elif syntax_list == 'arrSortIndices':
+        indexed_list = list(enumerate(args[0]))
+        indexed_list.sort(key=lambda x: x[1], reverse=bool(args[1]) if len(args) > 1 else False)
+        return [i for i, _ in indexed_list]
+        
+    elif syntax_list == 'arrStandardize':
+        if not args[0]:
+            return []
+        mean = sum(args[0]) / len(args[0])
+        std = (sum((x - mean) ** 2 for x in args[0]) / len(args[0])) ** 0.5
+        return [(x - mean) / std if std != 0 else 0 for x in args[0]]
+        
+    elif syntax_list == 'arrStdev':
+        if len(args[0]) < 2:
+            return None
+        mean = sum(args[0]) / len(args[0])
+        return (sum((x - mean) ** 2 for x in args[0]) / (len(args[0]) - 1)) ** 0.5
+        
+    elif syntax_list == 'arrSum':
+        return sum(args[0])
+        
+    elif syntax_list == 'arrUnshift':
+        args[0].insert(0, args[1])
+        return len(args[0])
+        
+    elif syntax_list == 'arrVariance':
+        if len(args[0]) < 2:
+            return None
+        mean = sum(args[0]) / len(args[0])
+        return sum((x - mean) ** 2 for x in args[0]) / (len(args[0]) - 1)
+
+    return None
+
+
+
+
+
+
+
+
+def _handle_box_operation(self, syntax_list, args):
+    elif syntax_list == 'boxFunc':
+        return {
+            'left': args[0],
+            'top': args[1],
+            'right': args[2],
+            'bottom': args[3],
+            'border_color': args[4] if len(args) > 4 else None,
+            'bg_color': args[5] if len(args) > 5 else None
+        }
+        
+    elif syntax_list == 'boxCopyFunc':
+        return args[0].copy()
+        
+    elif syntax_list == 'boxDeleteFunc':
+        return None
+        
+    elif syntax_list == 'boxGetBottomFunc':
+        return args[0]['bottom']
+        
+    elif syntax_list == 'boxGetLeftFunc':
+        return args[0]['left']
+        
+    elif syntax_list == 'boxGetRightFunc':
+        return args[0]['right']
+        
+    elif syntax_list == 'boxGetTopFunc':
+        return args[0]['top']
+        
+    elif syntax_list == 'boxNewFunc':
+        return {
+            'left': 0,
+            'top': 0,
+            'right': 0,
+            'bottom': 0,
+            'border_color': None,
+            'bg_color': None,
+            'text': '',
+            'text_color': None,
+            'text_size': 12,
+            'text_halign': 'center',
+            'text_valign': 'center',
+            'text_wrap': False,
+            'text_font_family': 'Arial',
+            'border_style': 'solid',
+            'border_width': 1,
+            'extend': False
+        }
+        
+    elif syntax_list == 'boxSetBgColFunc':
+        args[0]['bg_color'] = args[1]
+        return args[0]
+        
+    elif syntax_list == 'boxSetBorderColFunc':
+        args[0]['border_color'] = args[1]
+        return args[0]
+        
+    elif syntax_list == 'boxSetBorderStyleFunc':
+        args[0]['border_style'] = args[1]
+        return args[0]
+        
+    elif syntax_list == 'boxSetBorderWidthFunc':
+        args[0]['border_width'] = args[1]
+        return args[0]
+        
+    elif syntax_list == 'boxSetBottomFunc':
+        args[0]['bottom'] = args[1]
+        return args[0]
+        
+    elif syntax_list == 'boxSetBottomRightPointFunc':
+        args[0]['bottom'] = args[2]
+        args[0]['right'] = args[1]
+        return args[0]
+        
+    elif syntax_list == 'boxSetExtendFunc':
+        args[0]['extend'] = args[1]
+        return args[0]
+        
+    elif syntax_list == 'boxSetLeftFunc':
+        args[0]['left'] = args[1]
+        return args[0]
+        
+    elif syntax_list == 'boxSetLeftTopFunc':
+        args[0]['left'] = args[1]
+        args[0]['top'] = args[2]
+        return args[0]
+        
+    elif syntax_list == 'boxSetRightFunc':
+        args[0]['right'] = args[1]
+        return args[0]
+        
+    elif syntax_list == 'boxSetRightBottomFunc':
+        args[0]['right'] = args[1]
+        args[0]['bottom'] = args[2]
+        return args[0]
+        
+    elif syntax_list == 'boxSetTextFunc':
+        args[0]['text'] = args[1]
+        return args[0]
+        
+    elif syntax_list == 'boxSetTextColFunc':
+        args[0]['text_color'] = args[1]
+        return args[0]
+        
+    elif syntax_list == 'boxSetTextFontFamilyFunc':
+        args[0]['text_font_family'] = args[1]
+        return args[0]
+        
+    elif syntax_list == 'boxSetTextHAlignFunc':
+        args[0]['text_halign'] = args[1]
+        return args[0]
+        
+    elif syntax_list == 'boxSetTextSizeFunc':
+        args[0]['text_size'] = args[1]
+        return args[0]
+        
+    elif syntax_list == 'boxSetTextVAlignFunc':
+        args[0]['text_valign'] = args[1]
+        return args[0]
+        
+    elif syntax_list == 'boxSetTextWrapFunc':
+        args[0]['text_wrap'] = args[1]
+        return args[0]
+        
+    elif syntax_list == 'boxSetTopFunc':
+        args[0]['top'] = args[1]
+        return args[0]
+        
+    elif syntax_list == 'boxSetTopLeftPointFunc':
+        args[0]['top'] = args[2]
+        args[0]['left'] = args[1]
+        return args[0]
+
+    return None
+
+
+
+
+
+def _handle_chart_operation(self, syntax_list, args):
+    elif syntax_list == 'chartPointCopyFunc':
+        return {
+            'time': args[0]['time'],
+            'price': args[0]['price'],
+            'index': args[0]['index'],
+            'bar_index': args[0]['bar_index'],
+            'offset': args[0]['offset'],
+            'plotchar': args[0]['plotchar'],
+            'style': args[0]['style'],
+            'color': args[0]['color'],
+            'width': args[0]['width']
+        }
+        
+    elif syntax_list == 'chartPointFromIndexFunc':
+        return {
+            'time': self.get_time_from_index(args[0]),
+            'price': args[1],
+            'index': args[0],
+            'bar_index': args[0],
+            'offset': 0,
+            'plotchar': None,
+            'style': 'line',
+            'color': None,
+            'width': 1
+        }
+        
+    elif syntax_list == 'chartPointFromTimeFunc':
+        index = self.get_index_from_time(args[0])
+        return {
+            'time': args[0],
+            'price': args[1],
+            'index': index,
+            'bar_index': index,
+            'offset': 0,
+            'plotchar': None,
+            'style': 'line',
+            'color': None,
+            'width': 1
+        }
+        
+    elif syntax_list == 'chartPointNewFunc':
+        return {
+            'time': None,
+            'price': None,
+            'index': None,
+            'bar_index': None,
+            'offset': 0,
+            'plotchar': None,
+            'style': 'line',
+            'color': None,
+            'width': 1
+        }
+        
+    elif syntax_list == 'chartPointNowFunc':
+        current_index = len(self.market_data['close']) - 1
+        current_time = self.current_time
+        return {
+            'time': current_time,
+            'price': args[0],
+            'index': current_index,
+            'bar_index': current_index,
+            'offset': 0,
+            'plotchar': None,
+            'style': 'line',
+            'color': None,
+            'width': 1
+        }
+
+    return None
+
+def get_time_from_index(self, index):
+    if 0 <= index < len(self.market_data['time']):
+        return self.market_data['time'][index]
+    return None
+
+def get_index_from_time(self, target_time):
+    for i, time in enumerate(self.market_data['time']):
+        if time == target_time:
+            return i
+    return -1
+
+
+
+
+
+def _handle_color_operation(self, syntax_list, args):
+    if syntax_list == 'colFunc':
+        r, g, b = args[0], args[1], args[2]
+        t = args[3] if len(args) > 3 else 0
+        return {'r': r, 'g': g, 'b': b, 't': t}
+        
+    elif syntax_list == 'colBFunc':
+        return args[0]['b']
+        
+    elif syntax_list == 'colFromGradientFunc':
+        value = args[0]
+        start_color = args[1]
+        end_color = args[2]
+        
+        r = start_color['r'] + (end_color['r'] - start_color['r']) * value
+        g = start_color['g'] + (end_color['g'] - start_color['g']) * value
+        b = start_color['b'] + (end_color['b'] - start_color['b']) * value
+        t = start_color['t'] + (end_color['t'] - start_color['t']) * value
+        
+        return {'r': int(r), 'g': int(g), 'b': int(b), 't': int(t)}
+        
+    elif syntax_list == 'colGFunc':
+        return args[0]['g']
+        
+    elif syntax_list == 'colNewFunc':
+        return {'r': 0, 'g': 0, 'b': 0, 't': 0}
+        
+    elif syntax_list == 'colRFunc':
+        return args[0]['r']
+        
+    elif syntax_list == 'colRgbFunc':
+        r = args[0] if len(args) > 0 else 0
+        g = args[1] if len(args) > 1 else 0
+        b = args[2] if len(args) > 2 else 0
+        return {'r': r, 'g': g, 'b': b, 't': 0}
+        
+    elif syntax_list == 'colTFunc':
+        return args[0]['t']
+
+    return None
+
+
+
+
+
+def _handle_input_operation(self, syntax_list, args):
+    if syntax_list == 'inputFunc':
+        defval = args[1] if len(args) > 1 else None
+        title = args[2] if len(args) > 2 else args[0]
+        return {
+            'name': args[0],
+            'value': defval,
+            'title': title,
+            'type': 'input'
+        }
+        
+    elif syntax_list == 'inputBoolFunc':
+        defval = args[1] if len(args) > 1 else False
+        title = args[2] if len(args) > 2 else args[0]
+        return {
+            'name': args[0],
+            'value': bool(defval),
+            'title': title,
+            'type': 'bool'
+        }
+        
+    elif syntax_list == 'inputColFunc':
+        defval = args[1] if len(args) > 1 else {'r': 0, 'g': 0, 'b': 0, 't': 0}
+        title = args[2] if len(args) > 2 else args[0]
+        return {
+            'name': args[0],
+            'value': defval,
+            'title': title,
+            'type': 'color'
+        }
+        
+    elif syntax_list == 'inputEnumFunc':
+        options = args[1]
+        defval = args[2] if len(args) > 2 else options[0]
+        title = args[3] if len(args) > 3 else args[0]
+        return {
+            'name': args[0],
+            'options': options,
+            'value': defval,
+            'title': title,
+            'type': 'enum'
+        }
+        
+    elif syntax_list == 'inputFloatFunc':
+        defval = args[1] if len(args) > 1 else 0.0
+        minval = args[2] if len(args) > 2 else None
+        maxval = args[3] if len(args) > 3 else None
+        step = args[4] if len(args) > 4 else None
+        title = args[5] if len(args) > 5 else args[0]
+        return {
+            'name': args[0],
+            'value': float(defval),
+            'min': minval,
+            'max': maxval,
+            'step': step,
+            'title': title,
+            'type': 'float'
+        }
+        
+    elif syntax_list == 'inputIntFunc':
+        defval = args[1] if len(args) > 1 else 0
+        minval = args[2] if len(args) > 2 else None
+        maxval = args[3] if len(args) > 3 else None
+        step = args[4] if len(args) > 4 else 1
+        title = args[5] if len(args) > 5 else args[0]
+        return {
+            'name': args[0],
+            'value': int(defval),
+            'min': minval,
+            'max': maxval,
+            'step': step,
+            'title': title,
+            'type': 'integer'
+        }
+        
+    elif syntax_list == 'inputPriceFunc':
+        defval = args[1] if len(args) > 1 else None
+        title = args[2] if len(args) > 2 else args[0]
+        return {
+            'name': args[0],
+            'value': defval,
+            'title': title,
+            'type': 'price'
+        }
+        
+    elif syntax_list == 'inputSessionFunc':
+        defval = args[1] if len(args) > 1 else "0000-2400"
+        title = args[2] if len(args) > 2 else args[0]
+        return {
+            'name': args[0],
+            'value': defval,
+            'title': title,
+            'type': 'session'
+        }
+        
+    elif syntax_list == 'inputSourceFunc':
+        defval = args[1] if len(args) > 1 else 'close'
+        title = args[2] if len(args) > 2 else args[0]
+        return {
+            'name': args[0],
+            'value': defval,
+            'title': title,
+            'type': 'source'
+        }
+        
+    elif syntax_list == 'inputStringFunc':
+        defval = args[1] if len(args) > 1 else ""
+        title = args[2] if len(args) > 2 else args[0]
+        return {
+            'name': args[0],
+            'value': str(defval),
+            'title': title,
+            'type': 'string'
+        }
+        
+    elif syntax_list == 'inputSymbolFunc':
+        defval = args[1] if len(args) > 1 else ""
+        title = args[2] if len(args) > 2 else args[0]
+        return {
+            'name': args[0],
+            'value': defval,
+            'title': title,
+            'type': 'symbol'
+        }
+        
+    elif syntax_list == 'inputTextAreaFunc':
+        defval = args[1] if len(args) > 1 else ""
+        title = args[2] if len(args) > 2 else args[0]
+        return {
+            'name': args[0],
+            'value': defval,
+            'title': title,
+            'type': 'textarea'
+        }
+        
+    elif syntax_list == 'inputTimeFunc':
+        defval = args[1] if len(args) > 1 else self.current_time
+        title = args[2] if len(args) > 2 else args[0]
+        return {
+            'name': args[0],
+            'value': defval,
+            'title': title,
+            'type': 'time'
+        }
+        
+    elif syntax_list == 'inputTimeFrameFunc':
+        defval = args[1] if len(args) > 1 else "D"
+        title = args[2] if len(args) > 2 else args[0]
+        return {
+            'name': args[0],
+            'value': defval,
+            'title': title,
+            'type': 'timeframe'
+        }
+
+    return None
+
+
+
+
+
+def _handle_label_operation(self, syntax_list, args):
+    if syntax_list == 'labelFunc':
+        return {
+            'text': args[0],
+            'x': args[1],
+            'y': args[2],
+            'xloc': args[3] if len(args) > 3 else 'bar_index',
+            'yloc': args[4] if len(args) > 4 else 'price',
+            'color': args[5] if len(args) > 5 else None,
+            'style': args[6] if len(args) > 6 else 'label_center',
+            'textcolor': args[7] if len(args) > 7 else None,
+            'size': args[8] if len(args) > 8 else 'normal',
+            'textalign': args[9] if len(args) > 9 else 'center'
+        }
+        
+    elif syntax_list == 'labelCopyFunc':
+        return dict(args[0])
+        
+    elif syntax_list == 'labelDeleteFunc':
+        return None
+        
+    elif syntax_list == 'labelGetTextFunc':
+        return args[0]['text']
+        
+    elif syntax_list == 'labelGetXFunc':
+        return args[0]['x']
+        
+    elif syntax_list == 'labelGetYFunc':
+        return args[0]['y']
+        
+    elif syntax_list == 'labelNewFunc':
+        return {
+            'text': '',
+            'x': 0,
+            'y': 0,
+            'xloc': 'bar_index',
+            'yloc': 'price',
+            'color': None,
+            'style': 'label_center',
+            'textcolor': None,
+            'size': 'normal',
+            'textalign': 'center',
+            'tooltip': '',
+            'font_family': 'Arial',
+            'font_size': 12
+        }
+        
+    elif syntax_list == 'labelSetColFunc':
+        args[0]['color'] = args[1]
+        return args[0]
+        
+    elif syntax_list == 'labelSetPointFunc':
+        args[0]['x'] = args[1]['x']
+        args[0]['y'] = args[1]['y']
+        return args[0]
+        
+    elif syntax_list == 'labelSetSizeFunc':
+        args[0]['size'] = args[1]
+        return args[0]
+        
+    elif syntax_list == 'labelSetStyleFunc':
+        args[0]['style'] = args[1]
+        return args[0]
+        
+    elif syntax_list == 'labelSetTextFunc':
+        args[0]['text'] = args[1]
+        return args[0]
+        
+    elif syntax_list == 'labelSetTextColFunc':
+        args[0]['textcolor'] = args[1]
+        return args[0]
+        
+    elif syntax_list == 'labelSetTextFontFamilyFunc':
+        args[0]['font_family'] = args[1]
+        return args[0]
+        
+    elif syntax_list == 'labelSetTextAlignFunc':
+        args[0]['textalign'] = args[1]
+        return args[0]
+        
+    elif syntax_list == 'labelSetToolTipFunc':
+        args[0]['tooltip'] = args[1]
+        return args[0]
+        
+    elif syntax_list == 'labelSetXFunc':
+        args[0]['x'] = args[1]
+        return args[0]
+        
+    elif syntax_list == 'labelSetXLocFunc':
+        args[0]['xloc'] = args[1]
+        return args[0]
+        
+    elif syntax_list == 'labelSetXYFunc':
+        args[0]['x'] = args[1]
+        args[0]['y'] = args[2]
+        return args[0]
+        
+    elif syntax_list == 'labelSetYFunc':
+        args[0]['y'] = args[1]
+        return args[0]
+        
+    elif syntax_list == 'labelSetYLocFunc':
+        args[0]['yloc'] = args[1]
+        return args[0]
+
+    return None
+
+
+def _handle_line_operation(self, syntax_list, args):
+    if syntax_list == 'lineFunc':
+        return {
+            'x1': args[0],
+            'y1': args[1],
+            'x2': args[2],
+            'y2': args[3],
+            'xloc': args[4] if len(args) > 4 else 'bar_index',
+            'extend': args[5] if len(args) > 5 else False,
+            'color': args[6] if len(args) > 6 else None,
+            'style': args[7] if len(args) > 7 else 'solid',
+            'width': args[8] if len(args) > 8 else 1
+        }
+        
+    elif syntax_list == 'lineCopyFunc':
+        return dict(args[0])
+        
+    elif syntax_list == 'lineDeleteFunc':
+        return None
+        
+    elif syntax_list == 'lineGetPriceFunc':
+        x = args[1]
+        line = args[0]
+        if line['x2'] == line['x1']:
+            return None
+        slope = (line['y2'] - line['y1']) / (line['x2'] - line['x1'])
+        return line['y1'] + slope * (x - line['x1'])
+        
+    elif syntax_list == 'lineGetX1Func':
+        return args[0]['x1']
+        
+    elif syntax_list == 'lineGetX2Func':
+        return args[0]['x2']
+        
+    elif syntax_list == 'lineGetY1Func':
+        return args[0]['y1']
+        
+    elif syntax_list == 'lineGetY2Func':
+        return args[0]['y2']
+        
+    elif syntax_list == 'lineNewFunc':
+        return {
+            'x1': 0,
+            'y1': 0,
+            'x2': 0,
+            'y2': 0,
+            'xloc': 'bar_index',
+            'extend': False,
+            'color': None,
+            'style': 'solid',
+            'width': 1
+        }
+        
+    elif syntax_list == 'lineSetColFunc':
+        args[0]['color'] = args[1]
+        return args[0]
+        
+    elif syntax_list == 'lineSetExtendFunc':
+        args[0]['extend'] = args[1]
+        return args[0]
+        
+    elif syntax_list == 'lineSetFirstPointFunc':
+        args[0]['x1'] = args[1]['x']
+        args[0]['y1'] = args[1]['y']
+        return args[0]
+        
+    elif syntax_list == 'lineSetSecondPointFunc':
+        args[0]['x2'] = args[1]['x']
+        args[0]['y2'] = args[1]['y']
+        return args[0]
+        
+    elif syntax_list == 'lineSetStyleFunc':
+        args[0]['style'] = args[1]
+        return args[0]
+        
+    elif syntax_list == 'lineSetWidthFunc':
+        args[0]['width'] = args[1]
+        return args[0]
+        
+    elif syntax_list == 'lineSetX1Func':
+        args[0]['x1'] = args[1]
+        return args[0]
+        
+    elif syntax_list == 'lineSetX2Func':
+        args[0]['x2'] = args[1]
+        return args[0]
+        
+    elif syntax_list == 'lineSetXLocFunc':
+        args[0]['xloc'] = args[1]
+        return args[0]
+        
+    elif syntax_list == 'lineSetXY1Func':
+        args[0]['x1'] = args[1]
+        args[0]['y1'] = args[2]
+        return args[0]
+        
+    elif syntax_list == 'lineSetXY2Func':
+        args[0]['x2'] = args[1]
+        args[0]['y2'] = args[2]
+        return args[0]
+        
+    elif syntax_list == 'lineSetY1Func':
+        args[0]['y1'] = args[1]
+        return args[0]
+        
+    elif syntax_list == 'lineSetY2Func':
+        args[0]['y2'] = args[1]
+        return args[0]
+
+    return None
+
+
+
+
+def calculate_market_data(data_array):
+    """
+    Comprehensive market data calculator that handles all market data operations
+    
+    Parameters:
+        data_array: numpy array containing OHLCV data
+        
+    Returns:
+        dict: All calculated market values
+    """
+    # Extract current bar values
+    current_bar = data_array[-1]
+    previous_bar = data_array[-2]
+    
+    # Basic OHLCV calculations
+    market_data = {
+        'open': current_bar[0],
+        'high': current_bar[1], 
+        'low': current_bar[2],
+        'close': current_bar[3],
+        'volume': current_bar[4],
+        
+        # Derived calculations
+        'hl2': (current_bar[1] + current_bar[2]) / 2,
+        'hlc3': (current_bar[1] + current_bar[2] + current_bar[3]) / 3,
+        'hlcc4': (current_bar[1] + current_bar[2] + current_bar[3] * 2) / 4,
+        'ohlc4': (current_bar[0] + current_bar[1] + current_bar[2] + current_bar[3]) / 4,
+        
+        # Bar state information
+        'barIndex': len(data_array) - 1,
+        'barStateIsConfirmed': True if current_bar[5] == 1 else False,
+        'barStateIsFirst': True if len(data_array) == 1 else False,
+        'barStateIsHistory': True if current_bar[6] == 1 else False,
+        'barStateIsLast': True if current_bar[7] == 1 else False,
+        'barStateIsLastConfirmedHistory': True if current_bar[8] == 1 else False,
+        'barStateIsNew': True if not numpy.array_equal(current_bar, previous_bar) else False,
+        'barStateIsRealtime': True if current_bar[9] == 1 else False,
+        
+        # Change calculations
+        'change': current_bar[3] - previous_bar[3],
+        'changePercent': ((current_bar[3] - previous_bar[3]) / previous_bar[3]) * 100,
+        
+        # Range calculations
+        'trueRange': max(
+            current_bar[1] - current_bar[2],  # High - Low
+            abs(current_bar[1] - previous_bar[3]),  # High - Previous Close
+            abs(current_bar[2] - previous_bar[3])   # Low - Previous Close
+        ),
+        
+        # Volume analysis
+        'volumeMA': numpy.mean(data_array[-20:, 4]),  # 20-period volume moving average
+        'volumeChange': current_bar[4] - previous_bar[4],
+        'volumeChangePercent': ((current_bar[4] - previous_bar[4]) / previous_bar[4]) * 100,
+        
+        # Price momentum
+        'momentum': current_bar[3] - data_array[-10][3],  # 10-period momentum
+        'rate_of_change': ((current_bar[3] - data_array[-10][3]) / data_array[-10][3]) * 100,
+        
+        # Volatility measures
+        'priceRange': current_bar[1] - current_bar[2],
+        'averageRange': numpy.mean([bar[1] - bar[2] for bar in data_array[-10:]]),
+        
+        # Additional derived values
+        'typical_price': (current_bar[1] + current_bar[2] + current_bar[3]) / 3,
+        'weighted_close': (current_bar[3] * 2 + current_bar[1] + current_bar[2]) / 4,
+        'median_price': (current_bar[1] + current_bar[2]) / 2
+    }
+    
+    return market_data
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class Environment:
+    def __init__(self):
+        self.global_scope = {}
+        self.local_scope = {}
+        self.series_data = {}
+        
+        # Initialize all registries
+        self.syntax_registry = {
+            'elements': {
+                'taAccDist': {'type': 'indicator'},
+                'taIII': {'type': 'indicator'},
+                'taNVI': {'type': 'indicator'},
+                'taOBV': {'type': 'indicator'},
+                'taPVI': {'type': 'indicator'},
+                'taPVT': {'type': 'indicator'},
+                'taTR': {'type': 'indicator'},
+                'taVWAP': {'type': 'indicator'},
+                'taWAD': {'type': 'indicator'},
+                'taWVAD': {'type': 'indicator'},
+                'taAlma': {'type': 'indicator'},
+                'taAtr': {'type': 'indicator'},
+                'taBarsSince': {'type': 'indicator'},
+                'taBb': {'type': 'indicator'},
+                'taBbw': {'type': 'indicator'},
+                'taCci': {'type': 'indicator'},
+                'taChange': {'type': 'indicator'},
+                'taCmo': {'type': 'indicator'},
+                'taCog': {'type': 'indicator'},
+                'taCorrelation': {'type': 'indicator'},
+                'taCross': {'type': 'indicator'},
+                'taCrossover': {'type': 'indicator'},
+                'taCrossunder': {'type': 'indicator'},
+                'taCum': {'type': 'indicator'},
+                'taDev': {'type': 'indicator'},
+                'taDmi': {'type': 'indicator'},
+                'taEma': {'type': 'indicator'},
+                'taFalling': {'type': 'indicator'},
+                'taHighest': {'type': 'indicator'},
+                'taHighestBars': {'type': 'indicator'},
+                'taHma': {'type': 'indicator'},
+                'taKc': {'type': 'indicator'},
+                'taKcw': {'type': 'indicator'},
+                'taLinReg': {'type': 'indicator'},
+                'taLowest': {'type': 'indicator'},
+                'taLowestBars': {'type': 'indicator'},
+                'taMacd': {'type': 'indicator'},
+                'taMax': {'type': 'indicator'},
+                'taMedian': {'type': 'indicator'},
+                'taMfi': {'type': 'indicator'},
+                'taMin': {'type': 'indicator'},
+                'taMode': {'type': 'indicator'},
+                'taMom': {'type': 'indicator'},
+                'taPercentile': {'type': 'indicator'},
+                'taPercentRank': {'type': 'indicator'},
+                'taPivotHigh': {'type': 'indicator'},
+                'taPivotLow': {'type': 'indicator'},
+                'taRange': {'type': 'indicator'},
+                'taRising': {'type': 'indicator'},
+                'taRma': {'type': 'indicator'},
+                'taRoc': {'type': 'indicator'},
+                'taRsi': {'type': 'indicator'},
+                'taSar': {'type': 'indicator'},
+                'taSma': {'type': 'indicator'},
+                'taStdev': {'type': 'indicator'},
+                'taStoch': {'type': 'indicator'},
+                'taSuperTrend': {'type': 'indicator'},
+                'taSwma': {'type': 'indicator'},
+                'taTsi': {'type': 'indicator'},
+                'taValueWhen': {'type': 'indicator'},
+                'taVariance': {'type': 'indicator'},
+                'taVwap': {'type': 'indicator'},
+                'taVwma': {'type': 'indicator'},
+                'taWma': {'type': 'indicator'},
+                'taWpr': {'type': 'indicator'}
+            }
+        }
+        
+        # State Management
+        self.bar_state = {
+            'index': 0,
+            'time': None,
+            'is_new_bar': True,
+            'is_realtime': False,
+            'is_confirmed': False,
+            'is_last': False,
+            'is_history': True
+        }
+
+        # Chart Configuration
+        self.chart_config = {
+            'timeframe': None,
+            'symbol': None,
+            'session': 'regular',
+            'adjustment': None,
+            'replay_mode': False,
+            'style': 'candles',
+            'theme': 'light'
+        }
+        
+        # Strategy State
+        self.strategy_state = {
+            'position': 0,
+            'entry_price': 0,
+            'equity': 0,
+            'cash': 0,
+            'orders': [],
+            'trades': [],
+            'risk_per_trade': 0.01,
+            'max_position_size': None
+        }
+
+    def initialize_registries(self):
+        """Initialize registries based on existing syntax and calculations"""
+        self.syntax_registry = {
+            'elements': {
+                'open': {'type': 'series', 'value': []},
+                'high': {'type': 'series', 'value': []},
+                'low': {'type': 'series', 'value': []},
+                'close': {'type': 'series', 'value': []},
+                'volume': {'type': 'series', 'value': []},
+                'hl2': {'type': 'series', 'value': []},
+                'hlc3': {'type': 'series', 'value': []},
+                'hlcc4': {'type': 'series', 'value': []},
+                'ohlc4': {'type': 'series', 'value': []},
+                'symInfoMinMove': {'type': 'float', 'value': 0.0},
+                'symInfoMinTick': {'type': 'float', 'value': 0.0},
+                'symInfoPointValue': {'type': 'float', 'value': 1.0},
+                'symInfoPriceScale': {'type': 'integer', 'value': 0},
+                'symInfoSession': {'type': 'string', 'value': ''},
+                'symInfoTradingHours': {'type': 'string', 'value': ''},
+                'symInfoTimeZone': {'type': 'string', 'value': ''},
+                'symInfoIndustry': {'type': 'string', 'value': ''},
+                'symInfoSector': {'type': 'string', 'value': ''}
+            }
+        }
+
+        self.calculation_registry = {
+            'arrAbs': self.calculate_syntax,
+            'arrAvg': self.calculate_syntax,
+            'arrBinarySearch': self.calculate_syntax,
+            'arrBinarySearchLeftmost': self.calculate_syntax,
+            'arrBinarySearchRightmost': self.calculate_syntax,
+            'boxFunc': self.calculate_syntax,
+            'boxCopyFunc': self.calculate_syntax,
+            'boxDeleteFunc': self.calculate_syntax,
+            'colFunc': self.calculate_syntax,
+            'colBFunc': self.calculate_syntax,
+            'colFromGradientFunc': self.calculate_syntax,
+            'matrixAddColFunc': self.calculate_syntax,
+            'matrixAddRowFunc': self.calculate_syntax,
+            'matrixAvgFunc': self.calculate_syntax,
+            'matrixColFunc': self.calculate_syntax,
+            'matrixColumnsFunc': self.calculate_syntax
+        }
+
+    def initialize_market_data(self):
+        """Initialize market data handlers based on existing syntax"""
+        self.market_data = {
+            'open': [],
+            'high': [],
+            'low': [],
+            'close': [],
+            'volume': [],
+            'hl2': [],
+            'hlc3': [],
+            'hlcc4': [],
+            'ohlc4': [],
+            'time': [],
+            'timeClose': [],
+            'timeTradingDay': []
+        }
+
+        self.session_data = {
+            'sessionIsFirstBar': False,
+            'sessionIsFirstBarRegular': False,
+            'sessionIsLastBar': False,
+            'sessionIsLastBarRegular': False,
+            'sessionIsMarket': False,
+            'sessionIsPostMarket': False,
+            'sessionIsPreMarket': False
+        }
+
+        self.time_data = {
+            'dayOfMonth': 0,
+            'dayOfWeek': 0,
+            'hour': 0,
+            'minute': 0,
+            'month': 0,
+            'second': 0,
+            'year': 0,
+            'weekOfYear': 0
+        }
+
+        self.chart_data = {
+            'chartBgCol': None,
+            'chartFgCol': None,
+            'chartIsHeikinAshi': False,
+            'chartIsKagi': False,
+            'chartIsLineBreak': False,
+            'chartIsPnf': False,
+            'chartIsRange': False,
+            'chartIsRenko': False,
+            'chartIsStandard': True,
+            'chartLeftVisibleBarTime': None,
+            'chartRightVisibleBarTime': None
+        }
+
+    def initialize_calculations(self):
+        """Initialize calculation handlers based on existing syntax"""
+        self.calculation_handlers = {
+            'mathE': 2.7182818284590452,
+            'mathPhi': 1.6180339887498948,
+            'mathPi': 3.1415926535897932,
+            'mathRPhi': 0.6180339887498948,
+            
+            # Color handlers
+            'colAqua': {'r': 0, 'g': 255, 'b': 255},
+            'colBlack': {'r': 0, 'g': 0, 'b': 0},
+            'colBlue': {'r': 0, 'g': 0, 'b': 255},
+            'colFuchsia': {'r': 255, 'g': 0, 'b': 255},
+            'colGray': {'r': 128, 'g': 128, 'b': 128},
+            'colGreen': {'r': 0, 'g': 255, 'b': 0},
+            'colLime': {'r': 0, 'g': 255, 'b': 0},
+            'colMaroon': {'r': 128, 'g': 0, 'b': 0},
+            'colNavy': {'r': 0, 'g': 0, 'b': 128},
+            'colOlive': {'r': 128, 'g': 128, 'b': 0},
+            'colOrange': {'r': 255, 'g': 165, 'b': 0},
+            'colPurple': {'r': 128, 'g': 0, 'b': 128},
+            'colRed': {'r': 255, 'g': 0, 'b': 0},
+            'colSilver': {'r': 192, 'g': 192, 'b': 192},
+            'colTeal': {'r': 0, 'g': 128, 'b': 128},
+            'colWhite': {'r': 255, 'g': 255, 'b': 255},
+            'colYellow': {'r': 255, 'g': 255, 'b': 0},
+
+            # Style handlers
+            'showStyleArea': 'area',
+            'showStyleAreaBr': 'areabr',
+            'showStyleCircles': 'circles',
+            'showStyleColumns': 'columns',
+            'showStyleCross': 'cross',
+            'showStyleHistogram': 'histogram',
+            'showStyleLine': 'line',
+            'showStyleLineBr': 'linebr',
+            'showStyleStepLine': 'stepline',
+            'showStyleStepLineBr': 'steplinebr'
+        }
+
+    def initialize_strategy_handlers(self):
+        """Initialize strategy handlers from existing syntax"""
+        self.strategy_handlers = {
+            'strategyAccountCurrency': '',
+            'strategyAvgLosingTrade': 0.0,
+            'strategyAvgLosingTradePercent': 0.0,
+            'strategyAvgTrade': 0.0,
+            'strategyAvgTradePercent': 0.0,
+            'strategyAvgWinningTrade': 0.0,
+            'strategyAvgWinningTradePercent': 0.0,
+            'strategyClosedTrades': 0,
+            'strategyClosedTradesFirstIndex': 0,
+            'strategyEquity': 0.0,
+            'strategyEvenTrades': 0,
+            'strategyGrossLoss': 0.0,
+            'strategyGrossLossPercent': 0.0,
+            'strategyGrossProfit': 0.0,
+            'strategyGrossProfitPercent': 0.0,
+            'strategyInitialCapital': 0.0,
+            'strategyLossTrades': 0,
+            'strategyMarginLiquidationPrice': 0.0,
+            'strategyMaxContractsHeldAll': 0,
+            'strategyMaxContractsHeldLong': 0,
+            'strategyMaxContractsHeldShort': 0,
+            'strategyMaxDrawdown': 0.0,
+            'strategyMaxDrawdownPercent': 0.0,
+            'strategyMaxRunup': 0.0,
+            'strategyMaxRunupPercent': 0.0,
+            'strategyNetProfit': 0.0,
+            'strategyNetProfitPercent': 0.0,
+            'strategyOpenProfit': 0.0,
+            'strategyOpenProfitPercent': 0.0,
+            'strategyOpenTrades': 0,
+            'strategyOpenTradesCapitalHeld': 0.0,
+            'strategyPositionAvgPrice': 0.0,
+            'strategyPositionEntryName': '',
+            'strategyPositionSize': 0,
+            'strategyWinTrades': 0
+        }
+
+    def initialize_symbol_handlers(self):
+        """Initialize symbol information handlers"""
+        self.symbol_handlers = {
+            'symInfoBaseCurrency': '',
+            'symInfoCountry': '',
+            'symInfoCurrency': '',
+            'symInfoDescription': '',
+            'symInfoEmployees': 0,
+            'symInfoExpirationDate': None,
+            'symInfoIndustry': '',
+            'symInfoMainTickerId': '',
+            'symInfoMinContract': 0.0,
+            'symInfoMinMove': 0.0,
+            'symInfoMinTick': 0.0,
+            'symInfoPointValue': 0.0,
+            'symInfoPrefix': '',
+            'symInfoPriceScale': 0,
+            'symInfoRecommendationsBuy': 0,
+            'symInfoRecommendationsBuyStrong': 0,
+            'symInfoRecommendationsDate': None,
+            'symInfoRecommendationsHold': 0,
+            'symInfoRecommendationsSell': 0,
+            'symInfoRecommendationsSellStrong': 0,
+            'symInfoRecommendationsTotal': 0,
+            'symInfoRoot': '',
+            'symInfoSector': '',
+            'symInfoSession': '',
+            'symInfoShareholders': 0,
+            'symInfoSharesOutstandingFloat': 0,
+            'symInfoSharesOutstandingTotal': 0,
+            'symInfoTargetPriceAverage': 0.0,
+            'symInfoTargetPriceDate': None,
+            'symInfoTargetPriceEstimates': 0,
+            'symInfoTargetPriceHigh': 0.0,
+            'symInfoTargetPriceLow': 0.0,
+            'symInfoTargetPriceMedian': 0.0,
+            'symInfoTicker': '',
+            'symInfoTickerId': '',
+            'symInfoTimezone': '',
+            'symInfoType': '',
+            'symInfoVolumeType': ''
+        }
+
+    def initialize_display_handlers(self):
+        """Initialize display and visualization handlers"""
+        self.display_handlers = {
+            'displayAll': 'all',
+            'displayDataWindow': 'data_window',
+            'displayNone': 'none',
+            'displayPane': 'pane',
+            'displayPriceScale': 'price_scale',
+            'displayStatusLine': 'status_line',
+            
+            'positionBottomCenter': 'bottom_center',
+            'positionBottomLeft': 'bottom_left',
+            'positionBottomRight': 'bottom_right',
+            'positionMiddleCenter': 'middle_center',
+            'positionMiddleLeft': 'middle_left',
+            'positionMiddleRight': 'middle_right',
+            'positionTopCenter': 'top_center',
+            'positionTopLeft': 'top_left',
+            'positionTopRight': 'top_right',
+            
+            'scaleLeft': 'left',
+            'scaleNone': 'none',
+            'scaleRight': 'right',
+            
+            'textAlignBottom': 'bottom',
+            'textAlignCenter': 'center',
+            'textAlignLeft': 'left',
+            'textAlignRight': 'right',
+            'textAlignTop': 'top',
+            
+            'textWrapAuto': 'auto',
+            'textWrapNone': 'none',
+            
+            'lineStyleArrowBoth': 'arrow_both',
+            'lineStyleArrowLeft': 'arrow_left',
+            'lineStyleArrowRight': 'arrow_right',
+            'lineStyleDashed': 'dashed',
+            'lineStyleDotted': 'dotted',
+            'lineStyleSolid': 'solid'
+        }
+
+    def initialize_timeframe_handlers(self):
+        """Initialize timeframe and session handlers"""
+        self.timeframe_handlers = {
+            'timeframeIsDaily': False,
+            'timeframeIsDWM': False,
+            'timeframeIsIntraday': False,
+            'timeframeIsMinutes': False,
+            'timeframeIsMonthly': False,
+            'timeframeIsSeconds': False,
+            'timeframeIsTicks': False,
+            'timeframeIsWeekly': False,
+            'timeframeMainPeriod': '',
+            'timeframeMultiplier': 1,
+            'timeframePeriod': ''
+        }
+
+        self.session_handlers = {
+            'sessionExtended': 'extended',
+            'sessionRegular': 'regular',
+            'settlementAsCloseInherit': 'inherit',
+            'settlementAsCloseOff': 'off',
+            'settlementAsCloseOn': 'on',
+            'barMergeGapsOff': False,
+            'barMergeGapsOn': True,
+            'barMergeLookaheadOff': False,
+            'barMergeLookaheadOn': True,
+            'backAdjustmentInherit': 'inherit',
+            'backAdjustmentOff': 'off',
+            'backAdjustmentOn': 'on'
+        }
+
+    def initialize_shape_handlers(self):
+        """Initialize shape and label style handlers"""
+        self.shape_handlers = {
+            'shapeArrowDown': 'arrow_down',
+            'shapeArrowUp': 'arrow_up',
+            'shapeCircle': 'circle',
+            'shapeCross': 'cross',
+            'shapeDiamond': 'diamond',
+            'shapeFlag': 'flag',
+            'shapeLabelDown': 'label_down',
+            'shapeLabelUp': 'label_up',
+            'shapeSquare': 'square',
+            'shapeTriangleDown': 'triangle_down',
+            'shapeTriangleUp': 'triangle_up',
+            'shapeXCross': 'xcross',
+            
+            'labelStyleArrowDown': 'arrow_down',
+            'labelStyleArrowUp': 'arrow_up',
+            'labelStyleCircle': 'circle',
+            'labelStyleCross': 'cross',
+            'labelStyleDiamond': 'diamond',
+            'labelStyleFlag': 'flag',
+            'labelStyleLabelCenter': 'label_center',
+            'labelStyleLabelDown': 'label_down',
+            'labelStyleLabelLeft': 'label_left',
+            'labelStyleLabelRight': 'label_right',
+            'labelStyleLabelUp': 'label_up',
+            'labelStyleNone': 'none',
+            'labelStyleSquare': 'square',
+            'labelStyleTriangleDown': 'triangle_down',
+            'labelStyleTriangleUp': 'triangle_up',
+            'labelStyleXCross': 'xcross'
+        }
+
+    def initialize_currency_handlers(self):
+        """Initialize currency and adjustment handlers"""
+        self.currency_handlers = {
+            'currencyAUD': 'AUD',
+            'currencyBTC': 'BTC',
+            'currencyCAD': 'CAD',
+            'currencyCHF': 'CHF',
+            'currencyETH': 'ETH',
+            'currencyEUR': 'EUR',
+            'currencyGBP': 'GBP',
+            'currencyHKD': 'HKD',
+            'currencyINR': 'INR',
+            'currencyJPY': 'JPY',
+            'currencyKRW': 'KRW',
+            'currencyMYR': 'MYR',
+            'currencyNOK': 'NOK',
+            'currencyNZD': 'NZD',
+            'currencyRUB': 'RUB',
+            'currencySEK': 'SEK',
+            'currencySGD': 'SGD',
+            'currencyTRY': 'TRY',
+            'currencyUSD': 'USD',
+            'currencyUSDT': 'USDT',
+            'currencyZAR': 'ZAR'
+        }
+
+        self.adjustment_handlers = {
+            'adjustmentDividends': 'dividends',
+            'adjustmentNone': 'none',
+            'adjustmentSplits': 'splits',
+            'alertFreqAll': 'all',
+            'alertFreqOncePerBar': 'once_per_bar',
+            'alertFreqOncePerBarClose': 'once_per_bar_close'
+        }
+
+    def initialize_day_handlers(self):
+        """Initialize day and time handlers"""
+        self.day_handlers = {
+            'dayOfWeekSunday': 0,
+            'dayOfWeekMonday': 1,
+            'dayOfWeekTuesday': 2,
+            'dayOfWeekWednesday': 3,
+            'dayOfWeekThursday': 4,
+            'dayOfWeekFriday': 5,
+            'dayOfWeekSaturday': 6
+        }
+
+        self.size_handlers = {
+            'sizeAuto': 'auto',
+            'sizeHuge': 'huge',
+            'sizeLarge': 'large',
+            'sizeNormal': 'normal',
+            'sizeSmall': 'small',
+            'sizeTiny': 'tiny'
+        }
+
+        self.strategy_direction_handlers = {
+            'strategyDirectionAll': 'all',
+            'strategyDirectionLong': 'long',
+            'strategyDirectionShort': 'short',
+            'strategyFixed': 'fixed',
+            'strategyLong': 'long',
+            'strategyShort': 'short',
+            'strategyOcaCancel': 'cancel',
+            'strategyOcaNone': 'none',
+            'strategyOcaReduce': 'reduce',
+            'strategyPercentOfEquity': 'percent_of_equity'
+        }
+
+    def initialize_format_handlers(self):
+        """Initialize format and location handlers"""
+        self.format_handlers = {
+            'formatInherit': 'inherit',
+            'formatMinTick': 'mintick',
+            'formatPercent': 'percent',
+            'formatPrice': 'price',
+            'formatVolume': 'volume',
+            
+            'locationAboveBar': 'above_bar',
+            'locationAbsolute': 'absolute',
+            'locationBelowBar': 'below_bar',
+            'locationBottom': 'bottom',
+            'locationTop': 'top'
+        }
+
+        self.extend_handlers = {
+            'extendBoth': 'both',
+            'extendLeft': 'left',
+            'extendNone': 'none',
+            'extendRight': 'right'
+        }
+
+        self.hline_handlers = {
+            'hlineStyleDashed': 'dashed',
+            'hlineStyleDotted': 'dotted',
+            'hlineStyleSolid': 'solid'
+        }
+
+        self.font_handlers = {
+            'fontFamilyDefault': 'default',
+            'fontFamilyMonospace': 'monospace'
+        }
+
+    def initialize_plot_handlers(self):
+        """Initialize plotting and visualization handlers"""
+        self.plot_handlers = {
+            'xLocBarIndex': 'bar_index',
+            'xLocBarTime': 'bar_time',
+            'yLocAboveBar': 'above_bar',
+            'yLocBelowBar': 'below_bar',
+            'yLocPrice': 'price',
+            
+            'dividendsGross': 'gross',
+            'dividendsNet': 'net',
+            
+            'earningsActual': 'actual',
+            'earningsEstimate': 'estimate',
+            'earningsStandardized': 'standardized',
+            
+            'falseValue': False,
+            'trueValue': True,
+            
+            'orderAscending': 'ascending',
+            'orderDescending': 'descending'
+        }
+
+        self.bar_state_handlers = {
+            'barStateIsConfirmed': False,
+            'barStateIsFirst': False,
+            'barStateIsHistory': False,
+            'barStateIsLast': False,
+            'barStateIsLastConfirmedHistory': False,
+            'barStateIsNew': False,
+            'barStateIsRealtime': False
+        }
+
+    def initialize_earnings_handlers(self):
+        """Initialize earnings and dividends handlers"""
+        self.earnings_handlers = {
+            'earningsFutureEps': [],
+            'earningsFuturePeriodEndTime': [],
+            'earningsFutureRevenue': [],
+            'earningsFutureTime': [],
+            'dividendsFutureAmount': [],
+            'dividendsFutureExDate': [],
+            'dividendsFuturePayDate': []
+        }
+
+        self.value_handlers = {
+            'na': None,
+            'barIndex': 0,
+            'lastBarIndex': 0,
+            'lastBarTime': None,
+            'splitsDenominator': 1,
+            'splitsNumerator': 1,
+            'strategyCash': 0.0,
+            'strategyCommissionCashPerContract': 0.0,
+            'strategyCommissionCashPerOrder': 0.0,
+            'strategyCommissionPercent': 0.0
+        }
+
+    def initialize_series_handlers(self):
+        """Initialize series and calculation handlers"""
+        self.series_handlers = {
+            'open': [],
+            'high': [],
+            'low': [],
+            'close': [],
+            'volume': [],
+            'hl2': [],
+            'hlc3': [],
+            'hlcc4': [],
+            'ohlc4': [],
+            'barIndex': [],
+            'time': [],
+            'timeClose': [],
+            'timeTradingDay': []
+        }
+
+        self.calculation_state = {
+            'last_calculated_index': -1,
+            'max_bars_back': 0,
+            'requires_update': True,
+            'calculation_values': {},
+            'cached_results': {}
+        }
+
+    def initialize_operator_handlers(self):
+        """Initialize operator and conditional handlers"""
+        self.operator_handlers = {
+            '=': 'assign',
+            '+': 'add',
+            '-': 'subtract',
+            '*': 'multiply',
+            '/': 'divide',
+            '%': 'modulo',
+            '==': 'equal',
+            '!=': 'not_equal',
+            '>': 'greater',
+            '<': 'less',
+            '>=': 'greater_equal',
+            '<=': 'less_equal',
+            'and': 'and_op',
+            'or': 'or_op',
+            'not': 'not_op'
+        }
+
+        self.conditional_handlers = {
+            'if': 'if_cond',
+            'else': 'else_cond',
+            'for': 'for_loop',
+            'while': 'while_loop',
+            'let': 'let_assign',
+            'arr': 'array_type',
+            'bool': 'bool_type',
+            'float': 'float_type',
+            'int': 'int_type',
+            'string': 'string_type'
+        }
+
+    def initialize_event_handlers(self):
+        """Initialize event and callback handlers"""
+        self.event_handlers = {
+            'onTick': None,
+            'onBar': None,
+            'barStateIsConfirmed': False,
+            'barStateIsFirst': False,
+            'barStateIsHistory': False,
+            'barStateIsLast': False,
+            'barStateIsLastConfirmedHistory': False,
+            'barStateIsNew': False,
+            'barStateIsRealtime': False
+        }
+
+        self.callback_state = {
+            'last_bar_time': None,
+            'current_bar_time': None,
+            'is_new_bar': False,
+            'is_real_time': False,
+            'is_history': True,
+            'calculation_triggered': False
+        }
+
+    def initialize_data_handlers(self):
+        """Initialize data type and conversion handlers"""
+        self.type_handlers = {
+            'box': 'box_type',
+            'chartPoint': 'chart_point_type',
+            'col': 'color_type',
+            'label': 'label_type',
+            'line': 'line_type',
+            'linefill': 'linefill_type',
+            'table': 'table_type',
+            'const': 'const_type'
+        }
+
+        self.conversion_state = {
+            'last_value': None,
+            'current_value': None,
+            'requires_conversion': False,
+            'conversion_type': None,
+            'source_type': None,
+            'target_type': None
+        }
+
+    def initialize_error_handlers(self):
+        """Initialize error and validation handlers"""
+        self.error_state = {
+            'has_error': False,
+            'error_message': None,
+            'error_type': None,
+            'error_line': None,
+            'error_position': None
+        }
+
+        self.validation_handlers = {
+            'symInfoMinMove': self.syntax_registry['elements']['symInfoMinMove'],
+            'symInfoMinTick': self.syntax_registry['elements']['symInfoMinTick'],
+            'symInfoPointValue': self.syntax_registry['elements']['symInfoPointValue'],
+            'symInfoPriceScale': self.syntax_registry['elements']['symInfoPriceScale'],
+            'symInfoSession': self.syntax_registry['elements']['symInfoSession'],
+            'symInfoTradingHours': self.syntax_registry['elements']['symInfoTradingHours']
+        }
+
+    def initialize_matrix_handlers(self):
+        """Initialize matrix operation handlers"""
+        self.matrix_handlers = {
+            'matrixAddCol': {'type': 'matrix', 'operation': 'add_column'},
+            'matrixAddRow': {'type': 'matrix', 'operation': 'add_row'},
+            'matrixAvg': {'type': 'matrix', 'operation': 'average'},
+            'matrixCol': {'type': 'matrix', 'operation': 'get_column'},
+            'matrixColumns': {'type': 'matrix', 'operation': 'column_count'},
+            'matrixConcat': {'type': 'matrix', 'operation': 'concatenate'},
+            'matrixCopy': {'type': 'matrix', 'operation': 'copy'},
+            'matrixDet': {'type': 'matrix', 'operation': 'determinant'},
+            'matrixDiff': {'type': 'matrix', 'operation': 'difference'},
+            'matrixEigenValues': {'type': 'matrix', 'operation': 'eigen_values'},
+            'matrixEigenVectors': {'type': 'matrix', 'operation': 'eigen_vectors'},
+            'matrixElementsCount': {'type': 'matrix', 'operation': 'element_count'},
+            'matrixFill': {'type': 'matrix', 'operation': 'fill'},
+            'matrixGet': {'type': 'matrix', 'operation': 'get_element'},
+            'matrixInv': {'type': 'matrix', 'operation': 'inverse'},
+            'matrixIsAntiDiagonal': {'type': 'matrix', 'operation': 'is_anti_diagonal'},
+            'matrixIsAntiSymmetric': {'type': 'matrix', 'operation': 'is_anti_symmetric'},
+            'matrixIsBinary': {'type': 'matrix', 'operation': 'is_binary'},
+            'matrixIsDiagonal': {'type': 'matrix', 'operation': 'is_diagonal'},
+            'matrixIsIdentity': {'type': 'matrix', 'operation': 'is_identity'},
+            'matrixIsSquare': {'type': 'matrix', 'operation': 'is_square'},
+            'matrixIsStochastic': {'type': 'matrix', 'operation': 'is_stochastic'},
+            'matrixIsSymmetric': {'type': 'matrix', 'operation': 'is_symmetric'},
+            'matrixIsTriangular': {'type': 'matrix', 'operation': 'is_triangular'},
+            'matrixIsZero': {'type': 'matrix', 'operation': 'is_zero'},
+            'matrixKron': {'type': 'matrix', 'operation': 'kronecker_product'},
+            'matrixPinv': {'type': 'matrix', 'operation': 'pseudoinverse'},
+            'matrixPow': {'type': 'matrix', 'operation': 'power'},
+            'matrixRank': {'type': 'matrix', 'operation': 'rank'},
+            'matrixReshape': {'type': 'matrix', 'operation': 'reshape'},
+            'matrixTrace': {'type': 'matrix', 'operation': 'trace'},
+            'matrixTranspose': {'type': 'matrix', 'operation': 'transpose'}
+        }
+
+    def initialize_request_handlers(self):
+        """Initialize request operation handlers"""
+        self.request_handlers = {
+            'requestSecurityFunc': {'type': 'request', 'category': 'data', 'operation': 'security'},
+            'requestSeedFunc': {'type': 'request', 'category': 'data', 'operation': 'seed'},
+            'requestDividendsFunc': {'type': 'request', 'category': 'data', 'operation': 'dividends'},
+            'requestEarningsFunc': {'type': 'request', 'category': 'data', 'operation': 'earnings'},
+            'requestFinancialFunc': {'type': 'request', 'category': 'data', 'operation': 'financial'},
+            'requestQuandlFunc': {'type': 'request', 'category': 'data', 'operation': 'quandl'},
+            'requestSplitsFunc': {'type': 'request', 'category': 'data', 'operation': 'splits'},
+            'requestEconomicFunc': {'type': 'request', 'category': 'data', 'operation': 'economic'}
+        }
+
+    def initialize_strategy_handlers(self):
+         """Initialize strategy operation handlers"""
+         self.strategy_handlers = {
+             'strategyEntryFunc': {'type': 'strategy', 'operation': 'entry'},
+             'strategyExitFunc': {'type': 'strategy', 'operation': 'exit'},
+             'strategyCloseFunc': {'type': 'strategy', 'operation': 'close'},
+             'strategyCloseAllFunc': {'type': 'strategy', 'operation': 'close_all'},
+             'strategyCancelFunc': {'type': 'strategy', 'operation': 'cancel'},
+             'strategyCancelAllFunc': {'type': 'strategy', 'operation': 'cancel_all'},
+             'strategyOrderFunc': {'type': 'strategy', 'operation': 'order'},
+             'strategyPositionSize': {'type': 'strategy', 'operation': 'position_size'},
+             'strategyPositionAvgPrice': {'type': 'strategy', 'operation': 'avg_price'},
+             'strategyOpenTrades': {'type': 'strategy', 'operation': 'open_trades'},
+             'strategyClosedTrades': {'type': 'strategy', 'operation': 'closed_trades'},
+             'strategyNetProfit': {'type': 'strategy', 'operation': 'net_profit'},
+             'strategyGrossProfit': {'type': 'strategy', 'operation': 'gross_profit'},
+             'strategyGrossLoss': {'type': 'strategy', 'operation': 'gross_loss'},
+             'strategyMaxDrawdown': {'type': 'strategy', 'operation': 'max_drawdown'},
+             'strategyEquity': {'type': 'strategy', 'operation': 'equity'}
+         }
+
+    def initialize_technical_handlers(self):
+        """Initialize technical analysis handlers"""
+        self.technical_handlers = {
+            'taAlma': {'type': 'indicator', 'category': 'moving_average'},
+            'taAtr': {'type': 'indicator', 'category': 'volatility'},
+            'taBarsSince': {'type': 'indicator', 'category': 'pattern'},
+            'taBb': {'type': 'indicator', 'category': 'bands'},
+            'taBbw': {'type': 'indicator', 'category': 'bands'},
+            'taCci': {'type': 'indicator', 'category': 'momentum'},
+            'taChange': {'type': 'indicator', 'category': 'momentum'},
+            'taCmo': {'type': 'indicator', 'category': 'momentum'},
+            'taCog': {'type': 'indicator', 'category': 'momentum'},
+            'taCorrelation': {'type': 'indicator', 'category': 'statistic'},
+            'taCross': {'type': 'indicator', 'category': 'pattern'},
+            'taCrossover': {'type': 'indicator', 'category': 'pattern'},
+            'taCrossunder': {'type': 'indicator', 'category': 'pattern'},
+            'taCum': {'type': 'indicator', 'category': 'math'},
+            'taDev': {'type': 'indicator', 'category': 'statistic'},
+            'taDmi': {'type': 'indicator', 'category': 'trend'},
+            'taEma': {'type': 'indicator', 'category': 'moving_average'},
+            'taFalling': {'type': 'indicator', 'category': 'pattern'},
+            'taHighest': {'type': 'indicator', 'category': 'math'},
+            'taHighestBars': {'type': 'indicator', 'category': 'math'},
+            'taHma': {'type': 'indicator', 'category': 'moving_average'},
+            'taKc': {'type': 'indicator', 'category': 'bands'},
+            'taKcw': {'type': 'indicator', 'category': 'bands'},
+            'taLinReg': {'type': 'indicator', 'category': 'statistic'},
+            'taLowest': {'type': 'indicator', 'category': 'math'},
+            'taLowestBars': {'type': 'indicator', 'category': 'math'},
+            'taMacd': {'type': 'indicator', 'category': 'momentum'},
+            'taMax': {'type': 'indicator', 'category': 'math'},
+            'taMedian': {'type': 'indicator', 'category': 'statistic'},
+            'taMfi': {'type': 'indicator', 'category': 'volume'},
+            'taMin': {'type': 'indicator', 'category': 'math'},
+            'taMode': {'type': 'indicator', 'category': 'statistic'},
+            'taMom': {'type': 'indicator', 'category': 'momentum'},
+            'taPercentile': {'type': 'indicator', 'category': 'statistic'},
+            'taPercentRank': {'type': 'indicator', 'category': 'statistic'},
+            'taPivotHigh': {'type': 'indicator', 'category': 'pattern'},
+            'taPivotLow': {'type': 'indicator', 'category': 'pattern'},
+            'taRange': {'type': 'indicator', 'category': 'volatility'},
+            'taRising': {'type': 'indicator', 'category': 'pattern'},
+            'taRma': {'type': 'indicator', 'category': 'moving_average'},
+            'taRoc': {'type': 'indicator', 'category': 'momentum'},
+            'taRsi': {'type': 'indicator', 'category': 'momentum'},
+            'taSar': {'type': 'indicator', 'category': 'trend'},
+            'taSma': {'type': 'indicator', 'category': 'moving_average'},
+            'taStdev': {'type': 'indicator', 'category': 'statistic'},
+            'taStoch': {'type': 'indicator', 'category': 'momentum'},
+            'taSuperTrend': {'type': 'indicator', 'category': 'trend'},
+            'taSwma': {'type': 'indicator', 'category': 'moving_average'},
+            'taTsi': {'type': 'indicator', 'category': 'momentum'},
+            'taValueWhen': {'type': 'indicator', 'category': 'pattern'},
+            'taVariance': {'type': 'indicator', 'category': 'statistic'},
+            'taVwap': {'type': 'indicator', 'category': 'volume'},
+            'taVwma': {'type': 'indicator', 'category': 'moving_average'},
+            'taWma': {'type': 'indicator', 'category': 'moving_average'},
+            'taWpr': {'type': 'indicator', 'category': 'momentum'}
+        }
+    def initialize_time_handlers(self):
+        """Initialize time-related handlers"""
+        self.time_handlers = {
+            'dayOfMonth': {'type': 'time', 'category': 'date'},
+            'dayOfWeek': {'type': 'time', 'category': 'date'},
+            'hour': {'type': 'time', 'category': 'time'},
+            'minute': {'type': 'time', 'category': 'time'},
+            'month': {'type': 'time', 'category': 'date'},
+            'second': {'type': 'time', 'category': 'time'},
+            'time': {'type': 'time', 'category': 'time'},
+            'timeClose': {'type': 'time', 'category': 'market'},
+            'timeTradingDay': {'type': 'time', 'category': 'market'},
+            'timeNow': {'type': 'time', 'category': 'time'},
+            'weekOfYear': {'type': 'time', 'category': 'date'},
+            'year': {'type': 'time', 'category': 'date'},
+            'sessionIsFirstBar': {'type': 'session', 'category': 'state'},
+            'sessionIsFirstBarRegular': {'type': 'session', 'category': 'state'},
+            'sessionIsLastBar': {'type': 'session', 'category': 'state'},
+            'sessionIsLastBarRegular': {'type': 'session', 'category': 'state'},
+            'sessionIsMarket': {'type': 'session', 'category': 'state'},
+            'sessionIsPostMarket': {'type': 'session', 'category': 'state'},
+            'sessionIsPreMarket': {'type': 'session', 'category': 'state'}
+        }
+
+    def initialize_visualization_handlers(self):
+        """Initialize visualization handlers"""
+        self.visualization_handlers = {
+            'show': {'type': 'visual', 'category': 'display'},
+            'showshape': {'type': 'visual', 'category': 'shape'},
+            'showcond': {'type': 'visual', 'category': 'condition'},
+            'solid': {'type': 'style', 'category': 'line'},
+            'dotted': {'type': 'style', 'category': 'line'},
+            'dashed': {'type': 'style', 'category': 'line'},
+            'fontFamilyDefault': {'type': 'style', 'category': 'font'},
+            'fontFamilyMonospace': {'type': 'style', 'category': 'font'},
+            'extendBoth': {'type': 'style', 'category': 'extend'},
+            'extendLeft': {'type': 'style', 'category': 'extend'},
+            'extendNone': {'type': 'style', 'category': 'extend'},
+            'extendRight': {'type': 'style', 'category': 'extend'},
+            'hlineStyleDashed': {'type': 'style', 'category': 'line'},
+            'hlineStyleDotted': {'type': 'style', 'category': 'line'},
+            'hlineStyleSolid': {'type': 'style', 'category': 'line'}
+        }
+
+    def initialize_string_handlers(self):
+        """Initialize string operation handlers"""
+        self.string_handlers = {
+            'strContains': {'type': 'string', 'operation': 'contains'},
+            'strEndsWith': {'type': 'string', 'operation': 'ends_with'},
+            'strFormat': {'type': 'string', 'operation': 'format'},
+            'strFormatTime': {'type': 'string', 'operation': 'format_time'},
+            'strLength': {'type': 'string', 'operation': 'length'},
+            'strLower': {'type': 'string', 'operation': 'lower'},
+            'strMatch': {'type': 'string', 'operation': 'match'},
+            'strPos': {'type': 'string', 'operation': 'position'},
+            'strRepeat': {'type': 'string', 'operation': 'repeat'},
+            'strReplace': {'type': 'string', 'operation': 'replace'},
+            'strReplaceAll': {'type': 'string', 'operation': 'replace_all'},
+            'strSplit': {'type': 'string', 'operation': 'split'},
+            'strStartsWith': {'type': 'string', 'operation': 'starts_with'},
+            'strSubstring': {'type': 'string', 'operation': 'substring'},
+            'strToNumber': {'type': 'string', 'operation': 'to_number'},
+            'strToString': {'type': 'string', 'operation': 'to_string'},
+            'strTrim': {'type': 'string', 'operation': 'trim'},
+            'strUpper': {'type': 'string', 'operation': 'upper'}
+        }
+
+    def initialize_input_handlers(self):
+        """Initialize input operation handlers"""
+        self.input_handlers = {
+            'input': {'type': 'input', 'category': 'basic'},
+            'inputBool': {'type': 'input', 'category': 'boolean'},
+            'inputColor': {'type': 'input', 'category': 'color'},
+            'inputEnum': {'type': 'input', 'category': 'enum'},
+            'inputFloat': {'type': 'input', 'category': 'float'},
+            'inputInt': {'type': 'input', 'category': 'integer'},
+            'inputPrice': {'type': 'input', 'category': 'price'},
+            'inputSession': {'type': 'input', 'category': 'session'},
+            'inputSource': {'type': 'input', 'category': 'source'},
+            'inputString': {'type': 'input', 'category': 'string'},
+            'inputSymbol': {'type': 'input', 'category': 'symbol'},
+            'inputTextArea': {'type': 'input', 'category': 'text'},
+            'inputTime': {'type': 'input', 'category': 'time'},
+            'inputTimeFrame': {'type': 'input', 'category': 'timeframe'}
+        }
+
+    def initialize_label_handlers(self):
+        """Initialize label operation handlers"""
+        self.label_handlers = {
+            'labelStyleArrowDown': {'type': 'label', 'style': 'arrow_down'},
+            'labelStyleArrowUp': {'type': 'label', 'style': 'arrow_up'},
+            'labelStyleCircle': {'type': 'label', 'style': 'circle'},
+            'labelStyleCross': {'type': 'label', 'style': 'cross'},
+            'labelStyleDiamond': {'type': 'label', 'style': 'diamond'},
+            'labelStyleFlag': {'type': 'label', 'style': 'flag'},
+            'labelStyleLabelCenter': {'type': 'label', 'style': 'center'},
+            'labelStyleLabelDown': {'type': 'label', 'style': 'down'},
+            'labelStyleLabelLeft': {'type': 'label', 'style': 'left'},
+            'labelStyleLabelRight': {'type': 'label', 'style': 'right'},
+            'labelStyleLabelUp': {'type': 'label', 'style': 'up'},
+            'labelStyleNone': {'type': 'label', 'style': 'none'},
+            'labelStyleSquare': {'type': 'label', 'style': 'square'},
+            'labelStyleTriangleDown': {'type': 'label', 'style': 'triangle_down'},
+            'labelStyleTriangleUp': {'type': 'label', 'style': 'triangle_up'},
+            'labelStyleXCross': {'type': 'label', 'style': 'xcross'}
+        }
+
+    def initialize_line_handlers(self):
+        """Initialize line operation handlers"""
+        self.line_handlers = {
+            'lineStyleArrowBoth': {'type': 'line', 'style': 'arrow_both'},
+            'lineStyleArrowLeft': {'type': 'line', 'style': 'arrow_left'},
+            'lineStyleArrowRight': {'type': 'line', 'style': 'arrow_right'},
+            'lineStyleDashed': {'type': 'line', 'style': 'dashed'},
+            'lineStyleDotted': {'type': 'line', 'style': 'dotted'},
+            'lineStyleSolid': {'type': 'line', 'style': 'solid'},
+            'locationAboveBar': {'type': 'location', 'position': 'above'},
+            'locationAbsolute': {'type': 'location', 'position': 'absolute'},
+            'locationBelowBar': {'type': 'location', 'position': 'below'},
+            'locationBottom': {'type': 'location', 'position': 'bottom'},
+            'locationTop': {'type': 'location', 'position': 'top'}
+        }
+    def initialize_input_handlers(self):
+    """Initialize input operation handlers"""
+    self.input_handlers = {
+        'input': {'type': 'input', 'category': 'basic'},
+        'inputBool': {'type': 'input', 'category': 'boolean'},
+        'inputColor': {'type': 'input', 'category': 'color'},
+        'inputEnum': {'type': 'input', 'category': 'enum'},
+        'inputFloat': {'type': 'input', 'category': 'float'},
+        'inputInt': {'type': 'input', 'category': 'integer'},
+        'inputPrice': {'type': 'input', 'category': 'price'},
+        'inputSession': {'type': 'input', 'category': 'session'},
+        'inputSource': {'type': 'input', 'category': 'source'},
+        'inputString': {'type': 'input', 'category': 'string'},
+        'inputSymbol': {'type': 'input', 'category': 'symbol'},
+        'inputTextArea': {'type': 'input', 'category': 'text'},
+        'inputTime': {'type': 'input', 'category': 'time'},
+        'inputTimeFrame': {'type': 'input', 'category': 'timeframe'}
+    }
+
+def initialize_label_handlers(self):
+    """Initialize label operation handlers"""
+    self.label_handlers = {
+        'labelStyleArrowDown': {'type': 'label', 'style': 'arrow_down'},
+        'labelStyleArrowUp': {'type': 'label', 'style': 'arrow_up'},
+        'labelStyleCircle': {'type': 'label', 'style': 'circle'},
+        'labelStyleCross': {'type': 'label', 'style': 'cross'},
+        'labelStyleDiamond': {'type': 'label', 'style': 'diamond'},
+        'labelStyleFlag': {'type': 'label', 'style': 'flag'},
+        'labelStyleLabelCenter': {'type': 'label', 'style': 'center'},
+        'labelStyleLabelDown': {'type': 'label', 'style': 'down'},
+        'labelStyleLabelLeft': {'type': 'label', 'style': 'left'},
+        'labelStyleLabelRight': {'type': 'label', 'style': 'right'},
+        'labelStyleLabelUp': {'type': 'label', 'style': 'up'},
+        'labelStyleNone': {'type': 'label', 'style': 'none'},
+        'labelStyleSquare': {'type': 'label', 'style': 'square'},
+        'labelStyleTriangleDown': {'type': 'label', 'style': 'triangle_down'},
+        'labelStyleTriangleUp': {'type': 'label', 'style': 'triangle_up'},
+        'labelStyleXCross': {'type': 'label', 'style': 'xcross'}
+    }
+
+def initialize_line_handlers(self):
+    """Initialize line operation handlers"""
+    self.line_handlers = {
+        'lineStyleArrowBoth': {'type': 'line', 'style': 'arrow_both'},
+        'lineStyleArrowLeft': {'type': 'line', 'style': 'arrow_left'},
+        'lineStyleArrowRight': {'type': 'line', 'style': 'arrow_right'},
+        'lineStyleDashed': {'type': 'line', 'style': 'dashed'},
+        'lineStyleDotted': {'type': 'line', 'style': 'dotted'},
+        'lineStyleSolid': {'type': 'line', 'style': 'solid'},
+        'locationAboveBar': {'type': 'location', 'position': 'above'},
+        'locationAbsolute': {'type': 'location', 'position': 'absolute'},
+        'locationBelowBar': {'type': 'location', 'position': 'below'},
+        'locationBottom': {'type': 'location', 'position': 'bottom'},
+        'locationTop': {'type': 'location', 'position': 'top'}
+    }
+
+    def initialize_math_constants(self):
+    """Initialize mathematical constants"""
+    self.math_constants = {
+        'mathE': {'value': 2.718281828459045, 'type': 'constant'},
+        'mathPhi': {'value': 1.618033988749895, 'type': 'constant'},
+        'mathPi': {'value': 3.141592653589793, 'type': 'constant'},
+        'mathRPhi': {'value': 0.618033988749895, 'type': 'constant'}
+    }
+
+def initialize_order_handlers(self):
+    """Initialize order operation handlers"""
+    self.order_handlers = {
+        'orderAscending': {'type': 'order', 'direction': 'asc'},
+        'orderDescending': {'type': 'order', 'direction': 'desc'},
+        'onTick': {'type': 'event', 'trigger': 'tick'},
+        'onBar': {'type': 'event', 'trigger': 'bar'}
+    }
+
+def initialize_position_handlers(self):
+    """Initialize position operation handlers"""
+    self.position_handlers = {
+        'positionBottomCenter': {'type': 'position', 'align': 'bottom_center'},
+        'positionBottomLeft': {'type': 'position', 'align': 'bottom_left'},
+        'positionBottomRight': {'type': 'position', 'align': 'bottom_right'},
+        'positionMiddleCenter': {'type': 'position', 'align': 'middle_center'},
+        'positionMiddleLeft': {'type': 'position', 'align': 'middle_left'},
+        'positionMiddleRight': {'type': 'position', 'align': 'middle_right'},
+        'positionTopCenter': {'type': 'position', 'align': 'top_center'},
+        'positionTopLeft': {'type': 'position', 'align': 'top_left'},
+        'positionTopRight': {'type': 'position', 'align': 'top_right'}
+    }
+
+def initialize_scale_handlers(self):
+    """Initialize scale operation handlers"""
+    self.scale_handlers = {
+        'scaleLeft': {'type': 'scale', 'position': 'left'},
+        'scaleNone': {'type': 'scale', 'position': 'none'},
+        'scaleRight': {'type': 'scale', 'position': 'right'},
+        'sessionExtended': {'type': 'session', 'mode': 'extended'},
+        'sessionRegular': {'type': 'session', 'mode': 'regular'},
+        'settlementAsCloseInherit': {'type': 'settlement', 'mode': 'inherit'},
+        'settlementAsCloseOff': {'type': 'settlement', 'mode': 'off'},
+        'settlementAsCloseOn': {'type': 'settlement', 'mode': 'on'}
+    }
+
+    def initialize_shape_handlers(self):
+    """Initialize shape operation handlers"""
+    self.shape_handlers = {
+        'shapeArrowDown': {'type': 'shape', 'style': 'arrow_down'},
+        'shapeArrowUp': {'type': 'shape', 'style': 'arrow_up'},
+        'shapeCircle': {'type': 'shape', 'style': 'circle'},
+        'shapeCross': {'type': 'shape', 'style': 'cross'},
+        'shapeDiamond': {'type': 'shape', 'style': 'diamond'},
+        'shapeFlag': {'type': 'shape', 'style': 'flag'},
+        'shapeLabelDown': {'type': 'shape', 'style': 'label_down'},
+        'shapeLabelUp': {'type': 'shape', 'style': 'label_up'},
+        'shapeSquare': {'type': 'shape', 'style': 'square'},
+        'shapeTriangleDown': {'type': 'shape', 'style': 'triangle_down'},
+        'shapeTriangleUp': {'type': 'shape', 'style': 'triangle_up'},
+        'shapeXCross': {'type': 'shape', 'style': 'xcross'}
+    }
+
+def initialize_size_handlers(self):
+    """Initialize size operation handlers"""
+    self.size_handlers = {
+        'sizeAuto': {'type': 'size', 'mode': 'auto'},
+        'sizeHuge': {'type': 'size', 'mode': 'huge'},
+        'sizeLarge': {'type': 'size', 'mode': 'large'},
+        'sizeNormal': {'type': 'size', 'mode': 'normal'},
+        'sizeSmall': {'type': 'size', 'mode': 'small'},
+        'sizeTiny': {'type': 'size', 'mode': 'tiny'}
+    }
+
+def initialize_strategy_mode_handlers(self):
+    """Initialize strategy mode handlers"""
+    self.strategy_mode_handlers = {
+        'strategyCash': {'type': 'strategy', 'mode': 'cash'},
+        'strategyFixed': {'type': 'strategy', 'mode': 'fixed'},
+        'strategyLong': {'type': 'strategy', 'mode': 'long'},
+        'strategyShort': {'type': 'strategy', 'mode': 'short'},
+        'strategyDirectionAll': {'type': 'strategy', 'direction': 'all'},
+        'strategyDirectionLong': {'type': 'strategy', 'direction': 'long'},
+        'strategyDirectionShort': {'type': 'strategy', 'direction': 'short'},
+        'strategyOcaCancel': {'type': 'strategy', 'oca': 'cancel'},
+        'strategyOcaNone': {'type': 'strategy', 'oca': 'none'},
+        'strategyOcaReduce': {'type': 'strategy', 'oca': 'reduce'},
+        'strategyPercentOfEquity': {'type': 'strategy', 'sizing': 'percent_of_equity'}
+    }
+
+def initialize_text_handlers(self):
+    """Initialize text operation handlers"""
+    self.text_handlers = {
+        'textAlignBottom': {'type': 'text', 'align': 'bottom'},
+        'textAlignCenter': {'type': 'text', 'align': 'center'},
+        'textAlignLeft': {'type': 'text', 'align': 'left'},
+        'textAlignRight': {'type': 'text', 'align': 'right'},
+        'textAlignTop': {'type': 'text', 'align': 'top'},
+        'textWrapAuto': {'type': 'text', 'wrap': 'auto'},
+        'textWrapNone': {'type': 'text', 'wrap': 'none'}
+    }
+
+    def initialize_series_management(self):
+    """Initialize series data management"""
+    self.series_data = {
+        'time_series': [],
+        'price_series': [],
+        'volume_series': [],
+        'indicator_series': {},
+        'custom_series': {},
+        'lookback_window': 5000
+    }
+
+def initialize_bar_state(self):
+    """Initialize bar state management"""
+    self.bar_state = {
+        'current_bar_index': 0,
+        'is_new_bar': False,
+        'is_realtime': False,
+        'is_confirmed': False,
+        'is_last': False,
+        'is_history': True,
+        'time': None,
+        'open': None,
+        'high': None,
+        'low': None,
+        'close': None,
+        'volume': None
+    }
+
+def initialize_execution_context(self):
+    """Initialize execution context"""
+    self.execution_context = {
+        'timeframe': None,
+        'ticker': None,
+        'session': 'regular',
+        'adjustment': 'none',
+        'currency': 'USD',
+        'replay_mode': False,
+        'max_bars_back': 5000,
+        'commit_to_replay': True
+    }
+
+def initialize_strategy_engine(self):
+    """Initialize strategy execution engine"""
+    self.strategy_engine = {
+        'positions': [],
+        'orders': [],
+        'trades': [],
+        'equity': 0,
+        'initial_capital': 100000,
+        'commission': 0,
+        'slippage': 0,
+        'margin_long': 1,
+        'margin_short': 1,
+        'pyramiding': 0
+    }
+def initialize_variable_scope(self):
+    """Initialize variable scope management"""
+    self.scope_manager = {
+        'global_scope': {},
+        'local_scope': [],
+        'function_scope': {},
+        'current_scope': None,
+        'scope_stack': []
+    }
+
+def initialize_runtime_state(self):
+    """Initialize runtime state management"""
+    self.runtime_state = {
+        'is_compiling': False,
+        'is_executing': False,
+        'current_function': None,
+        'security_cache': {},
+        'calculation_cache': {},
+        'plot_cache': {},
+        'alert_cache': []
+    }
+
+def initialize_market_replay(self):
+    """Initialize market replay functionality"""
+    self.market_replay = {
+        'historical_data': [],
+        'replay_index': 0,
+        'replay_speed': 1,
+        'replay_mode': 'bar',
+        'tick_replay': False,
+        'max_bars_back': 5000,
+        'warmup_bars': 100
+    }
+
+def initialize_security_context(self):
+    """Initialize security context for multi-timeframe analysis"""
+    self.security_context = {
+        'timeframe_data': {},
+        'resolution_gaps': True,
+        'lookahead_off': True,
+        'ignore_invalid_timeframes': False,
+        'current_timeframe': None,
+        'higher_tf_data': {},
+        'lower_tf_data': {}
+    }
+
+def initialize_plotting_engine(self):
+    """Initialize plotting and visualization engine"""
+    self.plotting_engine = {
+        'plots': [],
+        'shapes': [],
+        'lines': [],
+        'labels': [],
+        'tables': [],
+        'backgrounds': [],
+        'current_chart': None,
+        'overlay_mode': True,
+        'scale_margin': 0.1
+    }
+
+    def initialize_currency_handlers(self):
+    """Initialize currency handlers from original syntax"""
+    self.currency_handlers = {
+        'currencyAUD': {'type': 'currency', 'code': 'AUD'},
+        'currencyBTC': {'type': 'currency', 'code': 'BTC'},
+        'currencyCAD': {'type': 'currency', 'code': 'CAD'},
+        'currencyCHF': {'type': 'currency', 'code': 'CHF'},
+        'currencyETH': {'type': 'currency', 'code': 'ETH'},
+        'currencyEUR': {'type': 'currency', 'code': 'EUR'},
+        'currencyGBP': {'type': 'currency', 'code': 'GBP'},
+        'currencyHKD': {'type': 'currency', 'code': 'HKD'},
+        'currencyINR': {'type': 'currency', 'code': 'INR'},
+        'currencyJPY': {'type': 'currency', 'code': 'JPY'},
+        'currencyKRW': {'type': 'currency', 'code': 'KRW'},
+        'currencyMYR': {'type': 'currency', 'code': 'MYR'},
+        'currencyNOK': {'type': 'currency', 'code': 'NOK'},
+        'currencyNZD': {'type': 'currency', 'code': 'NZD'},
+        'currencyRUB': {'type': 'currency', 'code': 'RUB'},
+        'currencySEK': {'type': 'currency', 'code': 'SEK'},
+        'currencySGD': {'type': 'currency', 'code': 'SGD'},
+        'currencyTRY': {'type': 'currency', 'code': 'TRY'},
+        'currencyUSD': {'type': 'currency', 'code': 'USD'},
+        'currencyUSDT': {'type': 'currency', 'code': 'USDT'},
+        'currencyZAR': {'type': 'currency', 'code': 'ZAR'}
+    }
+
+def initialize_syminfo_handlers(self):
+    """Initialize symbol information handlers from original syntax"""
+    self.syminfo_handlers = {
+        'symInfoBaseCurrency': {'type': 'syminfo', 'property': 'base_currency'},
+        'symInfoDescription': {'type': 'syminfo', 'property': 'description'},
+        'symInfoMinMove': {'type': 'syminfo', 'property': 'min_move'},
+        'symInfoMinTick': {'type': 'syminfo', 'property': 'mintick'},
+        'symInfoPointValue': {'type': 'syminfo', 'property': 'pointvalue'},
+        'symInfoPriceScale': {'type': 'syminfo', 'property': 'pricescale'},
+        'symInfoSession': {'type': 'syminfo', 'property': 'session'},
+        'symInfoTicker': {'type': 'syminfo', 'property': 'ticker'},
+        'symInfoType': {'type': 'syminfo', 'property': 'type'},
+        'symInfoRoot': {'type': 'syminfo', 'property': 'root'}
+    }
+
+    def initialize_display_handlers(self):
+    """Initialize display handlers"""
+    self.display_handlers = {
+        'displayAll': {'type': 'display', 'mode': 'all'},
+        'displayDataWindow': {'type': 'display', 'mode': 'data_window'},
+        'displayNone': {'type': 'display', 'mode': 'none'},
+        'displayPane': {'type': 'display', 'mode': 'pane'},
+        'displayPriceScale': {'type': 'display', 'mode': 'price_scale'},
+        'displayStatusLine': {'type': 'display', 'mode': 'status_line'}
+    }
+
+def initialize_timeframe_handlers(self):
+    """Initialize timeframe handlers"""
+    self.timeframe_handlers = {
+        'timeframeIsDaily': {'type': 'timeframe', 'check': 'daily'},
+        'timeframeIsDWM': {'type': 'timeframe', 'check': 'dwm'},
+        'timeframeIsIntraday': {'type': 'timeframe', 'check': 'intraday'},
+        'timeframeIsMinutes': {'type': 'timeframe', 'check': 'minutes'},
+        'timeframeIsMonthly': {'type': 'timeframe', 'check': 'monthly'},
+        'timeframeIsSeconds': {'type': 'timeframe', 'check': 'seconds'},
+        'timeframeIsTicks': {'type': 'timeframe', 'check': 'ticks'},
+        'timeframeIsWeekly': {'type': 'timeframe', 'check': 'weekly'},
+        'timeframeMainPeriod': {'type': 'timeframe', 'property': 'main_period'},
+        'timeframeMultiplier': {'type': 'timeframe', 'property': 'multiplier'},
+        'timeframePeriod': {'type': 'timeframe', 'property': 'period'}
+    }
+
+def initialize_format_handlers(self):
+    """Initialize format handlers"""
+    self.format_handlers = {
+        'formatInherit': {'type': 'format', 'mode': 'inherit'},
+        'formatMinTick': {'type': 'format', 'mode': 'mintick'},
+        'formatPercent': {'type': 'format', 'mode': 'percent'},
+        'formatPrice': {'type': 'format', 'mode': 'price'},
+        'formatVolume': {'type': 'format', 'mode': 'volume'}
+    }
+
+    def initialize_adjustment_handlers(self):
+    """Initialize adjustment handlers"""
+    self.adjustment_handlers = {
+        'adjustmentDividends': {'type': 'adjustment', 'mode': 'dividends'},
+        'adjustmentNone': {'type': 'adjustment', 'mode': 'none'},
+        'adjustmentSplits': {'type': 'adjustment', 'mode': 'splits'},
+        'backAdjustmentInherit': {'type': 'adjustment', 'mode': 'inherit'},
+        'backAdjustmentOff': {'type': 'adjustment', 'mode': 'off'},
+        'backAdjustmentOn': {'type': 'adjustment', 'mode': 'on'}
+    }
+
+def initialize_bar_merge_handlers(self):
+    """Initialize bar merge handlers"""
+    self.bar_merge_handlers = {
+        'barMergeGapsOff': {'type': 'bar_merge', 'gaps': False},
+        'barMergeGapsOn': {'type': 'bar_merge', 'gaps': True},
+        'barMergeLookaheadOff': {'type': 'bar_merge', 'lookahead': False},
+        'barMergeLookaheadOn': {'type': 'bar_merge', 'lookahead': True}
+    }
+
+def initialize_color_handlers(self):
+    """Initialize color handlers"""
+    self.color_handlers = {
+        'colAqua': {'type': 'color', 'value': '#00FFFF'},
+        'colBlack': {'type': 'color', 'value': '#000000'},
+        'colBlue': {'type': 'color', 'value': '#0000FF'},
+        'colFuchsia': {'type': 'color', 'value': '#FF00FF'},
+        'colGray': {'type': 'color', 'value': '#808080'},
+        'colGreen': {'type': 'color', 'value': '#008000'},
+        'colLime': {'type': 'color', 'value': '#00FF00'},
+        'colMaroon': {'type': 'color', 'value': '#800000'},
+        'colNavy': {'type': 'color', 'value': '#000080'},
+        'colOlive': {'type': 'color', 'value': '#808000'},
+        'colOrange': {'type': 'color', 'value': '#FFA500'},
+        'colPurple': {'type': 'color', 'value': '#800080'},
+        'colRed': {'type': 'color', 'value': '#FF0000'},
+        'colSilver': {'type': 'color', 'value': '#C0C0C0'},
+        'colTeal': {'type': 'color', 'value': '#008080'},
+        'colWhite': {'type': 'color', 'value': '#FFFFFF'},
+        'colYellow': {'type': 'color', 'value': '#FFFF00'}
+    }
+
+def initialize_day_of_week_handlers(self):
+    """Initialize day of week handlers"""
+    self.day_of_week_handlers = {
+        'dayOfWeekFriday': {'type': 'day_of_week', 'value': 5},
+        'dayOfWeekMonday': {'type': 'day_of_week', 'value': 1},
+        'dayOfWeekSaturday': {'type': 'day_of_week', 'value': 6},
+        'dayOfWeekSunday': {'type': 'day_of_week', 'value': 0},
+        'dayOfWeekThursday': {'type': 'day_of_week', 'value': 4},
+        'dayOfWeekTuesday': {'type': 'day_of_week', 'value': 2},
+        'dayOfWeekWednesday': {'type': 'day_of_week', 'value': 3}
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+'open', 'high', 'low', 'close', 'volume', 'hl2', 'hlc3', 'hlcc4', 'ohlc4','symInfoMinMove', 'symInfoMinTick', 'symInfoPointValue', 'symInfoPrefix','symInfoPriceScale', 'symInfoRoot', 'symInfoSector', 'symInfoSession','symInfoShareholders', 'symInfoSharesOutstandingFloat','symInfoSharesOutstandingTotal',             'sma', 'ema', 'rsi', 'minvalue', 'maxvalue', 'taAccDist', 'taIII', 'taNVI', 'taOBV', 'taPVI', 'taPVT', 'taTR', 'taVWAP','taWAD', 'taWVAD', 'taAlma', 'taAtr', 'taBarsSince', 'taBb', 'taBbw', 'taCci','taChange', 'taCmo', 'taCog', 'taCorrelation', 'taCross', 'taCrossover','taCrossunder', 'taCum', 'taDev', 'taDmi', 'taEma', 'taFalling', 'taHighest','taHighestBars', 'taHma', 'taKc', 'taKcw', 'taLinReg', 'taLowest','taLowestBars', 'taMacd', 'taMax', 'taMedian', 'taMfi', 'taMin', 'taMode','taMom', 'taPercentile', 'taPercentRank', 'taPivotHigh', 'taPivotLow','taRange', 'taRising', 'taRma', 'taRoc', 'taRsi', 'taSar', 'taSma', 'taStdev','taStoch', 'taSuperTrend', 'taSwma', 'taTsi', 'taValueWhen', 'taVariance','taVwap', 'taVwma', 'taWma', 'taWpr', 'strategyAccountCurrency', 'strategyAvgLosingTrade','strategyAvgLosingTradePercent', 'strategyAvgTrade','strategyAvgTradePercent', 'strategyAvgWinningTrade','strategyAvgWinningTradePercent', 'strategyClosedTrades','strategyClosedTradesFirstIndex', 'strategyEquity', 'strategyEvenTrades','strategyGrossLoss', 'strategyGrossLossPercent', 'strategyGrossProfit','strategyGrossProfitPercent', 'strategyInitialCapital', 'strategyLossTrades','strategyMarginLiquidationPrice', 'strategyMaxContractsHeldAll','strategyMaxContractsHeldLong', 'strategyMaxContractsHeldShort','strategyMaxDrawdown', 'strategyMaxDrawdownPercent', 'strategyMaxRunup','strategyMaxRunupPercent', 'strategyNetProfit', 'strategyNetProfitPercent','strategyOpenProfit', 'strategyOpenProfitPercent', 'strategyOpenTrades','strategyOpenTradesCapitalHeld', 'strategyPositionAvgPrice','strategyPositionEntryName', 'strategyPositionSize', 'strategyWinTrades',             'dayOfMonth', 'dayOfWeek', 'hour', 'minute', 'month','second', 'time', 'timeClose', 'timeTradingDay', 'timeNow','weekOfYear', 'year', 'sessionIsFirstBar', 'sessionIsFirstBarRegular','sessionIsLastBar', 'sessionIsLastBarRegular', 'sessionIsMarket','sessionIsPostMarket', 'sessionIsPreMarket',             'boxAll', 'chartBgCol', 'chartFgCol', 'chartIsHeikinAshi','chartIsKagi', 'chartIsLineBreak', 'chartIsPnf', 'chartIsRange','chartIsRenko', 'chartIsStandard', 'chartLeftVisibleBarTime','chartRightVisibleBarTime', 'labelAll', 'lineAll', 'lineFillAll','polylineAll', 'tableAll', 'andOp', 'enumType', 'exportFunc', 'forLoop', 'forInLoop', 'ifCond', 'importFunc', 'methodFunc', 'notOp', 'orOp', 'switchCase', 'typeDef', 'let', 'letip', 'whileLoop','open','high','low','close','volume','barIndex','barStateIsConfirmed','barStateIsFirst','barStateIsHistory','barStateIsLast','barStateIsLastConfirmedHistory','barStateIsNew','barStateIsRealtime','boxAll','chartBgCol','chartFgCol','chartIsHeikinAshi','chartIsKagi','chartIsLineBreak','chartIsPnf','chartIsRange','chartIsRenko','chartIsStandard','chartLeftVisibleBarTime','chartRightVisibleBarTime','dayOfMonth','dayOfWeek','dividendsFutureAmount','dividendsFutureExDate','dividendsFuturePayDate','earningsFutureEps','earningsFuturePeriodEndTime','earningsFutureRevenue','earningsFutureTime','hl2','hlc3','hlcc4','hour','labelAll','lastBarIndex','lastBarTime','lineAll','lineFillAll','minute','month','na','ohlc4','polylineAll','second','sessionIsFirstBar','sessionIsFirstBarRegular','sessionIsLastBar','sessionIsLastBarRegular','sessionIsMarket','sessionIsPostMarket','sessionIsPreMarket','strategyAccountCurrency','strategyAvgLosingTrade','strategyAvgLosingTradePercent','strategyAvgTrade','strategyAvgTradePercent','strategyAvgWinningTrade','strategyAvgWinningTradePercent','strategyClosedTrades','strategyClosedTradesFirstIndex','strategyEquity','strategyEvenTrades','strategyGrossLoss','strategyGrossLossPercent','strategyGrossProfit','strategyGrossProfitPercent','strategyInitialCapital','strategyLossTrades','strategyMarginLiquidationPrice','strategyMaxContractsHeldAll','strategyMaxContractsHeldLong','strategyMaxContractsHeldShort','strategyMaxDrawdown','strategyMaxDrawdownPercent','strategyMaxRunup','strategyMaxRunupPercent','strategyNetProfit','strategyNetProfitPercent','strategyOpenProfit','strategyOpenProfitPercent','strategyOpenTrades','strategyOpenTradesCapitalHeld','strategyPositionAvgPrice','strategyPositionEntryName','strategyPositionSize','strategyWinTrades','symInfoBaseCurrency','symInfoCountry','symInfoCurrency','symInfoDescription','symInfoEmployees','symInfoExpirationDate','symInfoIndustry','symInfoMainTickerId','symInfoMinContract','symInfoMinMove','symInfoMinTick','symInfoPointValue','symInfoPrefix','symInfoPriceScale','symInfoRecommendationsBuy','symInfoRecommendationsBuyStrong','symInfoRecommendationsDate','symInfoRecommendationsHold','symInfoRecommendationsSell','symInfoRecommendationsSellStrong','symInfoRecommendationsTotal','symInfoRoot','symInfoSector','symInfoSession','symInfoShareholders','symInfoSharesOutstandingFloat','symInfoSharesOutstandingTotal','symInfoTargetPriceAverage','symInfoTargetPriceDate','symInfoTargetPriceEstimates','symInfoTargetPriceHigh','symInfoTargetPriceLow','symInfoTargetPriceMedian','symInfoTicker','symInfoTickerId','symInfoTimezone','symInfoType','symInfoVolumeType','taAccDist','taIII','taNVI','taOBV','taPVI','taPVT','taTR','taVWAP','taWAD','taWVAD','tableAll','time','timeClose','timeTradingDay','timeframeIsDaily','timeframeIsDWM','timeframeIsIntraday','timeframeIsMinutes','timeframeIsMonthly','timeframeIsSeconds','timeframeIsTicks','timeframeIsWeekly','timeframeMainPeriod','timeframeMultiplier','timeframePeriod','timeNow','weekOfYear','year','showStyleArea','showStyleAreaBr','showStyleCircles','showStyleColumns','showStyleCross','showStyleHistogram','showStyleLine','showStyleLineBr','showStyleStepLine','showStyleStepLineDiamond','showStyleStepLineBr','positionBottomCenter','positionBottomLeft','positionBottomRight','positionMiddleCenter','positionMiddleLeft','positionMiddleRight','positionTopCenter','positionTopLeft','positionTopRight','scaleLeft','scaleNone','scaleRight','sessionExtended','sessionRegular','settlementAsCloseInherit','settlementAsCloseOff','settlementAsCloseOn','shapeArrowDown','shapeArrowUp','shapeCircle','shapeCross','shapeDiamond','shapeFlag','shapeLabelDown','shapeLabelUp','shapeSquare','shapeTriangleDown','shapeTriangleUp','shapeXCross','sizeAuto','sizeHuge','sizeLarge','sizeNormal','sizeSmall','sizeTiny','splitsDenominator','splitsNumerator','strategyCash','strategyCommissionCashPerContract','strategyCommissionCashPerOrder','strategyCommissionPercent','strategyDirectionAll','strategyDirectionLong','strategyDirectionShort','strategyFixed','strategyLong','strategyOcaCancel','strategyOcaNone','strategyOcaReduce','strategyPercentOfEquity','strategyShort','textAlignBottom','textAlignCenter','textAlignLeft','textAlignRight','textAlignTop','textWrapAuto','textWrapNone','trueValue','xLocBarIndex','xLocBarTime','yLocAboveBar','yLocBelowBar','yLocPrice','adjustmentDividends','adjustmentNone','adjustmentSplits','alertFreqAll','alertFreqOncePerBar','alertFreqOncePerBarClose','backAdjustmentInherit','backAdjustmentOff','backAdjustmentOn','barMergeGapsOff','barMergeGapsOn','barMergeLookaheadOff','barMergeLookaheadOn','colAqua','colBlack','colBlue','colFuchsia','colGray','colGreen','colLime','colMaroon','colNavy','colOlive','colOrange','colPurple','colRed','colSilver','colTeal','colWhite','colYellow','currencyAUD','currencyBTC','currencyCAD','currencyCHF','currencyETH','currencyEUR','currencyGBP','currencyHKD','currencyINR','currencyJPY','currencyKRW','currencyMYR','currencyNOK','currencyNone','currencyNZD','currencyRUB','currencySEK','currencySGD','currencyTRY','currencyUSD','currencyUSDT','currencyZAR','dayOfWeekFriday','dayOfWeekMonday','dayOfWeekSaturday','dayOfWeekSunday','dayOfWeekThursday','dayOfWeekTuesday','dayOfWeekWednesday','displayAll','displayDataWindow','displayNone','displayPane','displayPriceScale','displayStatusLine','dividendsGross','dividendsNet','earningsActual','earningsEstimate','earningsStandardized','extendBoth','extendLeft','extendNone','extendRight','falseValue','fontFamilyDefault','fontFamilyMonospace','formatInherit','formatMinTick','formatPercent','formatPrice','formatVolume','hlineStyleDashed','hlineStyleDotted','hlineStyleSolid','labelStyleArrowDown','labelStyleArrowUp','labelStyleCircle','labelStyleCross','labelStyleDiamond','labelStyleFlag','labelStyleLabelCenter','labelStyleLabelDown','labelStyleLabelLeft','labelStyleLabelLowerLeft','labelStyleLabelLowerRight','labelStyleLabelRight','labelStyleLabelUp','labelStyleLabelUpperLeft','labelStyleLabelUpperRight','labelStyleNone','labelStyleSquare','labelStyleTextOutline','labelStyleTriangleDown','labelStyleTriangleUp','labelStyleXCross','lineStyleArrowBoth','lineStyleArrowLeft','lineStyleArrowRight','lineStyleDashed','lineStyleDotted','lineStyleSolid','locationAboveBar','locationAbsolute','locationBelowBar','locationBottom','locationTop','mathE','mathPhi','mathPi','mathRPhi','orderAscending','orderDescending', 'onTick', 'onBar','=', '+', '-', '*', '/', '%', '==','!', '!=', '>', '<', '>=', '<=', 'and', 'or', 'not', 'if', 'else', 'for', 'while', 'let', 'arr', 'bool', 'box', 'chartPoint', 'col', 'const', 'float', 'int', 'label',             'dayOfMonth', 'dayOfWeek', 'hour', 'minute', 'month','second', 'time', 'timeClose', 'timeTradingDay', 'timeNow','weekOfYear', 'year', 'sessionIsFirstBar', 'sessionIsFirstBarRegular','sessionIsLastBar', 'sessionIsLastBarRegular', 'sessionIsMarket','sessionIsPostMarket', 'sessionIsPreMarket',             'sma', 'ema', 'rsi', 'minvalue', 'maxvalue', 'taAccDist', 'taIII', 'taNVI', 'taOBV', 'taPVI', 'taPVT', 'taTR', 'taVWAP','taWAD', 'taWVAD', 'taAlma', 'taAtr', 'taBarsSince', 'taBb', 'taBbw', 'taCci','taChange', 'taCmo', 'taCog', 'taCorrelation', 'taCross', 'taCrossover','taCrossunder', 'taCum', 'taDev', 'taDmi', 'taEma', 'taFalling', 'taHighest','taHighestBars', 'taHma', 'taKc', 'taKcw', 'taLinReg', 'taLowest','taLowestBars', 'taMacd', 'taMax', 'taMedian', 'taMfi', 'taMin', 'taMode','taMom', 'taPercentile', 'taPercentRank', 'taPivotHigh', 'taPivotLow','taRange', 'taRising', 'taRma', 'taRoc', 'taRsi', 'taSar', 'taSma', 'taStdev','taStoch', 'taSuperTrend', 'taSwma', 'taTsi', 'taValueWhen', 'taVariance','taVwap', 'taVwma', 'taWma', 'taWpr',             'adjustmentDividends', 'adjustmentNone', 'adjustmentSplits','alertFreqAll', 'alertFreqOncePerBar', 'alertFreqOncePerBarClose','colAqua', 'colBlack', 'colBlue', 'colFuchsia', 'colGray','colGreen', 'colLime', 'colMaroon', 'colNavy', 'colOlive','colOrange', 'colPurple', 'colRed', 'colSilver', 'colTeal','colWhite', 'colYellow',            'symInfoRecommendationsBuy', 'symInfoRecommendationsBuyStrong','symInfoRecommendationsDate', 'symInfoRecommendationsHold','symInfoRecommendationsSell', 'symInfoRecommendationsSellStrong','symInfoRecommendationsTotal', 'symInfoTargetPriceAverage','symInfoTargetPriceDate', 'symInfoTargetPriceEstimates','symInfoTargetPriceHigh', 'symInfoTargetPriceLow','symInfoTargetPriceMedian', 'symInfoTicker', 'symInfoTickerId','symInfoTimezone', 'symInfoType', 'symInfoVolumeType', 'symInfoBaseCurrency', 'symInfoCountry', 'symInfoCurrency','symInfoDescription', 'symInfoEmployees', 'symInfoExpirationDate','symInfoIndustry', 'symInfoMainTickerId', 'symInfoMinContract',   'strategyAccountCurrency', 'strategyAvgLosingTrade','strategyAvgLosingTradePercent', 'strategyAvgTrade','strategyAvgTradePercent', 'strategyAvgWinningTrade','strategyAvgWinningTradePercent', 'strategyClosedTrades','strategyClosedTradesFirstIndex', 'strategyEquity', 'strategyEvenTrades','strategyGrossLoss', 'strategyGrossLossPercent', 'strategyGrossProfit','strategyGrossProfitPercent', 'strategyInitialCapital', 'strategyLossTrades','strategyMarginLiquidationPrice', 'strategyMaxContractsHeldAll','strategyMaxContractsHeldLong', 'strategyMaxContractsHeldShort','strategyMaxDrawdown', 'strategyMaxDrawdownPercent', 'strategyMaxRunup','strategyMaxRunupPercent', 'strategyNetProfit', 'strategyNetProfitPercent','strategyOpenProfit', 'strategyOpenProfitPercent', 'strategyOpenTrades','strategyOpenTradesCapitalHeld', 'strategyPositionAvgPrice','strategyPositionEntryName', 'strategyPositionSize', 'strategyWinTrades','sma', 'ema', 'rsi', 'minvalue', 'maxvalue','alertFunc', 'alertConditionFunc', 'arrAbs', 'arrAvg', 'arrBinarySearch', 'arrBinarySearchLeftmost', 'arrBinarySearchRightmost', 'arrClear', 'arrConcat', 'arrCopy', 'arrCovariance', 'arrEvery', 'arrFill', 'arrFirst', 'arrFrom', 'arrGet', 'arrIncludes', 'arrIndexOf', 'arrInsert', 'arrJoin', 'arrLast', 'arrLastIndexOf', 'arrMax', 'arrMedian', 'arrMin', 'arrMode', 'arrNewBool', 'arrNewBox', 'aryNewCol', 'arrNewFloat', 'arrNewInt', 'arrNewLabel', 'arrNewLine', 'arrNewLineFill', 'arrNewString', 'arrNewTable', 'arrNewType', 'arrPercentileLinearInterpolation', 'arrPercentileNearestRank', 'arrPercentRank', 'arrPop', 'arrPush', 'arrRange', 'arrRemove', 'arrReverse', 'arrSet', 'arrShift', 'arrSize', 'arrSlice', 'arrSome', 'arrSort', 'arrSortIndices', 'arrStandardize', 'arrStdev', 'arrSum', 'arrUnshift', 'arrVariance', 'barColFunc', 'bgColFunc', 'boolFunc', 'boxFunc', 'boxCopyFunc', 'boxDeleteFunc', 'boxGetBottomFunc', 'boxGetLeftFunc', 'boxGetRightFunc', 'boxGetTopFunc', 'boxNewFunc', 'boxSetBgColFunc', 'boxSetBorderColFunc', 'boxSetBorderStyleFunc', 'boxSetBorderWidthFunc', 'boxSetBottomFunc', 'boxSetBottomRightPointFunc', 'boxSetExtendFunc', 'boxSetLeftFunc', 'boxSetLeftTopFunc', 'boxSetRightFunc', 'boxSetRightBottomFunc', 'boxSetTextFunc', 'boxSetTextColFunc', 'boxSetTextFontFamilyFunc', 'boxSetTextHAlignFunc', 'boxSetTextSizeFunc', 'boxSetTextVAlignFunc', 'boxSetTextWrapFunc', 'boxSetTopFunc', 'boxSetTopLeftPointFunc', 'chartPointCopyFunc', 'chartPointFromIndexFunc', 'chartPointFromTimeFunc', 'chartPointNewFunc', 'chartPointNowFunc', 'colFunc', 'colBFunc', 'colFromGradientFunc', 'colGFunc', 'colNewFunc', 'colRFunc', 'colRgbFunc', 'colTFunc', 'dayOfMonthFunc', 'dayOfWeekFunc', 'fillFunc', 'fixNanFunc', 'floatFunc', 'hLineFunc', 'hourFunc', 'indicatorFunc', 'inputFunc', 'inputBoolFunc', 'inputColFunc', 'inputEnumFunc', 'inputFloatFunc', 'inputIntFunc', 'inputPriceFunc', 'inputSessionFunc', 'inputSourceFunc', 'inputStringFunc', 'inputSymbolFunc', 'inputTextAreaFunc', 'inputTimeFunc', 'inputTimeFrameFunc', 'intFunc', 'labelFunc', 'labelCopyFunc', 'labelDeleteFunc', 'labelGetTextFunc', 'labelGetXFunc', 'labelGetYFunc', 'labelNewFunc', 'labelSetColFunc', 'labelSetPointFunc', 'labelSetSizeFunc', 'labelSetStyleFunc', 'labelSetTextFunc', 'labelSetTextFontFamilyFunc', 'labelSetTextAlignFunc', 'labelSetTextColFunc', 'labelSetToolTipFunc', 'labelSetXFunc', 'labelSetXLocFunc', 'labelSetXYFunc', 'labelSetYFunc', 'labelSetYLocFunc', 'libraryFunc', 'lineFunc', 'lineCopyFunc', 'lineDeleteFunc', 'lineGetPriceFunc', 'lineGetX1Func', 'lineGetX2Func', 'lineGetY1Func', 'lineGetY2Func', 'lineNewFunc', 'lineSetColFunc', 'lineSetExtendFunc', 'lineSetFirstPointFunc', 'lineSetSecondPointFunc', 'lineSetStyleFunc', 'lineSetWidthFunc', 'lineSetX1Func', 'lineSetX2Func', 'lineSetXLocFunc', 'lineSetXY1Func', 'lineSetXY2Func', 'lineSetY1Func', 'lineSetY2Func', 'lineFillFunc', 'lineFillDeleteFunc', 'lineFillGetLine1Func', 'lineFillGetLine2Func', 'lineFillNewFunc', 'lineFillSetColFunc', 'logErrorFunc', 'logInfoFunc', 'logWarningFunc', 'mapClearFunc', 'mapContainsFunc', 'mapCopyFunc', 'mapGetFunc', 'mapKeysFunc', 'mapNewTypeFunc', 'mapPutFunc', 'mapPutAllFunc', 'mapRemoveFunc', 'mapSizeFunc', 'mapValuesFunc', 'mathAbsFunc', 'mathAcosFunc', 'mathAsinFunc', 'mathAtanFunc', 'mathAvgFunc', 'mathCeilFunc', 'mathCosFunc', 'mathExpFunc', 'mathFloorFunc', 'mathLogFunc', 'mathLog10Func', 'mathMaxFunc', 'mathMinFunc', 'mathPowFunc', 'mathRandomFunc', 'mathRoundFunc', 'mathRoundToMinTickFunc', 'mathSignFunc', 'mathSinFunc', 'mathSqrtFunc', 'mathSumFunc', 'mathTanFunc', 'mathToDegreesFunc', 'mathToRadiansFunc', 'matrixAddColFunc', 'matrixAddRowFunc', 'matrixAvgFunc', 'matrixColFunc', 'matrixColumnsFunc', 'matrixConcatFunc', 'matrixCopyFunc', 'matrixDetFunc', 'matrixDiffFunc', 'matrixEigenValuesFunc', 'matrixEigenVectorsFunc', 'matrixElementsCountFunc', 'matrixFillFunc', 'matrixGetFunc', 'matrixInvFunc', 'matrixIsAntiDiagonalFunc', 'matrixIsAntiSymmetricFunc', 'matrixIsBinaryFunc', 'matrixIsDiagonalFunc', 'matrixIsIdentityFunc', 'matrixIsSquareFunc', 'matrixIsStochasticFunc', 'matrixIsSymmetricFunc', 'matrixIsTriangularFunc', 'matrixIsZeroFunc', 'matrixKronFunc', 'matrixMaxFunc', 'matrixMedianFunc', 'matrixMinFunc', 'matrixModeFunc', 'matrixMultFunc', 'matrixNewTypeFunc', 'matrixPinvFunc', 'matrixPowFunc', 'matrixRankFunc', 'matrixRemoveColFunc', 'matrixRemoveRowFunc', 'matrixReshapeFunc', 'matrixReverseFunc', 'matrixRowFunc', 'matrixRowsFunc', 'matrixSetFunc', 'matrixSortFunc', 'matrixSubMatrixFunc', 'matrixSumFunc', 'matrixSwapColumnsFunc', 'matrixSwapRowsFunc', 'matrixTraceFunc', 'matrixTransposeFunc', 'maxBarsBackFunc', 'minuteFunc', 'monthFunc', 'naFunc', 'nzFunc', 'polylineDeleteFunc', 'polylineNewFunc','requestCurrencyRateFunc', 'requestDividendsFunc', 'requestEarningsFunc', 'requestEconomicFunc', 'requestFinancialFunc', 'requestQuandlFunc', 'requestSecurityFunc', 'requestSecurityLowerTfFunc', 'requestSeedFunc', 'requestSplitsFunc', 'runtimeErrorFunc', 'secondFunc', 'strContainsFunc', 'strEndsWithFunc', 'strFormatFunc', 'strFormatTimeFunc', 'strLengthFunc', 'strLowerFunc', 'strMatchFunc', 'strPosFunc', 'strRepeatFunc', 'strReplaceFunc', 'strReplaceAllFunc', 'strSplitFunc', 'strStartsWithFunc', 'strSubstringFunc', 'strToNumberFunc', 'strToStringFunc', 'strTrimFunc', 'strUpperFunc', 'strategyFunc', 'strategyCancelFunc', 'strategyCancelAllFunc', 'strategyCloseFunc', 'strategyCloseAllFunc', 'strategyClosedTradesCommissionFunc', 'strategyClosedTradesEntryBarIndexFunc', 'strategyClosedTradesEntryCommentFunc', 'strategyClosedTradesEntryIdFunc', 'strategyClosedTradesEntryPriceFunc', 'strategyClosedTradesEntryTimeFunc', 'strategyClosedTradesExitBarIndexFunc', 'strategyClosedTradesExitCommentFunc', 'strategyClosedTradesExitIdFunc', 'strategyClosedTradesExitPriceFunc', 'strategyClosedTradesExitTimeFunc', 'strategyClosedTradesMaxDrawdownFunc', 'strategyClosedTradesMaxDrawdownPercentFunc', 'strategyClosedTradesMaxRunupFunc', 'strategyClosedTradesMaxRunupPercentFunc', 'strategyClosedTradesProfitFunc', 'strategyClosedTradesProfitPercentFunc', 
+    'strategyClosedTradesSizeFunc', 'strategyConvertToAccountFunc', 'strategyConvertToSymbolFunc', 'strategyDefaultEntryQtyFunc', 'strategyEntryFunc', 'strategyExitFunc', 'strategyOpenTradesCommissionFunc', 'strategyOpenTradesEntryBarIndexFunc', 'strategyOpenTradesEntryCommentFunc', 'strategyOpenTradesEntryIdFunc', 'strategyOpenTradesEntryPriceFunc', 'strategyOpenTradesEntryTimeFunc', 'strategyOpenTradesMaxDrawdownFunc', 'strategyOpenTradesMaxDrawdownPercentFunc', 'strategyOpenTradesMaxRunupFunc', 'strategyOpenTradesMaxRunupPercentFunc', 'strategyOpenTradesProfitFunc', 'strategyOpenTradesProfitPercentFunc', 'strategyOpenTradesSizeFunc', 'strategyOrderFunc', 'strategyRiskAllowEntryInFunc', 'strategyRiskMaxConsLossDaysFunc', 'strategyRiskMaxDrawdownFunc', 'strategyRiskMaxIntradayFilledOrdersFunc', 'strategyRiskMaxIntradayLossFunc', 'strategyRiskMaxPositionSizeFunc', 'symInfoPrefixFunc', 'symInfoTickerFunc', 'timeFunc', 'timeCloseFunc', 'timeframeChangeFunc', 'timeframeFromSecondsFunc', 'timeframeInSecondsFunc', 'timestampFunc', 'weekOfYearFunc', 'yearFunc',             'show', 'showshape', 'showcond','solid', 'dotted', 'dashed','fontFamilyDefault', 'fontFamilyMonospace','extendBoth', 'extendLeft', 'extendNone', 'extendRight','hlineStyleDashed', 'hlineStyleDotted', 'hlineStyleSolid','tableFunc ','tableCellFunc','tableCellSetBgColFunc','tableCellSetHeightFunc' ,'tableCellSetTextFunc','tableCellSetTextColFunc','tableCellSetTextFontFamily','tableCellSetTextHAlignFunc','tableCellSetTextSizeFunc','tableCellSetTextVAlignFunc','tableCellSetToolTipFunc','tableCellSetWidthFunc','tableClearFunc ','tableDeleteFunc ','tableMergeCellsFunc','tableNewFunc','tableSetBgColFunc','tableSetBorderColFunc','tableSetBorderWidthFunc','tableSetFrameColFunc ','tableSetFrameWidthFunc','tableSetPositionFunc '
+                       
+
+
+
+
+
+def _get_syntax_list(self):
+    return {
+        'open': True, 'high': True, 'low': True, 'close': True, 'volume': True,
+        'barIndex': True, 'barStateIsConfirmed': True, 'barStateIsFirst': True,
+        'barStateIsHistory': True, 'barStateIsLast': True, 'barStateIsLastConfirmedHistory': True,
+        'barStateIsNew': True, 'barStateIsRealtime': True, 'boxAll': True,
+        'chartBgCol': True, 'chartFgCol': True, 'chartIsHeikinAshi': True,
+        'chartIsKagi': True, 'chartIsLineBreak': True, 'chartIsPnf': True,
+        'chartIsRange': True, 'chartIsRenko': True, 'chartIsStandard': True,
+        'chartLeftVisibleBarTime': True, 'chartRightVisibleBarTime': True,
+        'dayOfMonth': True, 'dayOfWeek': True, 'dividendsFutureAmount': True,
+        'dividendsFutureExDate': True, 'dividendsFuturePayDate': True,
+        'earningsFutureEps': True, 'earningsFuturePeriodEndTime': True,
+        'earningsFutureRevenue': True, 'earningsFutureTime': True,
+        'hl2': True, 'hlc3': True, 'hlcc4': True, 'hour': True,
+        'labelAll': True, 'lastBarIndex': True, 'lastBarTime': True,
+        'lineAll': True, 'lineFillAll': True, 'minute': True, 'month': True,
+        'na': True, 'ohlc4': True, 'polylineAll': True, 'second': True,
+        'sessionIsFirstBar': True, 'sessionIsFirstBarRegular': True,
+        'sessionIsLastBar': True, 'sessionIsLastBarRegular': True,
+        'sessionIsMarket': True, 'sessionIsPostMarket': True,
+        'sessionIsPreMarket': True, 'strategyAccountCurrency': True,
+        'strategyAvgLosingTrade': True, 'strategyAvgLosingTradePercent': True,
+        'strategyAvgTrade': True, 'strategyAvgTradePercent': True,
+        'strategyAvgWinningTrade': True, 'strategyAvgWinningTradePercent': True,
+        'strategyClosedTrades': True, 'strategyClosedTradesFirstIndex': True,
+        'strategyEquity': True, 'strategyEvenTrades': True,
+        'strategyGrossLoss': True, 'strategyGrossLossPercent': True,
+        'strategyGrossProfit': True, 'strategyGrossProfitPercent': True,
+        'strategyInitialCapital': True, 'strategyLossTrades': True,
+        'strategyMarginLiquidationPrice': True, 'strategyMaxContractsHeldAll': True,
+        'strategyMaxContractsHeldLong': True, 'strategyMaxContractsHeldShort': True,
+        'strategyMaxDrawdown': True, 'strategyMaxDrawdownPercent': True,
+        'strategyMaxRunup': True, 'strategyMaxRunupPercent': True,
+        'strategyNetProfit': True, 'strategyNetProfitPercent': True,
+        'strategyOpenProfit': True, 'strategyOpenProfitPercent': True,
+        'strategyOpenTrades': True, 'strategyOpenTradesCapitalHeld': True,
+        'strategyPositionAvgPrice': True, 'strategyPositionEntryName': True,
+        'strategyPositionSize': True, 'strategyWinTrades': True,
+        'symInfoBaseCurrency': True, 'symInfoCountry': True,
+        'symInfoCurrency': True, 'symInfoDescription': True,
+        'symInfoEmployees': True, 'symInfoExpirationDate': True,
+        'symInfoIndustry': True, 'symInfoMainTickerId': True,
+        'symInfoMinContract': True, 'symInfoMinMove': True,
+        'symInfoMinTick': True, 'symInfoPointValue': True,
+        'symInfoPrefix': True, 'symInfoPriceScale': True,
+        'symInfoRoot': True, 'symInfoSector': True,
+        'symInfoSession': True, 'symInfoShareholders': True,
+        'symInfoSharesOutstandingFloat': True, 'symInfoSharesOutstandingTotal': True,
+        'symInfoTargetPriceAverage': True, 'symInfoTargetPriceDate': True,
+        'symInfoTargetPriceEstimates': True, 'symInfoTargetPriceHigh': True,
+        'symInfoTargetPriceLow': True, 'symInfoTargetPriceMedian': True,
+        'symInfoTicker': True, 'symInfoTickerId': True,
+        'symInfoTimezone': True, 'symInfoType': True,
+        'symInfoVolumeType': True, 'tableAll': True,
+        'time': True, 'timeClose': True, 'timeTradingDay': True,
+        'timeframeIsDaily': True, 'timeframeIsDWM': True,
+        'timeframeIsIntraday': True, 'timeframeIsMinutes': True,
+        'timeframeIsMonthly': True, 'timeframeIsSeconds': True,
+        'timeframeIsTicks': True, 'timeframeIsWeekly': True,
+        'timeframeMainPeriod': True, 'timeframeMultiplier': True,
+        'timeframePeriod': True, 'timeNow': True,
+        'weekOfYear': True, 'year': True
+
+
+                # Technical Analysis Functions
+        'sma': True, 'ema': True, 'rsi': True, 'minvalue': True, 'maxvalue': True,
+        'taAccDist': True, 'taIII': True, 'taNVI': True, 'taOBV': True, 'taPVI': True,
+        'taPVT': True, 'taTR': True, 'taVWAP': True, 'taWAD': True, 'taWVAD': True,
+        'taAlma': True, 'taAtr': True, 'taBarsSince': True, 'taBb': True, 'taBbw': True,
+        'taCci': True, 'taChange': True, 'taCmo': True, 'taCog': True, 'taCorrelation': True,
+        'taCross': True, 'taCrossover': True, 'taCrossunder': True, 'taCum': True,
+        'taDev': True, 'taDmi': True, 'taEma': True, 'taFalling': True, 'taHighest': True,
+        'taHighestBars': True, 'taHma': True, 'taKc': True, 'taKcw': True, 'taLinReg': True,
+        'taLowest': True, 'taLowestBars': True, 'taMacd': True, 'taMax': True, 'taMedian': True,
+        'taMfi': True, 'taMin': True, 'taMode': True, 'taMom': True, 'taPercentile': True,
+        'taPercentRank': True, 'taPivotHigh': True, 'taPivotLow': True, 'taRange': True,
+        'taRising': True, 'taRma': True, 'taRoc': True, 'taRsi': True, 'taSar': True,
+        'taSma': True, 'taStdev': True, 'taStoch': True, 'taSuperTrend': True, 'taSwma': True,
+        'taTsi': True, 'taValueWhen': True, 'taVariance': True, 'taVwap': True, 'taVwma': True,
+        'taWma': True, 'taWpr': True,
+
+        # Array Functions
+        'arrAbs': True, 'arrAvg': True, 'arrBinarySearch': True, 'arrBinarySearchLeftmost': True,
+        'arrBinarySearchRightmost': True, 'arrClear': True, 'arrConcat': True, 'arrCopy': True,
+        'arrCovariance': True, 'arrEvery': True, 'arrFill': True, 'arrFirst': True,
+        'arrFrom': True, 'arrGet': True, 'arrIncludes': True, 'arrIndexOf': True,
+        'arrInsert': True, 'arrJoin': True, 'arrLast': True, 'arrLastIndexOf': True,
+        'arrMax': True, 'arrMedian': True, 'arrMin': True, 'arrMode': True,
+        'arrNewBool': True, 'arrNewBox': True, 'aryNewCol': True, 'arrNewFloat': True,
+        'arrNewInt': True, 'arrNewLabel': True, 'arrNewLine': True, 'arrNewLineFill': True,
+        'arrNewString': True, 'arrNewTable': True, 'arrNewType': True,
+        'arrPercentileLinearInterpolation': True, 'arrPercentileNearestRank': True,
+        'arrPercentRank': True, 'arrPop': True, 'arrPush': True, 'arrRange': True,
+        'arrRemove': True, 'arrReverse': True, 'arrSet': True, 'arrShift': True,
+        'arrSize': True, 'arrSlice': True, 'arrSome': True, 'arrSort': True,
+        'arrSortIndices': True, 'arrStandardize': True, 'arrStdev': True,
+        'arrSum': True, 'arrUnshift': True, 'arrVariance': True,
+
+        # Box Functions
+        'boxFunc': True, 'boxCopyFunc': True, 'boxDeleteFunc': True,
+        'boxGetBottomFunc': True, 'boxGetLeftFunc': True, 'boxGetRightFunc': True,
+        'boxGetTopFunc': True, 'boxNewFunc': True, 'boxSetBgColFunc': True,
+        'boxSetBorderColFunc': True, 'boxSetBorderStyleFunc': True,
+        'boxSetBorderWidthFunc': True, 'boxSetBottomFunc': True,
+        'boxSetBottomRightPointFunc': True, 'boxSetExtendFunc': True,
+        'boxSetLeftFunc': True, 'boxSetLeftTopFunc': True, 'boxSetRightFunc': True,
+        'boxSetRightBottomFunc': True, 'boxSetTextFunc': True, 'boxSetTextColFunc': True,
+        'boxSetTextFontFamilyFunc': True, 'boxSetTextHAlignFunc': True,
+        'boxSetTextSizeFunc': True, 'boxSetTextVAlignFunc': True,
+        'boxSetTextWrapFunc': True, 'boxSetTopFunc': True, 'boxSetTopLeftPointFunc': True,
+
+        # Line Functions
+        'lineFunc': True, 'lineCopyFunc': True, 'lineDeleteFunc': True,
+        'lineGetPriceFunc': True, 'lineGetX1Func': True, 'lineGetX2Func': True,
+        'lineGetY1Func': True, 'lineGetY2Func': True, 'lineNewFunc': True,
+        'lineSetColFunc': True, 'lineSetExtendFunc': True, 'lineSetFirstPointFunc': True,
+        'lineSetSecondPointFunc': True, 'lineSetStyleFunc': True, 'lineSetWidthFunc': True,
+        'lineSetX1Func': True, 'lineSetX2Func': True, 'lineSetXLocFunc': True,
+        'lineSetXY1Func': True, 'lineSetXY2Func': True, 'lineSetY1Func': True,
+        'lineSetY2Func': True,
+
+        # Matrix Functions
+        'matrixAddColFunc': True, 'matrixAddRowFunc': True, 'matrixAvgFunc': True,
+        'matrixColFunc': True, 'matrixColumnsFunc': True, 'matrixConcatFunc': True,
+        'matrixCopyFunc': True, 'matrixDetFunc': True, 'matrixDiffFunc': True,
+        'matrixElementsCountFunc': True, 'matrixFillFunc': True, 'matrixGetFunc': True,
+        'matrixIsAntiDiagonalFunc': True, 'matrixIsAntiSymmetricFunc': True,
+        'matrixIsBinaryFunc': True, 'matrixIsDiagonalFunc': True,
+        'matrixIsIdentityFunc': True, 'matrixIsSquareFunc': True,
+        'matrixIsStochasticFunc': True, 'matrixIsSymmetricFunc': True,
+        'matrixIsTriangularFunc': True, 'matrixIsZeroFunc': True,
+        'matrixMaxFunc': True, 'matrixMinFunc': True, 'matrixMultFunc': True,
+        'matrixNewTypeFunc': True, 'matrixReshapeFunc': True, 'matrixReverseFunc': True,
+        'matrixRowFunc': True, 'matrixRowsFunc': True, 'matrixSetFunc': True,
+        'matrixSortFunc': True, 'matrixSumFunc': True, 'matrixTraceFunc': True,
+        'matrixTransposeFunc': True,
+
+        # String Functions
+        'strContains': True, 'strEndsWith': True, 'strFormat': True,
+        'strLength': True, 'strLower': True, 'strMatch': True,
+        'strPos': True, 'strReplace': True, 'strReplaceAll': True,
+        'strSplit': True, 'strStartsWith': True, 'strSubstring': True,
+        'strToNumber': True, 'strToString': True, 'strTrim': True,
+        'strUpper': True
+
+                # Chart Functions
+        'chartPointCopy': True, 'chartPointFromIndex': True, 'chartPointFromTime': True,
+        'chartPointNew': True, 'chartPointNow': True,
+
+        # Color Functions
+        'colFunc': True, 'colBFunc': True, 'colFromGradientFunc': True,
+        'colGFunc': True, 'colNewFunc': True, 'colRFunc': True,
+        'colRgbFunc': True, 'colTFunc': True,
+
+        # Math Functions
+        'mathAbsFunc': True, 'mathAcosFunc': True, 'mathAsinFunc': True,
+        'mathAtanFunc': True, 'mathAvgFunc': True, 'mathCeilFunc': True,
+        'mathCosFunc': True, 'mathExpFunc': True, 'mathFloorFunc': True,
+        'mathLogFunc': True, 'mathLog10Func': True, 'mathMaxFunc': True,
+        'mathMinFunc': True, 'mathPowFunc': True, 'mathRandomFunc': True,
+        'mathRoundFunc': True, 'mathRoundToMinTickFunc': True, 'mathSignFunc': True,
+        'mathSinFunc': True, 'mathSqrtFunc': True, 'mathSumFunc': True,
+        'mathTanFunc': True, 'mathToDegreesFunc': True, 'mathToRadiansFunc': True,
+
+        # Strategy Functions
+        'strategyFunc': True, 'strategyCancelFunc': True, 'strategyCancelAllFunc': True,
+        'strategyCloseFunc': True, 'strategyCloseAllFunc': True,
+        'strategyEntryFunc': True, 'strategyExitFunc': True,
+        'strategyOrderFunc': True,
+
+        # Text and Label Functions
+        'textAlignBottom': True, 'textAlignCenter': True, 'textAlignLeft': True,
+        'textAlignRight': True, 'textAlignTop': True, 'textWrapAuto': True,
+        'textWrapNone': True,
+
+        # Location Types
+        'xLocBarIndex': True, 'xLocBarTime': True, 'yLocAboveBar': True,
+        'yLocBelowBar': True, 'yLocPrice': True,
+
+        # Data Types
+        'Numeric': True, 'Boolean': True, 'String': True, 'Series': True,
+
+        # Operators and Keywords
+        '=': True, '+': True, '-': True, '*': True, '/': True, '%': True,
+        '==': True, '!=': True, '>': True, '<': True, '>=': True, '<=': True,
+        'and': True, 'or': True, 'not': True, 'if': True, 'else': True,
+        'for': True, 'while': True, 'let': True
+    
+                # Table Functions
+        'tableFunc': True, 'tableCellFunc': True, 'tableCellSetBgColFunc': True,
+        'tableCellSetHeightFunc': True, 'tableCellSetTextFunc': True,
+        'tableCellSetTextColFunc': True, 'tableCellSetTextFontFamily': True,
+        'tableCellSetTextHAlignFunc': True, 'tableCellSetTextSizeFunc': True,
+        'tableCellSetTextVAlignFunc': True, 'tableCellSetToolTipFunc': True,
+        'tableCellSetWidthFunc': True, 'tableClearFunc': True, 'tableDeleteFunc': True,
+        'tableMergeCellsFunc': True, 'tableNewFunc': True, 'tableSetBgColFunc': True,
+        'tableSetBorderColFunc': True, 'tableSetBorderWidthFunc': True,
+        'tableSetFrameColFunc': True, 'tableSetFrameWidthFunc': True,
+        'tableSetPositionFunc': True,
+
+        # Alert Functions
+        'alertFunc': True, 'alertConditionFunc': True,
+
+        # Style Functions
+        'showStyleArea': True, 'showStyleAreaBr': True, 'showStyleCircles': True,
+        'showStyleColumns': True, 'showStyleCross': True, 'showStyleHistogram': True,
+        'showStyleLine': True, 'showStyleLineBr': True, 'showStyleStepLine': True,
+        'showStyleStepLineDiamond': True, 'showStyleStepLineBr': True,
+
+        # Position Functions
+        'positionBottomCenter': True, 'positionBottomLeft': True, 'positionBottomRight': True,
+        'positionMiddleCenter': True, 'positionMiddleLeft': True, 'positionMiddleRight': True,
+        'positionTopCenter': True, 'positionTopLeft': True, 'positionTopRight': True,
+
+        # Scale Functions
+        'scaleLeft': True, 'scaleNone': True, 'scaleRight': True,
+
+        # Session Functions
+        'sessionExtended': True, 'sessionRegular': True,
+
+        # Settlement Functions
+        'settlementAsCloseInherit': True, 'settlementAsCloseOff': True, 'settlementAsCloseOn': True,
+
+        # Shape Functions
+        'shapeArrowDown': True, 'shapeArrowUp': True, 'shapeCircle': True,
+        'shapeCross': True, 'shapeDiamond': True, 'shapeFlag': True,
+        'shapeLabelDown': True, 'shapeLabelUp': True, 'shapeSquare': True,
+        'shapeTriangleDown': True, 'shapeTriangleUp': True, 'shapeXCross': True,
+
+        # Size Functions
+        'sizeAuto': True, 'sizeHuge': True, 'sizeLarge': True,
+        'sizeNormal': True, 'sizeSmall': True, 'sizeTiny': True
+
+                # Library and Input Functions
+        'libraryFunc': True, 'inputFunc': True, 'inputBoolFunc': True,
+        'inputColFunc': True, 'inputEnumFunc': True, 'inputFloatFunc': True,
+        'inputIntFunc': True, 'inputPriceFunc': True, 'inputSessionFunc': True,
+        'inputSourceFunc': True, 'inputStringFunc': True, 'inputSymbolFunc': True,
+        'inputTextAreaFunc': True, 'inputTimeFunc': True, 'inputTimeFrameFunc': True,
+
+        # Log Functions
+        'logErrorFunc': True, 'logInfoFunc': True, 'logWarningFunc': True,
+
+        # Map Functions
+        'mapClearFunc': True, 'mapContainsFunc': True, 'mapCopyFunc': True,
+        'mapGetFunc': True, 'mapKeysFunc': True, 'mapNewTypeFunc': True,
+        'mapPutFunc': True, 'mapPutAllFunc': True, 'mapRemoveFunc': True,
+        'mapSizeFunc': True, 'mapValuesFunc': True,
+
+        # Request Functions
+        'requestCurrencyRateFunc': True, 'requestDividendsFunc': True,
+        'requestEarningsFunc': True, 'requestEconomicFunc': True,
+        'requestFinancialFunc': True, 'requestQuandlFunc': True,
+        'requestSecurityFunc': True, 'requestSecurityLowerTfFunc': True,
+        'requestSeedFunc': True, 'requestSplitsFunc': True,
+
+        # Runtime Functions
+        'runtimeErrorFunc': True,
+
+        # Fill Functions
+        'fillFunc': True, 'fixNanFunc': True, 'floatFunc': True,
+        'hLineFunc': True, 'hourFunc': True, 'indicatorFunc': True,
+
+        # Polyline Functions
+        'polylineDeleteFunc': True, 'polylineNewFunc': True
+
+                # Label Functions
+        'labelFunc': True, 'labelCopyFunc': True, 'labelDeleteFunc': True,
+        'labelGetTextFunc': True, 'labelGetXFunc': True, 'labelGetYFunc': True,
+        'labelNewFunc': True, 'labelSetColFunc': True, 'labelSetPointFunc': True,
+        'labelSetSizeFunc': True, 'labelSetStyleFunc': True, 'labelSetTextFunc': True,
+        'labelSetTextFontFamilyFunc': True, 'labelSetTextAlignFunc': True,
+        'labelSetTextColFunc': True, 'labelSetToolTipFunc': True, 'labelSetXFunc': True,
+        'labelSetXLocFunc': True, 'labelSetXYFunc': True, 'labelSetYFunc': True,
+        'labelSetYLocFunc': True,
+
+        # Constants
+        'mathE': True, 'mathPhi': True, 'mathPi': True, 'mathRPhi': True,
+        'trueValue': True, 'falseValue': True,
+
+        # Order Functions
+        'orderAscending': True, 'orderDescending': True,
+
+        # Bar Functions
+        'onTick': True, 'onBar': True,
+
+        # Format Functions
+        'formatInherit': True, 'formatMinTick': True, 'formatPercent': True,
+        'formatPrice': True, 'formatVolume': True,
+
+        # Font Functions
+        'fontFamilyDefault': True, 'fontFamilyMonospace': True,
+
+        # Line Style Functions
+        'lineStyleArrowBoth': True, 'lineStyleArrowLeft': True, 'lineStyleArrowRight': True,
+        'lineStyleDashed': True, 'lineStyleDotted': True, 'lineStyleSolid': True,
+
+        # Location Functions
+        'locationAboveBar': True, 'locationAbsolute': True, 'locationBelowBar': True,
+        'locationBottom': True, 'locationTop': True
+
+                # Currency Functions
+        'currencyAUD': True, 'currencyBTC': True, 'currencyCAD': True, 'currencyCHF': True,
+        'currencyETH': True, 'currencyEUR': True, 'currencyGBP': True, 'currencyHKD': True,
+        'currencyINR': True, 'currencyJPY': True, 'currencyKRW': True, 'currencyMYR': True,
+        'currencyNOK': True, 'currencyNone': True, 'currencyNZD': True, 'currencyRUB': True,
+        'currencySEK': True, 'currencySGD': True, 'currencyTRY': True, 'currencyUSD': True,
+        'currencyUSDT': True, 'currencyZAR': True,
+
+        # Display Functions
+        'displayAll': True, 'displayDataWindow': True, 'displayNone': True,
+        'displayPane': True, 'displayPriceScale': True, 'displayStatusLine': True,
+
+        # Dividend Functions
+        'dividendsGross': True, 'dividendsNet': True,
+
+        # Earnings Functions
+        'earningsActual': True, 'earningsEstimate': True, 'earningsStandardized': True,
+
+        # Extend Functions
+        'extendBoth': True, 'extendLeft': True, 'extendNone': True, 'extendRight': True,
+
+        # Line Style Functions
+        'hlineStyleDashed': True, 'hlineStyleDotted': True, 'hlineStyleSolid': True,
+
+        # Label Style Functions
+        'labelStyleArrowDown': True, 'labelStyleArrowUp': True, 'labelStyleCircle': True,
+        'labelStyleCross': True, 'labelStyleDiamond': True, 'labelStyleFlag': True,
+        'labelStyleLabelCenter': True, 'labelStyleLabelDown': True, 'labelStyleLabelLeft': True,
+        'labelStyleLabelLowerLeft': True, 'labelStyleLabelLowerRight': True,
+        'labelStyleLabelRight': True, 'labelStyleLabelUp': True, 'labelStyleLabelUpperLeft': True,
+        'labelStyleLabelUpperRight': True, 'labelStyleNone': True, 'labelStyleSquare': True,
+        'labelStyleTextOutline': True, 'labelStyleTriangleDown': True,
+        'labelStyleTriangleUp': True, 'labelStyleXCross': True,
+
+        # Bar Merge Functions
+        'barMergeGapsOff': True, 'barMergeGapsOn': True,
+        'barMergeLookaheadOff': True, 'barMergeLookaheadOn': True,
+
+        # Adjustment Functions
+        'adjustmentDividends': True, 'adjustmentNone': True, 'adjustmentSplits': True,
+        'backAdjustmentInherit': True, 'backAdjustmentOff': True, 'backAdjustmentOn': True
+
+                # Strategy Additional Functions
+        'strategyClosedTradesCommissionFunc': True, 'strategyClosedTradesEntryBarIndexFunc': True,
+        'strategyClosedTradesEntryCommentFunc': True, 'strategyClosedTradesEntryIdFunc': True,
+        'strategyClosedTradesEntryPriceFunc': True, 'strategyClosedTradesEntryTimeFunc': True,
+        'strategyClosedTradesExitBarIndexFunc': True, 'strategyClosedTradesExitCommentFunc': True,
+        'strategyClosedTradesExitIdFunc': True, 'strategyClosedTradesExitPriceFunc': True,
+        'strategyClosedTradesExitTimeFunc': True, 'strategyClosedTradesMaxDrawdownFunc': True,
+        'strategyClosedTradesMaxDrawdownPercentFunc': True, 'strategyClosedTradesMaxRunupFunc': True,
+        'strategyClosedTradesMaxRunupPercentFunc': True, 'strategyClosedTradesProfitFunc': True,
+        'strategyClosedTradesProfitPercentFunc': True, 'strategyClosedTradesSizeFunc': True,
+        'strategyConvertToAccountFunc': True, 'strategyConvertToSymbolFunc': True,
+        'strategyDefaultEntryQtyFunc': True, 'strategyOpenTradesCommissionFunc': True,
+        'strategyOpenTradesEntryBarIndexFunc': True, 'strategyOpenTradesEntryCommentFunc': True,
+        'strategyOpenTradesEntryIdFunc': True, 'strategyOpenTradesEntryPriceFunc': True,
+        'strategyOpenTradesEntryTimeFunc': True, 'strategyOpenTradesMaxDrawdownFunc': True,
+        'strategyOpenTradesMaxDrawdownPercentFunc': True, 'strategyOpenTradesMaxRunupFunc': True,
+        'strategyOpenTradesMaxRunupPercentFunc': True, 'strategyOpenTradesProfitFunc': True,
+        'strategyOpenTradesProfitPercentFunc': True, 'strategyOpenTradesSizeFunc': True,
+        'strategyRiskAllowEntryInFunc': True, 'strategyRiskMaxConsLossDaysFunc': True,
+        'strategyRiskMaxDrawdownFunc': True, 'strategyRiskMaxIntradayFilledOrdersFunc': True,
+        'strategyRiskMaxIntradayLossFunc': True, 'strategyRiskMaxPositionSizeFunc': True,
+
+        # Additional Time Functions
+        'timeframeChangeFunc': True, 'timeframeFromSecondsFunc': True,
+        'timeframeInSecondsFunc': True, 'timestampFunc': True,
+
+        # Show Functions
+        'show': True, 'showshape': True, 'showcond': True,
+
+        # Line Style Additional
+        'solid': True, 'dotted': True, 'dashed': True
+
+    }

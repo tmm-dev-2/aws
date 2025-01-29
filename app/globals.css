@@ -1,0 +1,100 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .watchlist-page {
+    background-color: #1a1a1a;
+  }
+}
+
+@layer base {
+  :root {
+    --background: #0f172a; /* Darker background - slate-900 */
+    --foreground: #e2e8f0; /* Lighter text color - slate-200 */
+
+    --muted: #1e293b; /* Even darker muted background - slate-800 */
+    --muted-foreground: #cbd5e1; /* Lighter muted text - slate-300 */
+
+    --popover: #1e293b; /* Even darker popover background - slate-800 */
+    --popover-foreground: #e2e8f0; /* Very light popover text - slate-200 */
+
+    --card: #1e293b; /* Even darker card background - slate-800 */
+    --card-foreground: #e2e8f0; /* Very light card text - slate-200 */
+
+    --border: #334155; /* Slightly darker border color - slate-700 */
+    --input: #334155; /* Slightly darker input background - slate-700 */
+
+    --primary: #e0f2fe; /* Light primary color - sky-100 */
+    --primary-foreground: #0f172a; /* Dark primary foreground - slate-900 */
+
+    --secondary: #475569; /* Slightly darker secondary color - slate-600 */
+    --secondary-foreground: #e2e8f0; /* Very light secondary text - slate-200 */
+
+    --accent: #64748b; /* Slightly darker accent color - slate-500 */
+    --accent-foreground: #e2e8f0; /* Very light accent text - slate-200 */
+
+    --destructive: #ef4444; /* Slightly lighter destructive color - red-500 */
+    --destructive-foreground: #e2e8f0; /* Very light destructive text - slate-200 */
+
+    --ring: #4b5563; /* Slightly darker ring color - slate-600 */
+
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  .button, .button > svg {
+    color: white !important;
+  }
+  * {
+    @apply border-border;
+  }
+  body {
+      background-color: #1a1a1a;
+      @apply text-foreground;
+    }
+    body.dark {
+      background-color: #1a1a1a;
+      @apply text-foreground;
+    }
+}
+
+/* Phone Input Dark Theme Styling */
+.react-tel-input .country-list {
+    background-color: #333 !important;
+}
+
+.react-tel-input .country-list .country {
+    color: #fff !important;
+}
+
+.react-tel-input .country-list .country:hover {
+    background-color: #444 !important;
+}
+
+.react-tel-input .selected-flag:hover,
+.react-tel-input .selected-flag:focus {
+    background-color: #444 !important;
+}
+
+.react-tel-input .search {
+    background-color: #333 !important;
+    color: #fff !important;
+}
+
+.react-tel-input .search::placeholder {
+    color: #aaa !important;
+}
+
+.react-tel-input .country-list .country.highlight {
+    background-color: #444 !important;
+}
+
+.react-tel-input .country-list .country-name {
+    color: #fff !important;
+}
+
+.react-tel-input .country-list .dial-code {
+    color: #fff !important;
+}

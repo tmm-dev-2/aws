@@ -1,0 +1,148 @@
+// @version=5
+indicator("Kernel Regression Oscillator P1 [TradingMarketMist]",  "KRO P1 [TradingMarketMist]", true, format.price, timeframe = "", timeframe_gaps = false)
+
+import QuantraAI/QuantraMAs/2 as DynamicMA
+import QuantraSystems/DynamicFunctions/1 as DynamicFunc
+
+
+//              ╔═══════════════════════════╗              //
+//              ║    USER DEFINED INPUTS    ║              //
+//              ╚═══════════════════════════╝              //
+
+
+var string KRS = "ᏦᏒᎧ ᏫᏉᏋᏒႱᎯᎽ - Settings", var string KRU = "ᏦᏒᎧ ᏫᏉᏋᏒႱᎯᎽ - UI"
+source    = input.source(close,         "Source",                                                     group = KRS)
+bandwidth = input.int   (45,            "Bandwidth", 1,                                               group = KRS, tooltip = "Length of the Kernel Regression calculation")
+width     = input.float (2,             "Width",                                       step = 0.2,    group = KRS, tooltip = "Smoothes the Signal")
+sdLook    = input.int   (150,           "Standard Deviation Lookback",                                group = KRS, tooltip = "Length of the SD bands lookback period") 
+sdMult    = input.float (3,             "Standard Deviation Extreme for OB/OS Border", step = 0.5,    group = KRS, tooltip = "Defines the outer border of the SD bands. \nThe inner border begins at 50% of the SD Multiplier")
+
+ColMode   = input.string("Modern",      "Color Palette Choice",                      inline = "drop", group = KRU, options = ["Classic", "Modern", "Robust", "Accented", "Monochrome"])
+man       = input.bool  (false,         "Custom Palette",                            inline = "drop", group = KRU)
+manUpC    = input.color (#00ff00,     "Custom Up",                                 inline = "man",  group = KRU) 
+manDnC    = input.color (#ff0000,     "Custom Down",                               inline = "man",  group = KRU)
+sig       = input.bool  (false,         "Show Trend Signals",                                         group = KRU)
+BCol      = input.bool  (true,          "Enable Bar Coloring",                                        group = KRU)
+devS      = input.bool  (true,          "Enable Deviation Band Shading",                              group = KRU)
+OBOS      = input.bool  (true,          "Enable Overbought/Oversold Shading",                         group = KRU)   
+TR        = input.int   (85,            "Shading Transparency", 0, 100,                               group = KRU)
+
+
+
+
+
+
+//              ╔══════════════════════════╗              //
+//              ║    COLOR DECLARATIONS    ║              //
+//              ╚══════════════════════════╝              //
+
+
+// Color assignment based on the selected palette
+[UpC, DnC]       =  switch    ColMode
+    "Classic"    => [#00E676, #880E4F]
+    "Modern"     => [#5ffae0, #c22ed0]
+    "Robust"     => [#ffbb00, #770737]
+    "Accented"   => [#9618f7, #ff0078]
+    "Monochrome" => [#dee2e6, #495057]
+
+
+// Override with custom colors if manual palette is selected
+[UpCol, DnCol]   =  switch     man
+    false        => [UpC,      DnC   ]
+    true         => [manUpC,   manDnC]
+
+
+
+
+
+
+//              ╔════════════════════════╗              //
+//              ║    CORE CALCULATIONS   ║              //
+//              ╚════════════════════════╝              //
+
+
+//  ╔════════════════════════════════╗  //
+//  ║      RESCALING FUNCTIONS       ║  //
+//  ╚════════════════════════════════╝  //
+
+// Achieves a non-deciaml tick size
+rescale(src) => src * (1 / syminfo.mintick)
+descale(src) => src / (1 / syminfo.mintick)
+
+// Rescale the Input Source
+source := rescale(source)
+
+
+
+//  ╔════════════════════════════════╗  //
+//  ║       KERNEL REGRESSIONS       ║  //
+//  ╚════════════════════════════════╝  //
+
+Wave = descale(DynamicFunc.waveCalculation (source, bandwidth, width          ))
+
+// Triple Confirmations
+Ep   = descale(DynamicFunc.kernelRegression(source, bandwidth, 'Epanechnikov' ))
+Lo   = descale(DynamicFunc.kernelRegression(source, bandwidth, 'Logistic'     ))
+Wa   = descale(DynamicFunc.kernelRegression(source, bandwidth, 'Wave'         ))
+
+// Average
+AV    = math.avg(Ep, Lo, Wa) + close
+Mid   = DynamicMA.SMA(AV, sdLook)
+arrUp = Wave > Wave[1] and not (Wave[1] > Wave[2])
+arrDn = Wave < Wave[1] and not (Wave[1] < Wave[2])
+
+// Standard Deviation Bands
+[_, u1, l1] = DynamicFunc.stdv_bands(AV, sdLook, sdMult/2)
+[_, u2, l2] = DynamicFunc.stdv_bands(AV, sdLook, sdMult)
+
+
+
+
+
+
+//              ╔══════════════════════════════╗              //
+//              ║        VISUALIZATION         ║              //
+//              ╚══════════════════════════════╝              //
+
+
+// Define shared display settings
+var all         = sig ? display.all : display.none
+
+// Main Plots
+pu1  = plot     (u1,   "1.𝓢𝓓 +",               color.new(DnCol, 70)                                                               )
+pl1  = plot     (l1,   "1.𝓢𝓓 -",               color.new(UpCol, 70)                                                               )
+pu2  = plot     (u2,   "2.𝓢𝓓 +",               color.new(DnCol, 70)                                                               )
+pl2  = plot     (l2,   "2.𝓢𝓓 -",               color.new(UpCol, 70)                                                               )
+mid  = plot     (Mid,  "Mid",                  color.gray,     2                                                                )
+HL2  = plot     (hl2,  "",                     color    (na)                                                                      )
+
+wave = plot     (Wave, "𝓢𝓲𝓰𝓷𝓪𝓵 𝓦𝓪𝓿𝓮", BCol ? color    (na) : Wave > Wave[1] ? UpCol : DnCol, 3                                 ),
+       fill     (pu1, pu2, u2, u1, devS      ? color.new(DnCol, 60) : na,                          color.new(chart.bg_color, 55)  ),
+       fill     (pl1, pl2, l2, l1, devS      ? color.new(UpCol, 60) : na,                          color.new(chart.bg_color, 55)  ),
+       fill     (wave, HL2, Wave, hl2,  BCol ? color.new(Wave > Wave[1] ? UpCol : DnCol, 50) : na, color.new(chart.bg_color, 75)  ),
+
+       plotshape(arrUp, "Trend", shape.arrowup,   location.belowbar, UpCol, 0, "Up",   UpCol, size = size.auto, display = all     ),
+       plotshape(arrDn, "Trend", shape.arrowdown, location.abovebar, DnCol, 0, "Down", DnCol, size = size.auto, display = all     ),
+
+       bgcolor  (OBOS ? (AV > u2 ?             color.new(DnCol, TR) : AV < l2 ?                    color.new(UpCol, TR) : na) : na),
+       barcolor (BCol ? Wave > Wave[1]? UpCol : DnCol: na)
+
+
+
+
+
+
+//              ╔══════════════════════════════╗              //
+//              ║    USER ALERT CONDITIONS     ║              //
+//              ╚══════════════════════════════╝              //
+
+
+symbol = "ᏦᏒᎧ ᏫᏉᏋᏒႱᎯᎽ [QuantraAI] >>> {{exchange}}:{{ticker}}"
+
+alertcondition(arrUp or arrDn,     "Major Trend Shift", symbol + " Trend Shift!"           )
+alertcondition(AV < l2 or AV > u2,             "OB/OS", symbol + " Extreme - OB/OS Zone!"  )
+lc1=ta.crossover(Wave, Wave[1])
+exitc1=ta.crossunder(Wave, Wave[1])
+
+plotshape(lc1, title='Buy', text='long', style=shape.labelup, location=location.belowbar, color=color.new(color.green, 0), textcolor=color.new(color.white, 0), size=size.tiny)
+plotshape(exitc1, title='short', text='Sell', style=shape.labeldown, location=location.abovebar, color=color.new(color.red, 0), textcolor=color.new(color.white, 0), size=size.tiny)s
