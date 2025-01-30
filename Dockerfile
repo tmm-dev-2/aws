@@ -1,8 +1,9 @@
 FROM ollama/ollama
 
-# Create a startup script with sequential model loading
+# Create a startup script with correct port binding
 RUN echo '#!/bin/bash\n\
-ollama serve &\n\
+export PORT=10000\n\
+ollama serve -p 10000 &\n\
 sleep 20\n\
 for model in mxbai-embed-large minicpm-v qwen2.5-coder codegemma codellama llama3.2-vision; do\n\
   echo "Pulling $model..."\n\
@@ -11,5 +12,5 @@ for model in mxbai-embed-large minicpm-v qwen2.5-coder codegemma codellama llama
 done\n\
 wait' > /start.sh && chmod +x /start.sh
 
-EXPOSE 11434
+EXPOSE 10000
 ENTRYPOINT ["/bin/bash", "/start.sh"]
