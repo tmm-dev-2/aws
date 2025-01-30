@@ -1,16 +1,15 @@
 FROM ollama/ollama
 
-# Create a startup script
+# Create a startup script with sequential model loading
 RUN echo '#!/bin/bash\n\
-nohup ollama serve &\n\
-sleep 15\n\
-ollama pull mxbai-embed-large\n\
-ollama pull minicpm-v\n\
-ollama pull qwen2.5-coder\n\
-ollama pull codegemma\n\
-ollama pull codellama\n\
-ollama pull llama3.2-vision\n\
-ollama serve' > /start.sh && chmod +x /start.sh
+ollama serve &\n\
+sleep 20\n\
+for model in mxbai-embed-large minicpm-v qwen2.5-coder codegemma codellama llama3.2-vision; do\n\
+  echo "Pulling $model..."\n\
+  ollama pull $model\n\
+  sleep 5\n\
+done\n\
+wait' > /start.sh && chmod +x /start.sh
 
 EXPOSE 11434
 ENTRYPOINT ["/bin/bash", "/start.sh"]
