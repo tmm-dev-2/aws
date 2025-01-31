@@ -1,15 +1,12 @@
 FROM ollama/ollama
 
-# Create a startup script with environment variable for port
+# Create a startup script with single lightweight model
 RUN echo '#!/bin/bash\n\
 export OLLAMA_HOST=0.0.0.0:10000\n\
 ollama serve &\n\
 sleep 20\n\
-for model in mxbai-embed-large minicpm-v qwen2.5-coder codegemma codellama llama3.2-vision; do\n\
-  echo "Pulling $model..."\n\
-  ollama pull $model\n\
-  sleep 5\n\
-done\n\
+echo "Pulling minicpm-v..."\n\
+ollama pull minicpm-v\n\
 wait' > /start.sh && chmod +x /start.sh
 
 EXPOSE 10000
