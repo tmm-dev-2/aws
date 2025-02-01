@@ -41,15 +41,27 @@ app.get('/health', (req, res) => {
     model: 'minicpm-v'
   });
 });
-
-// Add a root endpoint
-app.get('/', (req, res) => {
-  res.status(200).json({
-    message: 'Aide AI Backend Service',
-    version: '1.0'
+  // Add a root endpoint
+  app.get('/', (req, res) => {
+    const { logs, message } = req.query;
+  
+    if (logs === 'chat' && message) {
+      // Process message with Ollama
+      axios.post(`${OLLAMA_URL}/api/generate`, {
+        model: 'minicpm-v',
+        prompt: message,
+        stream: false
+      })
+      .then(response => {
+        res.json({ response: response.data.response });
+      })
+      .catch(error => {
+        res.json({ response: "Processing your message..." });
+      });
+    } else {
+      res.send("Ollama is running");
+    }
   });
-});
-
 // Update the chat endpoin`
 app.post('/api/chat', async (req, res) => {
   const { message } = req.body;
