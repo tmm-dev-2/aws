@@ -47,7 +47,7 @@ app.get('/', async (req, res) => {
   
   if (logs === 'chat' && message) {
     try {
-      const modelResponse = await axios.post(`/api/generate`, {  // Direct to container endpoint
+      const modelResponse = await axios.post(`${OLLAMA_URL}/api/generate`, {
         model: 'minicpm-v',
         prompt: message,
         stream: false
@@ -65,8 +65,7 @@ app.get('/', async (req, res) => {
   } else if (logs === 'build') {
     res.send("Ollama is running");
   }
-}); 
-// Update the chat endpoin`
+});// Update the chat endpoin`
 app.post('/api/chat', async (req, res) => {
   const { message } = req.body;
   try {
