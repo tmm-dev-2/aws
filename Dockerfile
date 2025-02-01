@@ -1,5 +1,7 @@
 FROM ollama/ollama
 
+VOLUME /root/.ollama
+
 # Create a startup script with single lightweight model
 RUN echo '#!/bin/bash\n\
 export OLLAMA_HOST=0.0.0.0:10000\n\
@@ -11,6 +13,7 @@ wait' > /start.sh && chmod +x /start.sh
 
 EXPOSE 10000
 ENTRYPOINT ["/bin/bash", "/start.sh"]
+
 
 #git add Dockerfile
 #git commit -m "Update Dockerfile with Ollama service initialization"
