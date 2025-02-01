@@ -140,7 +140,6 @@ function ChatContent() {
       };
       reader.readAsDataURL(file);
     };
-
   const createNewChat = () => {
     const newChatId = uuidv4();
     setCurrentChatId(newChatId);
@@ -156,63 +155,33 @@ function ChatContent() {
           createdAt: new Date(),
           isBot: false
         };
-          try {
-            // First log the service check
-            const serviceCheck = await fetch('https://tmmdev-tmm-minicpm-v.hf.space/api/generate', {
-              method: 'GET',
-              mode: 'cors'
-            });
-          
-            console.log('Service check status:', serviceCheck.status);
-            console.log('Service check response:', await serviceCheck.text());
-            const response = await fetch('https://tmmdev-tmm-minicpm-v.hf.space/api/generate', {
-              method: 'POST',
-              headers: { 
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-              },
-              mode: 'cors',
-              body: JSON.stringify({ 
-                model: 'minicpm-v',
-                prompt: messageRef.current.value,
-                stream: false,
-                options: {
-                  num_ctx: 2048,
-                  num_thread: 4
-                }
-              })
-            });
-            
+        
+        addMessage(userMessage);
 
-            console.log('Chat response status:', response.status);
-            const data = await response.json();
-            console.log('Chat response data:', data);
-          
-            const aiResponse = {
-              id: Date.now().toString() + '-ai',
-              content: data.response || 'AI response received',
-              senderId: 'ai',
-              createdAt: new Date(),
-              isBot: true
-            };
+        try {
+          // Using the confirmed working API endpoint
+          const response = await fetch(`https://tmmdev-tmm-minicpm-v.hf.space/?logs=chat&message=${encodeURIComponent(messageRef.current.value)}`, {
+            method: 'GET',
+            headers: {
+              'Accept': '*/*',
+              'Access-Control-Allow-Origin': '*'
+            }
+          });
 
-            addMessage(userMessage);
-            addMessage(aiResponse);
-            messageRef.current.value = '';
-          
-          } catch (error) {
-            console.log('Detailed error:', {
-              message: error.message,
-              stack: error.stack,
-              response: error.response
-            });
-            addMessage({
-              id: Date.now().toString(),
-              content: 'AI service is warming up, please try again in a moment.',
-              senderId: 'system',
-              createdAt: new Date(),
-              isBot: true
-            });
+          const responseText = await response.text();
+          console.log('Response:', responseText);
+
+          addMessage({
+            id: Date.now().toString() + '-ai',
+            content: responseText,
+            senderId: 'ai',
+            createdAt: new Date(),
+            isBot: true
+          });
+
+          messageRef.current.value = '';
+        } catch (error) {
+          console.log('Network status:', error);
         }
         setIsLoading(false);
       }
