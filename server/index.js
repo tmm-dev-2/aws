@@ -42,29 +42,27 @@ app.get('/health', (req, res) => {
   });
 });
   // Add a root endpoint
-  app.get('/', (req, res) => {
+  app.get('/', async (req, res) => {
     const { logs, message } = req.query;
-  
+    
     if (logs === 'chat' && message) {
-      console.log('Processing message:', message);
-      
-      axios.post(`${OLLAMA_URL}/api/generate`, {
-        model: 'minicpm-v',
-        prompt: message,
-        stream: false
-      })
-      .then(response => {
-        console.log('Model response:', response.data);
-        res.json({ response: response.data.response });
-      })
-      .catch(error => {
-        console.error('Detailed error:', error);
-        res.status(500).json({ 
-          error: 'Model processing error',
-          details: error.message 
+      try {
+        const modelResponse = await axios.post(`${OLLAMA_URL}/api/generate`, {
+          model: 'minicpm-v',
+          prompt: message,
+          stream: false
         });
-      });
-    } else {
+        
+        console.log('Model response:', modelResponse.data);
+        res.json(modelResponse.data);
+      } catch (error) {
+        console.error('Model error:', error);
+        res.status(500).json({
+          error: 'Model processing error',
+          details: error.message
+        });
+      }
+    } else if (logs === 'build') {
       res.send("Ollama is running");
     }
   });
