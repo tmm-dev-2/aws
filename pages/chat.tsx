@@ -115,33 +115,31 @@ function ChatContent() {
   const [isLoading, setIsLoading] = useState(false);
   const [currentChatId, setCurrentChatId] = useState(null);
   const [chats, setChats] = useState([]);
+    useEffect(() => {
+      initializeListeners();
+    }, [initializeListeners]);
 
-  useEffect(() => {
-    initializeListeners();
-  }, []);
+    const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
 
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const newMessage = {
-        id: Date.now().toString(),
-        content: '',
-        senderId: 'currentUser',
-        createdAt: new Date(),
-        isBot: false,
-        fileUrl: event.target?.result as string,
-        fileName: file.name,
-        fileType: file.type.startsWith('image/') ? 'image' : 'file'
-      };
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const newMessage = {
+          id: Date.now().toString(),
+          content: '',
+          senderId: 'currentUser',
+          createdAt: new Date(),
+          isBot: false,
+          fileUrl: event.target?.result as string,
+          fileName: file.name,
+          fileType: file.type.startsWith('image/') ? 'image' : 'file'
+        };
     
-      socket.emit('message', newMessage);
-      addMessage(newMessage);
+        addMessage(newMessage);
+      };
+      reader.readAsDataURL(file);
     };
-    reader.readAsDataURL(file);
-  };
 
   const createNewChat = () => {
     const newChatId = uuidv4();
@@ -158,32 +156,63 @@ function ChatContent() {
           createdAt: new Date(),
           isBot: false
         };
-
-        try {
-          const response = await fetch('https://aide-project-1.onrender.com/api/chat', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-              message: messageRef.current.value,
-              model: 'minicpm-v'
-            })
-          });
-
-          const data = await response.json();
+          try {
+            // First log the service check
+            const serviceCheck = await fetch('https://tmmdev-tmm-minicpm-v.hf.space/api/generate', {
+              method: 'GET',
+              mode: 'cors'
+            });
           
-          const aiResponse = {
-            id: Date.now().toString() + '-ai',
-            content: data.response, // This will show the actual AI response
-            senderId: 'ai',
-            createdAt: new Date(),
-            isBot: true
-          };
+            console.log('Service check status:', serviceCheck.status);
+            console.log('Service check response:', await serviceCheck.text());
+            const response = await fetch('https://tmmdev-tmm-minicpm-v.hf.space/api/generate', {
+              method: 'POST',
+              headers: { 
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+              },
+              mode: 'cors',
+              body: JSON.stringify({ 
+                model: 'minicpm-v',
+                prompt: messageRef.current.value,
+                stream: false,
+                options: {
+                  num_ctx: 2048,
+                  num_thread: 4
+                }
+              })
+            });
+            
 
-          addMessage(userMessage);
-          addMessage(aiResponse);
-          messageRef.current.value = '';
-        } catch (error) {
-          console.error('Chat Error:', error);
+            console.log('Chat response status:', response.status);
+            const data = await response.json();
+            console.log('Chat response data:', data);
+          
+            const aiResponse = {
+              id: Date.now().toString() + '-ai',
+              content: data.response || 'AI response received',
+              senderId: 'ai',
+              createdAt: new Date(),
+              isBot: true
+            };
+
+            addMessage(userMessage);
+            addMessage(aiResponse);
+            messageRef.current.value = '';
+          
+          } catch (error) {
+            console.log('Detailed error:', {
+              message: error.message,
+              stack: error.stack,
+              response: error.response
+            });
+            addMessage({
+              id: Date.now().toString(),
+              content: 'AI service is warming up, please try again in a moment.',
+              senderId: 'system',
+              createdAt: new Date(),
+              isBot: true
+            });
         }
         setIsLoading(false);
       }

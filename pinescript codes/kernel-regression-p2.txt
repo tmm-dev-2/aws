@@ -1,0 +1,113 @@
+// @version=5
+indicator("Kernel Regression Oscillator P2 [TradingMarketMist]", "KRO P2 [TradingMarketMist]", false, max_labels_count = 500)
+
+import QuantraAI/QuantraMAs/2 as DynamicMA
+import QuantraSystems/DynamicFunctions/1 as DynamicFunc
+var string KRS = "ᏦᏒᎧ 𝐁𝐚𝐬𝐞 - Settings", var string KRU = "ᏦᏒᎧ 𝐁𝐚𝐬𝐞 - UI", var string COMP = "Compressed Signal Mode"
+source     = input.source(close,         "Source",                                          group = KRS )
+bandwidth  = input.int   (45,            "Bandwidth",            1,                         group = KRS, tooltip = "Length of the Kernel Regression calculation")
+sdLook     = input.int   (150,           "Standard Deviation Lookback",                     group = KRS, tooltip = "Length of the SD bands lookback period") 
+sdMult     = input.float (2,             "Standard Deviation Extreme for OB/OS Border",     group = KRS, tooltip = "Defines the outer border of the SD bands. \nThe inner border begins at 50% of the SD Multiplier", step = 0.5) 
+Mean       = input.bool  (false,         "Use 0 as Mid Line? ",                             group = KRS, tooltip = "Dynamic Mid Line")
+
+ColMode    = input.string("Modern",      "Color Palette Choice",       inline = "drop",     group = KRU, options = ["Classic", "Modern", "Robust", "Accented", "Monochrome"])
+man        = input.bool  (false,         "Custom Palette",             inline = "drop",     group = KRU )
+manUpC     = input.color (#00ff00,     "Custom Up",                  inline = "man",      group = KRU ) 
+manDnC     = input.color (#ff0000,     "Custom Down",                inline = "man",      group = KRU )
+BCol       = input.bool  (true,          "Enable Bar Coloring",                             group = KRU )
+OBOS       = input.bool  (true,          "Enable Overbought/Oversold Shading",              group = KRU )   
+TR         = input.int   (85,            "Shading Transparency", 0, 100,                    group = KRU )
+
+compress   = input.bool  (false,         "Compressed Mode",                                 group = COMP)
+labels     = input.bool  (true,          "Labels",                                          group = COMP)      
+Reversal_B = input.bool  (true,          "Reversion Line",                                  group = COMP)
+Trend_B    = input.bool  (true,          "Trend Line",                                      group = COMP)
+
+// Color assignment based on the selected palette
+[UpC, DnC]       =  switch    ColMode
+    "Classic"    => [#00E676, #880E4F]
+    "Modern"     => [#5ffae0, #c22ed0]
+    "Robust"     => [#ffbb00, #770737]
+    "Accented"   => [#9618f7, #ff0078]
+    "Monochrome" => [#dee2e6, #495057]
+
+// Override with custom colors if manual palette is selected
+[UpCol, DnCol]   =  switch     man
+    false        => [UpC,      DnC   ]
+    true         => [manUpC,   manDnC]
+
+
+// Triple Confirmations
+Ep = DynamicFunc.kernelRegression(source, bandwidth, 'Epanechnikov' )
+Lo = DynamicFunc.kernelRegression(source, bandwidth, 'Logistic'     )
+Wa = DynamicFunc.kernelRegression(source, bandwidth, 'Wave'         )
+
+// Average
+AV  = math.avg(Ep, Lo, Wa)
+Mid = Mean? 0 : DynamicMA.SMA(AV, sdLook)
+
+// Standard Deviation Bands
+[_, u1, l1] = DynamicFunc.stdv_bands(AV, sdLook, sdMult/2)
+[_, u2, l2] = DynamicFunc.stdv_bands(AV, sdLook, sdMult)
+
+
+var all         = compress ? display.none : display.all
+var pane        = compress ? display.none : display.pane    
+
+// Main Plots
+pu1 = plot    (u1,  "1.𝓢𝓓 +",       color.new(DnCol, 70),                                                    display =  all)
+pl1 = plot    (l1,  "1.𝓢𝓓 -",       color.new(UpCol, 70),                                                    display =  all)
+pu2 = plot    (u2,  "2.𝓢𝓓 +",       color.new(DnCol, 70),                                                    display =  all)
+pl2 = plot    (l2,  "2.𝓢𝓓 -",       color.new(UpCol, 70),                                                    display =  all)
+pAV = plot    (AV,  "ᏦᏒᎧ",          AV > Mid ? UpCol : DnCol, 2,                                             display =  all)
+mid = plot    (Mid, "Mid",          color.gray, 2,                                                         display =  all),
+
+      plot    (Ep,  "Epanechnikov", color.new(Ep > Mid ? UpCol : DnCol, 60), 1,                              display = pane),
+      plot    (Lo,  "Logistic",     color.new(Lo > Mid ? UpCol : DnCol, 60), 1,                              display = pane),
+      plot    (Wa,  "Wave",         color.new(Wa > Mid ? UpCol : DnCol, 60), 1,                              display = pane),
+
+      fill    (mid, pAV, AV, Mid,   color.new(AV > Mid ? UpCol : DnCol, 50), color.new(chart.bg_color, 75),  display =  all),
+      fill    (pu1, pu2, u2, u1,    color.new(DnCol, 60),                    color.new(chart.bg_color, 55),  display =  all),
+      fill    (pl1, pl2, l2, l1,    color.new(UpCol, 60),                    color.new(chart.bg_color, 55),  display =  all),
+
+      bgcolor (OBOS ? (AV > u2  ?   color.new(DnCol, TR)  : AV < l2 ?        color.new(UpCol, TR) : na): na, display =  all),
+      barcolor(BCol ? (AV > Mid ?   UpCol : DnCol) : na)
+
+// Signal Colors
+OBOScol  = color.from_gradient(AV, l2, u2, UpCol, DnCol)
+Trendcol = AV > Mid ? UpCol : DnCol
+
+// Signal Conditions
+up = AV > Mid and AV[1] <= Mid
+dn = AV < Mid and AV[1] >= Mid
+ob = AV > u2
+os = AV < l2
+
+plot(2, "Reversions",  OBOScol, 5, display = compress and Reversal_B ? display.all : display.none)
+plot(1, "Trend",      Trendcol, 5, display = compress and Trend_B ?    display.all : display.none)
+
+if os[1] and not os and compress and Reversal_B
+    label.new(bar_index, 2, "𝓡", color = UpCol, style = label.style_label_down, tooltip = "Bullish Reversal", textcolor = #000000)
+if ob[1] and not ob and compress and Reversal_B
+    label.new(bar_index, 2, "𝓡", color = DnCol, style = label.style_label_down, tooltip = "Bearish Reversal", textcolor = #000000)
+
+
+label R = na
+label T = na
+
+if compress and labels
+    if Reversal_B
+        R := label.new(bar_index+ 5, 2, "Reversions", style = label.style_label_left, color = chart.fg_color, textcolor = chart.bg_color)
+    if Trend_B
+        T := label.new(bar_index+ 5, 1, "Trend",      style = label.style_label_left, color = chart.fg_color, textcolor = chart.bg_color)
+
+// Clean up labels
+a_labels = array.from(R[1],T[1])
+if array.size(a_labels) > 0
+    for i = 0 to array.size(a_labels) - 1
+        label.delete(array.get(a_labels, i))
+
+symbol = "ᏦᏒᎧ 𝐁𝐚𝐬𝐞 [QuantraAI] >>> {{exchange}}:{{ticker}}"
+
+alertcondition(up or dn, "Major Trend Shift", symbol + " Trend Shift!"           )
+alertcondition(ob or os,             "OB/OS", symbol + " Extreme - OB/OS Zone!"  )

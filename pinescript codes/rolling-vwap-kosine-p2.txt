@@ -1,0 +1,284 @@
+// @version=5
+indicator("Rolling VWAP & Kosine Regression P2 [TradingMarketMist]", "R-VWAP & KR P2 [TradingMarketMist]" , overlay = false, max_labels_count = 500)
+import QuantraAI/QuantraMAs/2 as Dynamic
+
+GRP1          = "Display:"
+GRP2          = "Indicator Setup:"
+GRP3          = "Kernel Calibration:" 
+
+// Indicator Calibrations
+src           = input.source(close,          "Source",                                          group = GRP2            )
+
+bool_STOCH    = input.bool  (true,           "",                              inline = "STOCH", group = GRP2            )
+bool_RSI      = input.bool  (true,           "",                              inline = "RSI",   group = GRP2            )       
+bool_BBPCT    = input.bool  (true,           "",                              inline = "BBPCT", group = GRP2            )
+bool_CMO      = input.bool  (true,           "",                              inline = "CMO",   group = GRP2            )
+bool_CCI      = input.bool  (true,           "",                              inline = "CCI",   group = GRP2            )
+bool_FISH     = input.bool  (true,           "",                              inline = "FISH",  group = GRP2            )
+bool_VZO      = input.bool  (true,           "",                              inline = "VZO",   group = GRP2            )
+
+length_STOCH  = input.int   (14,             "Stochastic Length",             inline = "STOCH", group = GRP2            )
+length_RSI    = input.int   (14,             "RSI Length",                    inline = "RSI",   group = GRP2            )
+length_BBPCT  = input.int   (20,             "BBPCT Length",                  inline = "BBPCT", group = GRP2            )
+length_CMO    = input.int   (14,             "Chande Momentum Length",        inline = "CMO",   group = GRP2            )
+length_CCI    = input.int   (20,             "CCI Length",                    inline = "CCI",   group = GRP2            )
+length_FISH   = input.int   (9,              "Fisher Transform Length",       inline = "FISH",  group = GRP2            )
+length_VZO    = input.int   (21,             "VZO Length",                    inline = "VZO",   group = GRP2            )
+
+// Cosine Kernel Setup
+varient       = input.string("Tuneable",     "Cosine Kernel Regression Type",                   group = GRP3, options = ["Tuneable", "Stepped"])
+lookbackR     = input.int   (60,             "Regression Lookback",                             group = GRP3            )
+tuning        = input.float (15.,            "Tuning Coefficient",                              group = GRP3            )
+
+// Display
+ColType       = input.string("Fast Trend",   "Choose Mode",                                     group = GRP1, options = ["None",    "Fast Trend", "Slow Trend"], tooltip = "Signal Mode - Barcolor")
+ColMode       = input.string("Modern",       "Color Palette Choice",          inline = "Drop",  group = GRP1, options = ["Classic", "Modern", "Robust", "Accented", "Monochrome"])
+man           = input.bool  (false,          "Custom Palette",                inline = "Drop",  group = GRP1            )
+manUpC        = input.color (#00ff00,      "Custom Up",                     inline = "Man",   group = GRP1            ) 
+manDnC        = input.color (#ff0000,      "Custom Down",                   inline = "Man",   group = GRP1            )
+
+// Color assignment based on the selected palette
+[UpC, DnC]       =   switch     ColMode
+    "Classic"    => [#00E676, #880E4F]
+    "Modern"     => [#5ffae0, #c22ed0]
+    "Robust"     => [#ffbb00, #770737]
+    "Accented"   => [#9618f7, #ff0078]
+    "Monochrome" => [#dee2e6, #495057]
+
+// Override with custom colors if manual palette is selected
+[UpCol, DnCol]   =   switch      man
+    false        => [UpC,        DnC     ]
+    true         => [manUpC,     manDnC  ]
+
+// Define a function to compute the cosine of an input scaled by a frequency tuner
+cosine(x, z) =>
+    // Where x = source input
+    //       y = function output
+    //       z = frequency tuner
+    var y = 0.
+    y := math.cos(z * x)
+    y
+
+// Define a kernel that utilizes the cosine function
+kernel(x, z) =>
+    var y = 0.
+    y := cosine(x, z)
+    math.abs(x) <= math.pi/(2 * z) ? math.abs(y) : 0.    //    cos(zx) = 0
+//  The above restricts the wave to positive values      //     when x = π / 2z
+
+// Kernel Regression                                                      //    ╔═══════════════════════════════════════════════════════════════════════════════════╗ 
+kernelRegression(src, lookback, tuning) =>                                //    ║                   FREQUENCY TUNEABLE KERNEL REGRESSION FUNCTION                   ║
+                                                                          //    ╠═══════════════════════════════════════════════════════════════════════════════════╣
+    currentWeight = 0.                                                    //    ║  Initialize the variable for the current weight                                   ║
+    totalWeight   = 0.                                                    //    ║  Initialize the variable for the sum of weights                                   ║
+    for i = 0 to math.min(lookback - 1, bar_index)                        //    ║  Loop through each bar in the lookback period without exceeding current bar index ║
+        y = src[i]                                                        //    ║  Get the source value at 'offset' i (i bars back)                                 ║
+        w = kernel(i / lookback, tuning)                                  //    ║  Calculate the weight using the kernel function                                   ║
+        currentWeight += y * w                                            //    ║  Sum the weighted source values                                                   ║
+        totalWeight   += w                                                //    ║  Sum the individual weights                                                       ║
+    currentWeight / totalWeight                                           //    ║  Divide the accumulated weighted values by the total weights                      ║
+                                                                          //    ╚═════════════════════════════════════════════════════════════
+// Multi Cosine                                                           //    ╔══════════════════════════════════════════════════════════════════════════════════╗
+multicosine(src, lookback, steps) =>                                      //    ║                   COSINE COMPOSITE KERNEL REGRESSION FUNCTION                    ║
+                                                                          //    ╠══════════════════════════════════════════════════════════════════════════════════╣
+    regression = 0.                                                       //    ║  Initialize the variable for the regression output                               ║
+    for i = 1 to math.min(steps - 1, bar_index)                           //    ║  steps = The number of cosine functions to be used for the composite regression  ║
+        regression += kernelRegression(src, lookback, i)                  //    ║  Sum the regression values from kernelRegression at varying frequencies          ║
+    regression / steps                                                    //    ║  Divide the accumulated frequencies by the total number of steps                 ║
+
+RSI_ReScale   (_res      ) => (      _res - 50   ) * 2.8
+STOCH_ReScale (_stoch    ) => (    _stoch - 50   ) * 2
+BBPCT_ReScale (_bbpct    ) => (    _bbpct - 0.5  ) * 120
+CMO_ReScale   (_chandeMO ) => ( _chandeMO * 1.15 )
+CCI_ReScale   (_cci      ) => (      _cci / 2    )
+FISH_ReScale  (_fish1    ) => (    _fish1 * 30   )
+VZO_ReScale   (_VP, _TV  ) => (_VP / _TV) * 110
+
+DynamicStdev(src, length) =>
+    actualLength =    math.min(length, bar_index + 1)
+    mean         = Dynamic.SMA(src,     actualLength)
+    sumSquares   = 0.0
+    for i = 0 to actualLength - 1
+        sumSquares := sumSquares + math.pow(nz(src[i]) - mean, 2)
+    stdev = math.sqrt(sumSquares / actualLength)
+    stdev
+
+DynamicDev(source, length) =>
+    mean  = Dynamic.SMA(source, length)
+    sum   = 0.0
+    for i = 0 to length - 1
+        val  = source[i]
+        sum := sum + math.abs(val - mean)
+    dev = sum / length
+
+DynamicRMA(src, length) =>
+    srcx = src * 100
+    var float rma = na
+    rma := length == 1 ? 
+           Dynamic.SMA(srcx, length) : 
+           ((rma[1] * (length - 1) ) + srcx) / length 
+    rma
+
+DynamicRSI(src, length) =>
+    var float res = na
+    len  =     math.min(length,   bar_index        )
+    u    =     math.max(src     - src[1], 0        ) 
+    d    =     math.max(src[1]  - src,     0       )
+    rs   =   DynamicRMA(u, len) / DynamicRMA(d, len)
+    res := 100 - 100 / (1 + rs)
+    RSI_ReScale(res)
+
+DynamicSTOCH(source, hi, lo, length) =>
+    len         =    math.min(length,   1 + bar_index)
+    lowestLow   =   ta.lowest(lo,           len      )
+    highestHigh =  ta.highest(hi,           len      )
+    stochastic  =      100 * (source      - lowestLow) / 
+                             (highestHigh - lowestLow)
+    STOCH_ReScale(stochastic)
+
+DynamicBBPCT(length, multi) =>
+    basis =   Dynamic.SMA(src, length)
+    dev   =   multi * DynamicStdev(src, length)
+    upper =   basis + dev
+    lower =   basis - dev
+    bbpct =  (src   - lower) / 
+             (upper - lower)
+    BBPCT_ReScale(bbpct)
+
+DynamicCMO(length) =>
+    len  = math.min(length, bar_index + 1)            
+    momm = ta.change(src)                             
+    m1   = momm >= 0 ?  momm : 0.0                     
+    m2   = momm <  0 ? -momm : 0.0                     
+    sm1  = math.sum(m1, len)                          
+    sm2  = math.sum(m2, len)                          
+    div  = sm1 + sm2                                  
+    chandeMO = div != 0 ? 100 * (sm1 - sm2) / div : 0 
+    CMO_ReScale(chandeMO)                             
+
+DynamicCCI(length) =>
+    len = math.min(length, bar_index + 1)
+    ma  = Dynamic.SMA(src, len) 
+    cci = (src - ma) / (0.015 * DynamicDev(src, len))
+    CCI_ReScale(cci)
+
+DynamicFisher(length) =>
+    len     =   math.min(length, 1 + bar_index)
+    high_   = ta.highest(hl2,        len      )
+    low_    =  ta.lowest(hl2,        len      )
+    value1  = 0.0
+    value2  = 0.0
+    value1 := 0.66 * ((hl2 - low_)  / (high_ - low_) - 0.5)  + 0.67 * nz(value1[1])
+    value2 := value1 > 0.99 ? 0.999 : value1 < -.99  ? -.999 : value1
+    fish1   = 0.0
+    fish1  := 0.5 * math.log((1 + value2) / (1 - value2)) + 0.5 * nz(fish1[1]) 
+    FISH_ReScale(fish1)
+
+DynamicVZO(length) =>
+    VP = Dynamic.EMA(math.sign(ta.change(hlc3)) * volume, length / 3)
+    TV = Dynamic.EMA(volume, length / 3)
+    VZO_ReScale(VP, TV)
+
+// Function to check the status of user-bools
+booleanCheck(condition, func) => condition ? func : na
+
+// Function to count active indicators
+countCondition(condition)     => condition ? 1 : 0
+
+// Pull all standardized base indicator values
+val_RSI   = booleanCheck(bool_RSI,   DynamicRSI    (src, length_RSI)              )
+val_STOCH = booleanCheck(bool_STOCH, DynamicSTOCH  (src, high, low, length_STOCH) )
+val_BBPCT = booleanCheck(bool_BBPCT, DynamicBBPCT  (length_BBPCT, 2)              )
+val_CMO   = booleanCheck(bool_CMO,   DynamicCMO    (length_CMO     )              )
+val_CCI   = booleanCheck(bool_CCI,   DynamicCCI    (length_CCI     )              )
+val_FISH  = booleanCheck(bool_FISH,  DynamicFisher (length_FISH    )              )
+val_VZO   = booleanCheck(bool_VZO,   DynamicVZO    (length_VZO     )              )
+
+// Count the number of active indicators
+activeIndicators = 
+          countCondition(bool_RSI  ) +
+          countCondition(bool_STOCH) +
+          countCondition(bool_BBPCT) +
+          countCondition(bool_CMO  ) +
+          countCondition(bool_CCI  ) +
+          countCondition(bool_FISH ) +
+          countCondition(bool_VZO  )
+
+// Calculate the average only with active indicators
+value = activeIndicators > 0 ? (
+          nz(val_RSI,   0) +
+          nz(val_STOCH, 0) +
+          nz(val_BBPCT, 0) +
+          nz(val_CMO,   0) +
+          nz(val_CCI,   0) +
+          nz(val_FISH,  0) +
+          nz(val_VZO,   0)
+          ) / activeIndicators : na
+
+// Gentle ALMA smoothing
+value := Dynamic.ALMA(value, 9, 0, 6)
+
+
+// Calulate the Output - Depending on the method of Cosine Regression Selected
+out  = switch varient 
+    "Tuneable" => kernelRegression(value, lookbackR, tuning)
+    "Stepped"  =>      multicosine(value, lookbackR, tuning)
+
+out2 = switch varient 
+    "Tuneable" => kernelRegression(value, lookbackR, math.round(tuning / 5))
+    "Stepped"  =>      multicosine(value, lookbackR, math.round(tuning / 5))
+
+
+// Define Alert Conditions
+fastTrend_up  = out  > out[1]  and not (out[1]  > out[2])
+fastTrend_dn  = out  < out[1]  and not (out[1]  < out[2])
+slowTrend_up  = out2 >     0   and not (out2[1] >     0 )
+slowTrend_dn  = out2 <     0   and not (out2[1] <     0 )
+overbought    = out  >    50   and not (out[1]  >    50 )
+oversold      = out  <   -50   and not (out[1]  <   -50 )
+
+fastTrend     = fastTrend_up or fastTrend_dn
+slowTrend     = slowTrend_up or slowTrend_dn
+
+barcol = switch ColType                                                                                    //  ╠═══════════════════════════════════════════════════════════════════════════════╣
+    "None"                   => na                                                                         //  ║  No bar color if selected                                                     ║
+    "Fast Trend"             => out  > out[1]       ?      UpCol : DnCol                                   //  ║  Colors bars determined by the short term signal direction                    ║
+    "Slow Trend"             => out2 > 0            ?      UpCol : DnCol                                   //  ║  Colors bars determined by the long  term signal direction                    ║
+col                          =  out  > out[1]       ?      UpCol : DnCol                                   //  ║  A fixed short term color for the signal lines                                ║
+col2                         =  color.new((out2 > 0 ?      UpCol : DnCol), 80)                             //  ║  A fixed long  term color for the signal lines                                ║
+                                                                                                           //  ║                                                                               ║
+mid  = plot(  0, "Midline",   color.gray ,               display = display.all         )                 //  ║  Midline                                                                      ║
+                                                                                                           //  ║                                                                               ║                                                                               ║
+sig  = plot(out,  "Fast Signal",          col,       3,    display = display.all         ),                //  ║  The core signal line                                                         ║
+       plot(out,  "",           color.new(col, 85), 10,    display = display.pane        ),                //  ║  Signal line glow effect - display.pane to avoid label confusion              ║
+       plot(out,  "",           color.new(col, 98), 25,    display = display.pane        )                 //  ║  Signal line glow effect - display.pane to avoid label confusion              ║
+sig2 = plot(out2, "Slow Signal",          col2,      3,    display = display.all, style = plot.style_area) //  ║  The slower, background signal line                                           ║
+
+l1   = plot( 100, "",                     na,              display = display.data_window )                 //  ║  The highest overbought zone - dispaly.data_window to be used as a fill line  ║
+l2   = plot(  50, "",           color.new(DnCol, 50),      display = display.data_window )                 //  ║  The initial overbought zone - dispaly.data_window to be used as a fill line  ║
+l3   = plot( -50, "",           color.new(UpCol, 50),      display = display.data_window )                 //  ║  The initial oversold   zone - dispaly.data_window to be used as a fill line  ║
+l4   = plot(-100, "",                     na,              display = display.data_window )                 //  ║  The lowest  oversold   zone - dispaly.data_window to be used as a fill line  ║
+
+plotshape  (out, "",  shape.xcross,      color = fastTrend_dn ? color.new(DnCol, 15) : na,                 //  ║  Negative trend shift, plotted as a cross                                     ║
+           location = location.absolute, size  = size.small                              )                 //  ║                                                                               ║
+plotshape  (out, "",  shape.circle,      color = fastTrend_up ? color.new(UpCol, 15) : na,                 //  ║  Positive trend shift, plotted as a circle                                    ║
+           location = location.absolute, size  = size.small                              )                 //  ║                                                                               ║
+                                                                                                           //  ║                                                                               ║
+fill(l1, l2, 100,   50,         color.new(DnCol, 60),           color.new(chart.bg_color, 30))             //  ║  Overbought zone gradient fill                                                ║
+fill(l4, l3, -50, -100,         color.new(chart.bg_color, 30),  color.new(UpCol, 60)     )                 //  ║  Oversold   zone grasient fill                                                ║
+                                                                                                           //  ║                                                                               ║
+barcolor(barcol)                                                                                           //  ║  Color the bars based upon user selection                                     ║
+
+symbol = "CKR [QuantraSystems] >>> {{exchange}}:{{ticker}}"
+
+// Fast Trend Alerts
+alertcondition(fastTrend_up, "Fast Positive Trend",  symbol + " - Fast Positive Trend!" )
+alertcondition(fastTrend_dn, "Fast Negative Trend",  symbol + " - Fast Negative Trend!" )
+
+// Slow Trend Alerts  
+alertcondition(slowTrend_up, "Slow Positive Trend",  symbol + " - Slow Positive Trend!" )
+alertcondition(slowTrend_dn, "Slow Negative Trend",  symbol + " - Slow Negative Trend!" )
+
+// Combined Alerts
+alertcondition(fastTrend,    "Fast Trend Shift",     symbol + " - Fast Trend Shift!"    )
+alertcondition(slowTrend,    "Slow Trend Shift",     symbol + " - Slow Trend Shift!"    )

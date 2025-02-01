@@ -21,7 +21,7 @@ app.use(cors({
 
 app.use(express.json());
 
-const OLLAMA_URL = process.env.OLLAMA_URL || 'http://localhost:11434';
+const OLLAMA_URL = process.env.OLLAMA_URL || 'http://localhost:7860';
 
 // Model-specific configurations
 const MODEL_CONFIGS = {
@@ -79,5 +79,5 @@ app.get('/api/models', async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 10000;
+const PORT = process.env.PORT || 7860;
 app.listen(PORT, '0.0.0.0', () => console.log(`Server running on port ${PORT}`));
