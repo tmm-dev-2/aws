@@ -1,10 +1,15 @@
 FROM ollama/ollama
 
-# Create .ollama directory with correct permissions
+# Set up proper permissions
 USER root
-RUN mkdir -p /.ollama && chmod 777 /.ollama
+RUN mkdir -p /home/ollama/.ollama && \
+    chown -R 1000:1000 /home/ollama
+
+# Switch to non-root user
+USER 1000
 
 RUN echo '#!/bin/bash\n\
+export OLLAMA_HOME=/home/ollama/.ollama\n\
 export OLLAMA_HOST=0.0.0.0:7860\n\
 ollama serve &\n\
 sleep 20\n\
