@@ -41,30 +41,28 @@ app.get('/health', (req, res) => {
 });
 
 const OLLAMA_URL = 'http://localhost:7860';  // This becomes internal to the container
-
-app.get('/', async (req, res) => {
-  const { logs, message } = req.query;
+  app.get('/', async (req, res) => {
+    const { logs, message } = req.query;
   
-  if (logs === 'chat' && message) {
-    try {
-      const modelResponse = await axios.post(`${OLLAMA_URL}/api/generate`, {
-        model: 'minicpm-v',
-        prompt: message,
-        stream: false
-      });
+    if (logs === 'chat' && message) {
+      try {
+        const modelResponse = await axios.post(`/api/generate`, {
+          model: 'minicpm-v',
+          prompt: message,
+          stream: false
+        });
       
-      console.log('Model response:', modelResponse.data);
-      res.json(modelResponse.data);
-    } catch (error) {
-      console.error('Model error:', error);
-      res.status(500).json({
-        error: 'Model processing error',
-        details: error.message
-      });
+        // Send the actual model response
+        res.send(modelResponse.data.response);
+      } catch (error) {
+        console.error('Model error:', error);
+        // Send error message if model fails
+        res.send("Model is processing, please try again");
+      }
+    } else if (logs === 'build') {
+      res.send("Ollama is running");
     }
-  } else if (logs === 'build') {
-    res.send("Ollama is running");
-  }
+  });
 });// Update the chat endpoin`
 app.post('/api/chat', async (req, res) => {
   const { message } = req.body;
