@@ -16,6 +16,21 @@ import EmojiPicker from 'emoji-picker-react';
 import { CreateGroupModal } from '@/components/CreateGroupModal';
 import { MessageActions } from '@/components/MessageActions';
 import { WarningBanner } from '@/components/WarningBanner';
+import { initializeApp } from 'firebase/app';
+import { getFirestore, collection, addDoc, query, where, getDocs } from 'firebase/firestore';
+import { v4 as uuidv4 } from 'uuid';
+
+const firebaseConfig = {
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 const defaultGroups = [
   { 
@@ -96,6 +111,10 @@ function ChatContent() {
     transports: ['websocket'],
     autoConnect: true
   });
+  const [selectedModel, setSelectedModel] = useState(MODELS[0].id);
+  const [isLoading, setIsLoading] = useState(false);
+  const [currentChatId, setCurrentChatId] = useState(null);
+  const [chats, setChats] = useState([]);
 
   useEffect(() => {
     initializeListeners();
@@ -117,29 +136,58 @@ function ChatContent() {
         fileName: file.name,
         fileType: file.type.startsWith('image/') ? 'image' : 'file'
       };
-      
+    
       socket.emit('message', newMessage);
       addMessage(newMessage);
     };
     reader.readAsDataURL(file);
   };
 
-  const sendMessage = () => {
-    if (messageRef.current?.value) {
-      const newMessage = {
-        id: Date.now().toString(),
-        content: messageRef.current.value,
-        senderId: 'currentUser',
-        createdAt: new Date(),
-        isBot: false
-      };
-      
-      socket.emit('message', newMessage);
-      addMessage(newMessage);
-      messageRef.current.value = '';
-    }
+  const createNewChat = () => {
+    const newChatId = uuidv4();
+    setCurrentChatId(newChatId);
+    setMessages([]);
   };
+    const sendMessage = async () => {
+      if (messageRef.current?.value) {
+        setIsLoading(true);
+        const userMessage = {
+          id: Date.now().toString(),
+          content: messageRef.current.value,
+          senderId: 'currentUser',
+          createdAt: new Date(),
+          isBot: false
+        };
 
+        try {
+          const response = await fetch('https://aide-project-1.onrender.com/api/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+              message: messageRef.current.value,
+              model: 'minicpm-v'
+            })
+          });
+
+          const data = await response.json();
+          
+          const aiResponse = {
+            id: Date.now().toString() + '-ai',
+            content: data.response, // This will show the actual AI response
+            senderId: 'ai',
+            createdAt: new Date(),
+            isBot: true
+          };
+
+          addMessage(userMessage);
+          addMessage(aiResponse);
+          messageRef.current.value = '';
+        } catch (error) {
+          console.error('Chat Error:', error);
+        }
+        setIsLoading(false);
+      }
+    };
   const handleGroupClick = (group) => {
     if (group.isPublic) {
       // Join directly
@@ -249,6 +297,21 @@ function ChatContent() {
                             <Info className="h-4 w-4 text-gray-400" />
                           </div>
                         ))}
+                        {defaultGroups.map(group => group.isAiChat && (
+                          <div className="flex flex-col space-y-2">
+                            <Button
+                              onClick={createNewChat}
+                              className="bg-blue-500 hover:bg-blue-600 text-white"
+                            >
+                              New Chat
+                            </Button>
+                            {isLoading && (
+                              <div className="flex items-center justify-center">
+                                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                              </div>
+                            )}
+                          </div>
+                        ))}
                       </div>
                     )
                   })()}
@@ -325,13 +388,7 @@ function ChatContent() {
         </div>
       )}
 
-      {showCreateGroup && (
-        <CreateGroupModal
-          isOpen={showCreateGroup}
-          onClose={() => setShowCreateGroup(false)}
-        />
-      )}
-
+      {/* Group Info Modal */}
       {showGroupInfo && selectedGroup && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
           <div className="bg-[#1a1a1a] p-6 rounded-lg w-96">
@@ -410,8 +467,7 @@ function ChatContent() {
   );
 }
 
-export default function Chat() {
-  return (
+export default function Chat() {  return (
     <MantineProvider>
       <ChatContent />
     </MantineProvider>
