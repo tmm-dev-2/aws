@@ -15,8 +15,6 @@ wait' > /start.sh && chmod +x /start.sh
 EXPOSE 7860
 ENTRYPOINT ["/bin/bash", "/start.sh"]
 
-
-
 #git add Dockerfile
 #git commit -m "Update Dockerfile with Ollama service initialization"
 #git push origin master
