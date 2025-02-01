@@ -25,7 +25,7 @@ const OLLAMA_URL = process.env.OLLAMA_URL || 'http://localhost:11434';
 
 // Model-specific configurations
 const MODEL_CONFIGS = {
-  'mxbai-embed-large': { temperature: 0.7, top_p: 0.9 },
+  'mxbai-embed-large': { temperature: 0.8, top_p: 0.9 },
   'minicpm-v': { temperature: 0.8, top_p: 0.9 },
   'qwen2.5-coder': { temperature: 0.6, top_p: 0.95 },
   'codegemma': { temperature: 0.6, top_p: 0.95 },
@@ -50,14 +50,18 @@ app.get('/', (req, res) => {
   });
 });
 
-// Update the chat endpoint
+// Update the chat endpoin`
 app.post('/api/chat', async (req, res) => {
-  const { message, model } = req.body;
+  const { message } = req.body;
   try {
-    const response = await axios.post('http://localhost:11434/api/generate', {
+    const response = await axios.post(`${OLLAMA_URL}/api/generate`, {
       model: 'minicpm-v',
       prompt: message,
-      stream: false
+      stream: false,
+      options: {
+        num_ctx: 2048,
+        num_thread: 4
+      }
     });
     res.json({ response: response.data.response });
   } catch (error) {
