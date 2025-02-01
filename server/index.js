@@ -21,8 +21,6 @@ app.use(cors({
 
 app.use(express.json());
 
-const OLLAMA_URL = process.env.OLLAMA_URL || 'http://localhost:7860';
-
 // Model-specific configurations
 const MODEL_CONFIGS = {
   'mxbai-embed-large': { temperature: 0.8, top_p: 0.9 },
@@ -41,31 +39,33 @@ app.get('/health', (req, res) => {
     model: 'minicpm-v'
   });
 });
-  // Add a root endpoint
-  app.get('/', async (req, res) => {
-    const { logs, message } = req.query;
-    
-    if (logs === 'chat' && message) {
-      try {
-        const modelResponse = await axios.post(`${OLLAMA_URL}/api/generate`, {
-          model: 'minicpm-v',
-          prompt: message,
-          stream: false
-        });
-        
-        console.log('Model response:', modelResponse.data);
-        res.json(modelResponse.data);
-      } catch (error) {
-        console.error('Model error:', error);
-        res.status(500).json({
-          error: 'Model processing error',
-          details: error.message
-        });
-      }
-    } else if (logs === 'build') {
-      res.send("Ollama is running");
+
+const OLLAMA_URL = 'http://localhost:7860';  // This becomes internal to the container
+
+app.get('/', async (req, res) => {
+  const { logs, message } = req.query;
+  
+  if (logs === 'chat' && message) {
+    try {
+      const modelResponse = await axios.post(`/api/generate`, {  // Direct to container endpoint
+        model: 'minicpm-v',
+        prompt: message,
+        stream: false
+      });
+      
+      console.log('Model response:', modelResponse.data);
+      res.json(modelResponse.data);
+    } catch (error) {
+      console.error('Model error:', error);
+      res.status(500).json({
+        error: 'Model processing error',
+        details: error.message
+      });
     }
-  });
+  } else if (logs === 'build') {
+    res.send("Ollama is running");
+  }
+}); 
 // Update the chat endpoin`
 app.post('/api/chat', async (req, res) => {
   const { message } = req.body;
