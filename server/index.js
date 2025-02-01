@@ -46,17 +46,23 @@ app.get('/health', (req, res) => {
     const { logs, message } = req.query;
   
     if (logs === 'chat' && message) {
-      // Process message with Ollama
+      console.log('Processing message:', message);
+      
       axios.post(`${OLLAMA_URL}/api/generate`, {
         model: 'minicpm-v',
         prompt: message,
         stream: false
       })
       .then(response => {
+        console.log('Model response:', response.data);
         res.json({ response: response.data.response });
       })
       .catch(error => {
-        res.json({ response: "Processing your message..." });
+        console.error('Detailed error:', error);
+        res.status(500).json({ 
+          error: 'Model processing error',
+          details: error.message 
+        });
       });
     } else {
       res.send("Ollama is running");
