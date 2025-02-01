@@ -1,25 +1,29 @@
 FROM ollama/ollama
 
-# Set up permissions and directories
-USER root
-RUN mkdir -p /ollama && \
-    chmod -R 777 /ollama && \
-    ln -s /ollama /.ollama
+WORKDIR /app
 
-ENV OLLAMA_HOME=/ollama
+# Create necessary directories with correct permissions
+RUN mkdir -p /root/.ollama && \
+    chmod -R 777 /root/.ollama
+
 ENV OLLAMA_HOST=0.0.0.0:7860
+ENV HOME=/root
 
-RUN echo '#!/bin/bash\n\
-ollama serve &\n\
-sleep 10\n\
-echo "Starting Ollama service..."\n\
-echo "Pulling minicpm-v..."\n\
-ollama pull minicpm-v\n\
-wait' > /start.sh && chmod +x /start.sh
+# Create and configure startup script
+COPY <<EOF /app/start.sh
+#!/bin/bash
+ollama serve &
+sleep 15
+echo "Starting Ollama service..."
+echo "Pulling minicpm-v..."
+ollama pull minicpm-v
+tail -f /dev/null
+EOF
+
+RUN chmod +x /app/start.sh
 
 EXPOSE 7860
-CMD ["/bin/bash", "/start.sh"]
-
+CMD ["/app/start.sh"]
 #git add Dockerfile
 #git commit -m "Update Dockerfile with Ollama service initialization"
 #git push origin master
