@@ -63,7 +63,7 @@ const OLLAMA_URL = 'http://localhost:7860';  // This becomes internal to the con
       res.send("Ollama is running");
     }
   });
-});// Update the chat endpoin`
+// Update the chat endpoin`
 app.post('/api/chat', async (req, res) => {
   const { message } = req.body;
   try {
