@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import { auth, db } from '../../config/firebase';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
@@ -7,8 +7,9 @@ interface GoogleAuthButtonProps {
   onLoginSuccess: (user: any) => void;
   onLoginFailure: (error: any) => void;
 }
-
 const GoogleAuthButton: React.FC<GoogleAuthButtonProps> = ({ onLoginSuccess, onLoginFailure }) => {
+  const [authMessage, setAuthMessage] = useState('');
+
   const handleGoogleSignIn = async () => {
     try {
       const provider = new GoogleAuthProvider();
@@ -18,23 +19,28 @@ const GoogleAuthButton: React.FC<GoogleAuthButtonProps> = ({ onLoginSuccess, onL
       const userDoc = await getDoc(doc(db, 'users', user.uid));
       
       if (!userDoc.exists()) {
-        // New user - store their data
         await setDoc(doc(db, 'users', user.uid), {
           email: user.email,
           name: user.displayName,
           photoURL: user.photoURL,
           createdAt: new Date().toISOString(),
           authProvider: 'google',
-          lastLogin: new Date().toISOString()
+          lastLogin: new Date().toISOString(),
+          followers: [],
+          following: [],
+          publishedBots: [],
+          publishedLibraries: [],
+          publishedIdeas: []
         });
+        setAuthMessage('Account created successfully!');
       } else {
-        // Existing user - update last login
         await setDoc(doc(db, 'users', user.uid), {
           lastLogin: new Date().toISOString()
         }, { merge: true });
+        setAuthMessage('Welcome back!');
       }
       
-      onLoginSuccess(user);
+      setTimeout(() => onLoginSuccess(user), 1500);
     } catch (error) {
       console.error('Google auth error:', error);
       onLoginFailure(error);

@@ -145,48 +145,46 @@ function ChatContent() {
     setCurrentChatId(newChatId);
     setMessages([]);
   };
-    const sendMessage = async () => {
-      if (messageRef.current?.value) {
-        setIsLoading(true);
-        const userMessage = {
-          id: Date.now().toString(),
-          content: messageRef.current.value,
-          senderId: 'currentUser',
+  const sendMessage = async () => {
+    if (messageRef.current?.value) {
+      setIsLoading(true);
+      const userMessage = {
+        id: Date.now().toString(),
+        content: messageRef.current.value,
+        senderId: 'currentUser',
+        createdAt: new Date(),
+        isBot: false
+      };
+    
+      addMessage(userMessage);
+
+      try {
+        const response = await fetch(`https://tmmdev-tmm-minicpm-v.hf.space/?logs=chat&message=${messageRef.current.value}`, {
+          method: 'GET',
+          headers: { 
+            'Accept': '*/*'
+          }
+        });
+
+        const responseText = await response.text();
+        console.log('Response:', responseText);
+
+        addMessage({
+          id: Date.now().toString() + '-ai',
+          content: responseText,
+          senderId: 'ai',
           createdAt: new Date(),
-          isBot: false
-        };
-        
-        addMessage(userMessage);
+          isBot: true
+        });
 
-        try {
-          // Using the confirmed working API endpoint
-          const response = await fetch(`https://tmmdev-tmm-minicpm-v.hf.space/?logs=chat&message=${encodeURIComponent(messageRef.current.value)}`, {
-            method: 'GET',
-            headers: {
-              'Accept': '*/*',
-              'Access-Control-Allow-Origin': '*'
-            }
-          });
-
-          const responseText = await response.text();
-          console.log('Response:', responseText);
-
-          addMessage({
-            id: Date.now().toString() + '-ai',
-            content: responseText,
-            senderId: 'ai',
-            createdAt: new Date(),
-            isBot: true
-          });
-
-          messageRef.current.value = '';
-        } catch (error) {
-          console.log('Network status:', error);
-        }
-        setIsLoading(false);
+        messageRef.current.value = '';
+      } catch (error) {
+        console.log('Network status:', error);
       }
-    };
-  const handleGroupClick = (group) => {
+      setIsLoading(false);
+    }
+  };
+         const handleGroupClick = (group) => {
     if (group.isPublic) {
       // Join directly
       socket.emit('join_group', group.id);

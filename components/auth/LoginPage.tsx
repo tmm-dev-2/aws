@@ -86,39 +86,42 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
         setIsSignUp(!isSignUp);
     };
 
+    // Add these state variables
+    const [authMessage, setAuthMessage] = useState('');
+    const [messageType, setMessageType] = useState<'success' | 'error' | null>(null);
+
+    // In handleSubmit
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         
-        if (!isEmailValid || !isPasswordValid || (isSignUp && !isPhoneValid)) {
-            return;
-        }
-
-        try {
-            if (isSignUp) {
+        if (isSignUp) {
+            try {
+                const signInMethods = await fetchSignInMethodsForEmail(auth, email);
+                if (signInMethods.length > 0) {
+                    setMessageType('error');
+                    setAuthMessage('Email already registered. Please login instead.');
+                    setTimeout(() => setIsSignUp(false), 2000);
+                    return;
+                }
+                
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                const user = userCredential.user;
-                
-                await setDoc(doc(db, 'users', user.uid), {
-                    email,
-                    username,
-                    name,
-                    phoneNumber,
-                    createdAt: new Date().toISOString(),
-                    authProvider: 'email',
-                    lastLogin: new Date().toISOString()
-                });
-                
-                onLogin(user);
-            } else {
-                const userCredential = await signInWithEmailAndPassword(auth, email, password);
-                await setDoc(doc(db, 'users', userCredential.user.uid), {
-                    lastLogin: new Date().toISOString()
-                }, { merge: true });
-                
-                onLogin(userCredential.user);
+                setMessageType('success');
+                setAuthMessage('Successfully registered!');
+                setTimeout(() => onLogin(userCredential.user), 1500);
+            } catch (error: any) {
+                setMessageType('error');
+                setAuthMessage(error.message);
             }
-        } catch (error: any) {
-            console.error('Authentication error:', error.message);
+        } else {
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                setMessageType('success');
+                setAuthMessage('Successfully logged in!');
+                setTimeout(() => onLogin(userCredential.user), 1500);
+            } catch (error: any) {
+                setMessageType('error');
+                setAuthMessage(error.message);
+            }
         }
     };
 
@@ -132,6 +135,13 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                 <div style={styles.formContainer}>
                     {!isSignUp && <h1 style={styles.welcomeText}>WELCOME BACK</h1>}
                     <h2 style={styles.title}>{isSignUp ? 'Create Account' : 'Login'}</h2>
+                    {messageType && (
+                        <div className={`p-4 rounded mb-4 ${
+                            messageType === 'success' ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'
+                        }`}>
+                            {authMessage}
+                        </div>
+                    )}
                     <div style={styles.inputGroup}>
                         <label style={styles.inputLabel}>EMAIL ADDRESS</label>
                         <input

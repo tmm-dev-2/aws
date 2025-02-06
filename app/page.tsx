@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from "components/ui/button";
 import { MainChart, MainChartContainer } from "components/main-chart";
 import { Sidebar } from "components/sidebar";
@@ -15,6 +15,12 @@ import { Resizable } from 're-resizable'; // Import Resizable component
 import { initializeApp } from 'firebase/app';
 import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
 import { TradingView } from '../components/tmm-chart'
+import  ActionsBar  from "components/ActionsBar";
+import ProfilePage from '../components/ProfilePage';
+import { auth } from '../config/firebase';
+
+
+
 
 
 
@@ -95,6 +101,19 @@ export default function Home() {
   const [selectedLayout, setSelectedLayout] = useState('single');
   const [symbols, setSymbols] = useState(['BTCUSDT']);
 
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+    useEffect(() => {
+      const unsubscribe = auth.onAuthStateChanged((user) => {
+        if (user) {
+          setIsAuthenticated(true);
+          setLoggedInUser(user);
+        }
+      });
+    
+      return () => unsubscribe();
+    }, []);
+  
   const fetchData = async (symbol: string, period: string) => {
     if (!symbol) return;
     
@@ -340,19 +359,33 @@ export default function Home() {
         </div>
       )}
 
-      {isLoginPageActive && (
+      {isLoginPageActive && !isAuthenticated ? (
         <div className="fixed inset-0 z-50 flex">
           <LeftSidePane 
             className="w-10 flex-shrink-0 bg-[#252526]" 
             onAccountClick={handleAccountClick} 
-            onChartClick={handleChartClick}  // Add this line
+            onChartClick={handleChartClick}
           />
           <div className="flex-1 min-w-0 overflow-hidden -mr-[1px] bg-[#1E1E1E]">
-            <LoginPage onLogin={handleLogin} />
+            <LoginPage onLogin={(user) => {
+              setLoggedInUser(user)
+              setIsAuthenticated(true)
+              setIsLoginPageActive(false)
+            }} />
           </div>
         </div>
-      )}
-
+      ) : isLoginPageActive && isAuthenticated ? (
+        <div className="fixed inset-0 z-50 flex">
+          <LeftSidePane 
+            className="w-10 flex-shrink-0 bg-[#252526]" 
+            onAccountClick={handleAccountClick} 
+            onChartClick={handleChartClick}
+          />
+          <div className="flex-1 min-w-0 overflow-hidden -mr-[1px] bg-[#1E1E1E]">
+            <ProfilePage />
+          </div>
+        </div>
+      ) : null}
 {showTechnicalsOverlay && (
   <div className="fixed inset-0 z-50 flex">
     <LeftSidePane 
@@ -385,6 +418,7 @@ export default function Home() {
   </div>
 )}
 
+      <ActionsBar />
     </main>
   );
 }

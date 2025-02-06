@@ -776,5 +776,77 @@ def fetch_technicals():
     
     return jsonify(technicals)
 
+@app.route('/market_news', methods=['GET'])
+def get_market_news():
+    try:
+        # You can integrate with news APIs like NewsAPI or Financial Modeling Prep
+        news_data = requests.get('https://newsapi.org/v2/everything', 
+            params={
+                'q': 'stock market',
+                'apiKey': 'YOUR_API_KEY',
+                'pageSize': 30
+            }
+        ).json()
+        
+        return jsonify(news_data)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/market_movers', methods=['GET'])
+def get_market_movers():
+    try:
+        # Get top gainers and losers
+        gainers = []
+        losers = []
+        
+        # Sample major indices
+        indices = ['SPY', 'QQQ', 'DIA', 'IWM']
+        
+        for symbol in indices:
+            ticker = yf.Ticker(symbol)
+            current_price = ticker.info.get('regularMarketPrice', 0)
+            prev_close = ticker.info.get('previousClose', 0)
+            change = ((current_price - prev_close) / prev_close) * 100
+            
+            data = {
+                'symbol': symbol,
+                'price': current_price,
+                'change': change
+            }
+            
+            if change > 0:
+                gainers.append(data)
+            else:
+                losers.append(data)
+                
+        return jsonify({
+            'gainers': sorted(gainers, key=lambda x: x['change'], reverse=True)[:5],
+            'losers': sorted(losers, key=lambda x: x['change'])[:5]
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/market_indices', methods=['GET'])
+def get_market_indices():
+    try:
+        indices = ['^GSPC', '^DJI', '^IXIC', '^RUT']
+        index_data = {}
+        
+        for index in indices:
+            ticker = yf.Ticker(index)
+            hist = ticker.history(period='1d', interval='5m')
+            
+            index_data[index] = {
+                'prices': hist['Close'].tolist(),
+                'times': hist.index.strftime('%H:%M').tolist(),
+                'change': float(hist['Close'][-1] - hist['Close'][0]),
+                'changePercent': float((hist['Close'][-1] - hist['Close'][0]) / hist['Close'][0] * 100)
+            }
+            
+        return jsonify(index_data)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
