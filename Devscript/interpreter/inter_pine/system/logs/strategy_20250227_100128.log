@@ -1,0 +1,2 @@
+2025-02-27 10:01:32,163 - INFO - Trade logged: {"timestamp": "2025-02-27T10:01:32.163466", "trade": {"symbol": "AAPL", "signal_type": "buy", "price": 150.25, "strategy": "MA Crossover"}}
+2025-02-27 10:01:32,163 - ERROR - Strategy calculation error

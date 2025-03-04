@@ -1,228 +1,357 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuSeparator } from './ui/dropdown-menu';
 import { FaPlay, FaTrash, FaSave } from 'react-icons/fa';
 import { ChevronDown, CloudUpload, Pencil, Plus, FolderArchive, Copy, MoreHorizontal } from 'lucide-react';
 import * as monaco from 'monaco-editor';
-import '../monaco-config'; // Import the Monaco configuration
+import '../monaco-config';
 import '../monaco-languages';
+import { initializeApp } from 'firebase/app';
+import { getFirestore, collection, addDoc, updateDoc, doc, getDoc, getDocs, where, query } from 'firebase/firestore';
 
-interface DevScriptRegistry {
-  syntax_registry: { elements: Record<string, any> };
-}
+const firebaseConfig = {
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY!,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN!,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID!,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET!,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID!,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID!
+};
 
-interface DevScriptSuggestion {
-  type: string;
-  params: Record<string, any>;
-  description: string;
-}
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-class DevScriptAutocomplete {
-  constructor(registry: DevScriptRegistry) {
-    this.registry = registry;
-    this.suggestions = {};
-    this._build_suggestions();
-  }
+const RenameDialog = ({ isOpen, onClose, onSave, initialName }: {
+  isOpen: boolean;
+  onClose: () => void;
+  onSave: (name: string) => void;
+  initialName: string;
+}) => {
+  const [name, setName] = useState(initialName);
 
-  private registry: DevScriptRegistry;
-  private suggestions: Record<string, DevScriptSuggestion>;
-
-  private _build_suggestions() {
-    for (const [func_name, func_info] of Object.entries(this.registry.syntax_registry.elements)) {
-      this.suggestions[func_name] = {
-        type: func_info.type,
-        params: func_info.params || {},
-        description: func_info.description || ''
-      };
-    }
-  }
-
-  get_suggestions(prefix: string) {
-    return Object.fromEntries(
-      Object.entries(this.suggestions).filter(([k]) => k.startsWith(prefix))
-    );
-  }
-}
-
-class DevScriptInterpreter {
-  registry: DevScriptRegistry;
-  autocomplete: DevScriptAutocomplete;
-
-  constructor() {
-    this.registry = { syntax_registry: { elements: {} } };
-    this.autocomplete = new DevScriptAutocomplete(this.registry);
-  }
-
-  suggest_completion(current_text: string, cursor_position: number) {
-    const word = this._get_current_word(current_text, cursor_position);
-    return this.autocomplete.get_suggestions(word);
-  }
-
-  private _get_current_word(text: string, position: number): string {
-    const left = text.lastIndexOf(' ', position - 1) + 1;
-    const right = text.indexOf(' ', position);
-    return text.slice(left, right === -1 ? undefined : right);
-  }
-}
-
-interface ScriptEditorProps {
-  onRunScript: (script: string) => void;
-}
-
-const ScriptEditor: React.FC<ScriptEditorProps> = ({ onRunScript }) => {
-  const editorRef = useRef<HTMLDivElement>(null);
-  const monacoRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
-  const interpreter = useRef(new DevScriptInterpreter());
-
-  useEffect(() => {
-    let isEditorMounted = false;
-
-    const initMonaco = async () => {
-      try {
-        if (editorRef.current && !isEditorMounted) {
-          isEditorMounted = true;
-          const monaco = await import('monaco-editor');
-
-          if (!monacoRef.current) {
-            monaco.editor.defineTheme('custom-dark', {
-              base: 'vs-dark',
-              inherit: true,
-              rules: [
-                { token: '', background: '1E1E1E' },
-                { token: 'comment', foreground: '6A9955' },
-                { token: 'keyword', foreground: '569CD6' },
-                { token: 'string', foreground: 'CE9178' },
-                { token: 'number', foreground: 'B5CEA8' },
-              ],
-              colors: {
-                'editor.background': '#1E1E1E',
-                'editor.foreground': '#D4D4D4',
-                'editor.lineHighlightBackground': '#2D2D2D',
-                'editorCursor.foreground': '#AEAFAD',
-                'editorWhitespace.foreground': '#3B3A32',
-                'editorIndentGuide.background': '#404040',
-                'editorIndentGuide.activeBackground': '#707070',
-              },
-            });
-
-            monacoRef.current = monaco.editor.create(editorRef.current, {
-              value: '',
-              language: 'devscript',
-              theme: 'custom-dark',
-            });
-
-            monaco.languages.registerCompletionItemProvider('devscript', {
-              provideCompletionItems: (model, position) => {
-                const textUntilPosition = model.getValueInRange({
-                  startLineNumber: position.lineNumber,
-                  startColumn: 1,
-                  endLineNumber: position.lineNumber,
-                  endColumn: position.column,
-                });
-
-                const suggestions = interpreter.current.suggest_completion(textUntilPosition, position.column);
-                
-                return {
-                  suggestions: Object.entries(suggestions).map(([name, info]) => ({
-                    label: name,
-                    kind: monaco.languages.CompletionItemKind.Function,
-                    detail: info.type,
-                    documentation: info.description,
-                    insertText: name
-                  }))
-                };
-              }
-            });
-          }
-        }
-      } catch (error) {
-        console.error("Error initializing Monaco Editor:", error);
-      }
-    };
-
-    initMonaco();
-
-    return () => {
-      isEditorMounted = false;
-      if (monacoRef.current) {
-        monacoRef.current.dispose();
-        monacoRef.current = null;
-      }
-    };
-  }, []);
-  const handleRunScript = () => {
-    const script = monacoRef.current?.getValue() || '';
-    fetch('http://localhost:5001/run_script', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ script })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === 'success') {
-            onRunScript(data.data);
-        } else {
-            console.error('Script execution failed:', data.message);
-        }
-    })
-    .catch(error => {
-        console.error('Error running script:', error);
-    });
-  };
-
-
-  const handleClear = () => {
-    monacoRef.current?.setValue('');
-  };
-
-  const handleSave = () => {
-    const script = monacoRef.current?.getValue() || '';
-    console.log('Script saved:', script);
-    // Implement save functionality here
-  };
-
-  return (
-    <div className="bg-[#1E1E1E] rounded-lg shadow-lg">
-      <div className="flex items-center justify-between p-2 bg-[#1E1E1E] rounded-t-lg">
-        <div className="flex space-x-2 justify-between">
-          <button className="p-0.5 bg-[#1E1E1E] text-white rounded flex flex-col items-center text-sm">
-            <span>Untitled Script </span>
-            <span className="text-blue-500 text-xs items-right">Save</span>
+  return isOpen ? (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-[#2D2D2D] rounded-lg p-4 w-96">
+        <h3 className="text-white mb-4">Rename Script</h3>
+        <input
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          className="w-full bg-[#1E1E1E] text-white rounded px-2 py-1 mb-4"
+          autoFocus
+        />
+        <div className="flex justify-end space-x-2">
+          <button 
+            onClick={onClose}
+            className="px-4 py-2 text-white hover:bg-[#3D3D3D] rounded"
+          >
+            Cancel
           </button>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button className="p-2 bg-[#1E1E1E] text-white rounded flex flex-col items-center text-sm">
-                <span> <ChevronDown className="h-4 w-4"/></span>
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56" side="bottom">
-              <button className="w-full text-left p-2 hover:bg-gray-100 block"><CloudUpload className="h-4 w-4"/>Save script</button>
-              <button className="w-full text-left p-2 hover:bg-gray-100 block"><Copy className="h-4 w-4"/>Make a copy...</button>
-              <button className="w-full text-left p-2 hover:bg-gray-100 block"><Pencil className="h-4 w-4"/>Rename...</button>
-              <DropdownMenuSeparator />
-              <button className="w-full text-left p-2 hover:bg-gray-100 block"><Plus className="h-4 w-4"/>Create new</button>
-              <DropdownMenuSeparator />
-              <button className="w-full text-left p-2 hover:bg-gray-100 block"><FolderArchive className="h-4 w-4"/>Open script...</button>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-        <div className="flex space-x-2">
-          <button onClick={handleRunScript} className="p-2 bg-blue-500 text-white rounded flex items-center text-sm">
-            <FaPlay className="mr-1" /> Run
-          </button>
-          <button onClick={handleClear} className="p-2 bg-gray-500 text-white rounded flex items-center text-sm">
-            <FaTrash className="mr-1" /> Clear
-          </button>
-          <button onClick={handleSave} className="p-2 bg-green-500 text-white rounded flex items-center text-sm">
-            <FaSave className="mr-1" /> Save
-          </button>
-          <button className="p-2 text-white rounded flex items-center text-sm">
-            <MoreHorizontal className="mr-1" /> 
+          <button 
+            onClick={() => onSave(name)}
+            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          >
+            Save
           </button>
         </div>
       </div>
-      <div ref={editorRef} style={{ height: '200px', width: '100%' }}></div>
+    </div>
+  ) : null;
+};
+
+interface Script {
+  id?: string;
+  name: string;
+  content: string;
+  type: 'indicator' | 'strategy' | 'library';
+  isPublished: boolean;
+  authorId: string;
+  settings?: ScriptSettings;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+interface ScriptSettings {
+  inputs: Record<string, any>;
+  style?: Record<string, any>;
+  visibility?: boolean;
+}
+
+interface ScriptEditorProps {
+  onRunScript: (script: string, chartData: any) => void;
+  userId: string;
+  chartData?: any;
+}
+
+const ScriptEditor: React.FC<ScriptEditorProps> = ({ onRunScript, userId, chartData }) => {
+  const [currentScript, setCurrentScript] = useState<Script | null>(null);
+  const [scriptType, setScriptType] = useState<'indicator' | 'strategy' | 'library'>('indicator');
+  const [scriptName, setScriptName] = useState('Untitled Script');
+  const [scripts, setScripts] = useState<Script[]>([]);
+  const [showSettings, setShowSettings] = useState(false);
+  const [showRenameDialog, setShowRenameDialog] = useState(false);
+  
+  const editorRef = useRef<HTMLDivElement>(null);
+  const monacoRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
+
+  useEffect(() => {
+    if (editorRef.current) {
+      monacoRef.current = monaco.editor.create(editorRef.current, {
+        value: '',
+        language: 'typescript',
+        theme: 'vs-dark',
+        minimap: { enabled: false },
+        fontSize: 14,
+        automaticLayout: true,
+        scrollBeyondLastLine: false,
+        lineNumbers: 'on',
+        roundedSelection: false,
+        contextmenu: true,
+        renderLineHighlight: 'all',
+        scrollbar: {
+          vertical: 'visible',
+          horizontal: 'visible',
+          useShadows: false,
+          verticalScrollbarSize: 10,
+          horizontalScrollbarSize: 10
+        }
+      });
+
+      return () => {
+        if (monacoRef.current) {
+          monacoRef.current.dispose();
+        }
+      };
+    }
+  }, []);
+
+  useEffect(() => {
+    if (userId) {
+      loadUserScripts();
+    }
+  }, [userId]);
+
+  const loadUserScripts = async () => {
+    if (!userId) return;
+    const scriptsRef = collection(db, 'scripts');
+    const userScriptsQuery = query(scriptsRef, where('authorId', '==', userId));
+    const querySnapshot = await getDocs(userScriptsQuery);
+    const loadedScripts = querySnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id } as Script));
+    setScripts(loadedScripts);
+  };
+
+  const saveScript = async () => {
+    if (!monacoRef.current || !userId) return;
+    
+    const content = monacoRef.current.getValue();
+    const scriptsRef = collection(db, 'scripts');
+    
+    const scriptData: Script = {
+      name: scriptName,
+      content,
+      type: scriptType,
+      isPublished: false,
+      authorId: userId,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      settings: {
+        inputs: {},
+        style: {},
+        visibility: true
+      }
+    };
+
+    if (currentScript?.id) {
+      await updateDoc(doc(db, 'scripts', currentScript.id), {
+        ...scriptData,
+        createdAt: currentScript.createdAt
+      });
+    } else {
+      const docRef = await addDoc(scriptsRef, scriptData);
+      setCurrentScript({ ...scriptData, id: docRef.id });
+    }
+    await loadUserScripts();
+  };
+
+  const loadScript = async (scriptId: string) => {
+    const scriptDoc = await getDoc(doc(db, 'scripts', scriptId));
+    if (scriptDoc.exists()) {
+      const scriptData = scriptDoc.data() as Script;
+      setCurrentScript({ ...scriptData, id: scriptDoc.id });
+      setScriptName(scriptData.name);
+      setScriptType(scriptData.type);
+      monacoRef.current?.setValue(scriptData.content);
+    }
+  };
+
+  const handleRename = async (newName: string) => {
+    if (!currentScript?.id) return;
+    await updateDoc(doc(db, 'scripts', currentScript.id), {
+      name: newName,
+      updatedAt: new Date()
+    });
+    setScriptName(newName);
+    setShowRenameDialog(false);
+    await loadUserScripts();
+  };
+
+  const createNewScript = () => {
+    setCurrentScript(null);
+    setScriptName('Untitled Script');
+    monacoRef.current?.setValue('');
+  };
+
+  const handleRunScript = async () => {
+    const script = monacoRef.current?.getValue() || '';
+    try {
+      const response = await fetch('http://localhost:5001/run_script', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          script,
+          type: scriptType,
+          settings: currentScript?.settings,
+          data: chartData
+        })
+      });
+      const result = await response.json();
+      onRunScript(script, {
+        name: scriptName,
+        type: scriptType,
+        settings: currentScript?.settings,
+        data: result
+      });
+    } catch (error) {
+      console.error('Error running script:', error);
+    }
+  };
+
+  const handleClear = () => {
+    monacoRef.current?.setValue('');
+    setCurrentScript(null);
+    setScriptName('Untitled Script');
+  };
+
+  const handleMakeCopy = async () => {
+    if (!currentScript || !userId) return;
+    const copyData: Script = {
+      ...currentScript,
+      name: `${currentScript.name} (Copy)`,
+      isPublished: false,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      authorId: userId
+    };
+    delete copyData.id;
+    const docRef = await addDoc(collection(db, 'scripts'), copyData);
+    setCurrentScript({ ...copyData, id: docRef.id });
+    setScriptName(copyData.name);
+    await loadUserScripts();
+  };
+
+  const toggleSettings = () => {
+    setShowSettings(!showSettings);
+  };
+
+  return (
+    <div className="flex flex-col h-full">
+      <div className="bg-[#1E1E1E] rounded-lg shadow-lg">
+        <div className="flex items-center justify-between p-2 bg-[#1E1E1E] rounded-t-lg">
+          <div className="flex space-x-2">
+            <button 
+              className="p-0.5 bg-[#1E1E1E] text-white rounded flex flex-col items-center text-sm"
+              onClick={() => setShowRenameDialog(true)}
+            >
+              <span>{scriptName}</span>
+              <span className="text-blue-500 text-xs">
+                {currentScript?.id ? 'Saved' : 'Unsaved'}
+              </span>
+            </button>
+            
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="p-2 bg-[#1E1E1E] text-white rounded flex items-center text-sm">
+                  <ChevronDown className="h-4 w-4"/>
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56 bg-[#2D2D2D] text-white" side="bottom">
+                <button onClick={saveScript} className="w-full text-left p-2 hover:bg-[#3D3D3D] flex items-center">
+                  <CloudUpload className="h-4 w-4 mr-2"/>Save script
+                </button>
+                <button onClick={handleMakeCopy} className="w-full text-left p-2 hover:bg-[#3D3D3D] flex items-center">
+                  <Copy className="h-4 w-4 mr-2"/>Make a copy
+                </button>
+                <button onClick={() => setShowRenameDialog(true)} className="w-full text-left p-2 hover:bg-[#3D3D3D] flex items-center">
+                  <Pencil className="h-4 w-4 mr-2"/>Rename
+                </button>
+                <DropdownMenuSeparator />
+                <button onClick={createNewScript} className="w-full text-left p-2 hover:bg-[#3D3D3D] flex items-center">
+                  <Plus className="h-4 w-4 mr-2"/>Create new
+                </button>
+                <DropdownMenuSeparator />
+                <select
+                  value={scriptType}
+                  onChange={(e) => setScriptType(e.target.value as any)}
+                  className="w-full p-2 bg-[#2D2D2D] text-white"
+                >
+                  <option value="indicator">Indicator</option>
+                  <option value="strategy">Strategy</option>
+                  <option value="library">Library</option>
+                </select>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+          
+          <div className="flex space-x-2">
+            <button onClick={handleRunScript} className="p-2 text-white rounded flex items-center text-sm hover:bg-[#2D2D2D]">
+              <FaPlay className="mr-1" /> Run
+            </button>
+            <button onClick={handleClear} className="p-2 text-white rounded flex items-center text-sm hover:bg-[#2D2D2D]">
+              <FaTrash className="mr-1" /> Clear
+            </button>
+            <button onClick={saveScript} className="p-2 text-white rounded flex items-center text-sm hover:bg-[#2D2D2D]">
+              <FaSave className="mr-1" /> Save
+            </button>
+            <button onClick={toggleSettings} className="p-2 text-white rounded flex items-center text-sm hover:bg-[#2D2D2D]">
+              <MoreHorizontal className="mr-1" />
+            </button>
+          </div>
+        </div>
+        <div ref={editorRef} style={{ height: '500px', width: '100%' }} />
+      </div>
+      
+      {showSettings && (
+        <div className="bg-[#1E1E1E] mt-2 p-4 rounded-lg">
+          <h3 className="text-white mb-4">Script Settings</h3>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="text-white text-sm">Visibility</label>
+              <input
+                type="checkbox"
+                checked={currentScript?.settings?.visibility}
+                onChange={(e) => {
+                  if (currentScript) {
+                    setCurrentScript({
+                      ...currentScript,
+                      settings: {
+                        ...currentScript.settings,
+                        visibility: e.target.checked
+                      }
+                    });
+                  }
+                }}
+                className="ml-2"
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
+      <RenameDialog
+        isOpen={showRenameDialog}
+        onClose={() => setShowRenameDialog(false)}
+        onSave={handleRename}
+        initialName={scriptName}
+      />
     </div>
   );
 };

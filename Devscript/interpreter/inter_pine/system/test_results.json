@@ -1,0 +1,36 @@
+{
+    "trades": [],
+    "performance_metrics": {
+        "total_return": 0.0,
+        "sharpe_ratio": 0.0,
+        "sortino_ratio": 0.0,
+        "calmar_ratio": 0.0,
+        "max_drawdown": 0.0,
+        "win_rate": 0.0,
+        "profit_factor": 0,
+        "avg_trade": 0,
+        "volatility": 0
+    },
+    "risk_metrics": {
+        "max_drawdown": 0.0,
+        "current_drawdown": 0.0,
+        "risk_limits": {
+            "max_position_size": 0.1,
+            "max_drawdown": 0.15,
+            "max_leverage": 2.0,
+            "max_concentration": 0.25,
+            "max_daily_loss": 0.05,
+            "position_limit": 10,
+            "min_liquidity": 1000000
+        }
+    },
+    "system_metrics": {
+        "metrics": {
+            "cpu_usage": [],
+            "memory_usage": [],
+            "cpu_current": 0,
+            "memory_current": 0
+        },
+        "error_rate": 0.0
+    }
+}

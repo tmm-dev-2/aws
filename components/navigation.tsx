@@ -1,5 +1,5 @@
 import { Home, LineChart, Bell, Settings } from 'lucide-react'
-import { Button } from "@/components/ui/button"
+import { Button } from "dashboard/components/ui/button"
 
 export function Navigation() {
   return (

@@ -1,7 +1,7 @@
-import { User } from '@/types/chat';
+import { User } from 'dashboard/types/chat';
 import { Check, X } from 'lucide-react';
 import { Button } from './ui/button';
-import { useChatStore } from '@/store/chatStore';
+import { useChatStore } from 'dashboard/store/chatStore';
 
 interface FriendRequestCardProps {
   request: {

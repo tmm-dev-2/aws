@@ -1,4 +1,11 @@
 {
     "editor.tabCompletion": "on",
-    "diffEditor.codeLens": true
+    "diffEditor.codeLens": true,
+    "python.analysis.extraPaths": [
+        "${workspaceFolder}",
+        "${workspaceFolder}/devscript",
+        "${workspaceFolder}/devscript/interpreter",
+        "${workspaceFolder}/devscript/interpreter/inter_pine",
+        "${workspaceFolder}/devscript/interpreter/inter_pine/core"
+    ]
 }

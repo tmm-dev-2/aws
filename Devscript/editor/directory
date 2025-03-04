@@ -1,0 +1,32 @@
+we got the technicals, in place, lets work on the code editor ,
+i ned a vs code like editor on my website with files and folder options on the left,
+a code write in the center and a terminal in the bottom , a top panel with basic navigation optiosn,
+some key optiosn like run, rename, publsih, files, etc  and a chat bot on the right for help in coding 
+( i will add it on my own),
+ the terminal can be sued for installing key libraries, essential for the advance fucntioning,
+code editor is liek normal vs code, only differance when creaitng files, the user needs to click indicaot, 
+stratey or library , adn shoudl be saved with a unique file format like .in, .st and .lib, can you help me do that,
+these can be svae don the the users pc,
+ lets also allow users to create .py python files for settign up the modules and libraries they downlaoded and then suing
+  them in our language for their stratregies, indicators, etc, complex right?
+   lets create another folder in devscript anmed editor, lets create fiels in that and link all these in there,
+    note things like terminal is already a part of this inter-pine fodler so we will jsut use it there,
+ is there any installation libraries that allow our project to made faster , lets get going, elts go
+
+
+
+Devscript/editor/
+├── components/
+│   ├── FileExplorer.tsx
+│   ├── CodeEditor.tsx
+│   ├── TopPanel.tsx
+│   ├── Terminal.tsx
+│   └── Layout.tsx
+├── styles/
+│   └── editor.css
+└── utils/
+    ├── fileTypes.ts
+    └── monaco-config.ts
+
+
+

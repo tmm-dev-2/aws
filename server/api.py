@@ -15,10 +15,242 @@ import talib
 import json
 import requests
 import pandas as pd
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from model.data.generate_patterns import organize_all_data
+
+# Add these imports at the top
+from functools import lru_cache
+import time
+# Add these imports at the top
+import random
+import time
+from requests.adapters import HTTPAdapter
+from urllib3.util import Retry
+def create_yf_session():
+    session = requests.Session()
+    retry = Retry(
+        total=5,
+        backoff_factor=0.5,
+        status_forcelist=[429, 500, 502, 503, 504],
+    )
+    adapter = HTTPAdapter(max_retries=retry)
+    session.mount('http://', adapter)
+    session.mount('https://', adapter)
+    
+    # Rotate user agents
+    user_agents = [
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:89.0) Gecko/20100101 Firefox/89.0',
+        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15'
+    ]
+    session.headers.update({'User-Agent': random.choice(user_agents)})
+    return session
+
+def get_ticker_with_retry(symbol):
+    session = create_yf_session()
+    ticker = yf.Ticker(symbol, session=session)
+    time.sleep(random.uniform(1, 3))  # Random delay between requests
+    return ticker
+
+
+yf.__version__="0.2.26"
+
+# Add rate limiting cache
+@lru_cache(maxsize=100)
+def get_cached_ticker(symbol: str):
+    return yf.Ticker(symbol)
+
+# Add cooldown decorator
+def with_cooldown(seconds=1):
+    def decorator(func):
+        last_called = {}
+        def wrapper(*args, **kwargs):
+            now = time.time()
+            if func.__name__ in last_called:
+                time_passed = now - last_called[func.__name__]
+                if time_passed < seconds:
+                    time.sleep(seconds - time_passed)
+            last_called[func.__name__] = now
+            return func(*args, **kwargs)
+        return wrapper
+    return decorator
 
 app = Flask(__name__)
 CORS(app)
 
+analysis_data = {}
+
+
+
+
+
+def convert_symbol_format(tv_symbol):
+    # Exchange-specific prefixes
+    if ':' in tv_symbol:
+        exchange, base_symbol = tv_symbol.split(':')
+    else:
+        base_symbol = tv_symbol
+        exchange = ''
+
+    # Exchange mappings
+    exchange_maps = {
+        'NSE': '.NS',
+        'BSE': '.BO',
+        'NYSE': '',
+        'NASDAQ': '',
+        'LSE': '.L',
+        'TSX': '.TO',
+        'HKEX': '.HK',
+        'SSE': '.SS',
+        'SZSE': '.SZ',
+        'ASX': '.AX',
+        'SGX': '.SI',
+        'KRX': '.KS',
+        'KOSDAQ': '.KQ',
+        'JPX': '.T',
+        'FWB': '.F',
+        'SWX': '.SW',
+        'MOEX': '.ME',
+        'BIT': '.MI',
+        'EURONEXT': '.PA'
+    }
+
+    # Futures mappings
+    futures_map = {
+        'ES1!': 'ES=F',  # S&P 500
+        'NQ1!': 'NQ=F',  # NASDAQ
+        'YM1!': 'YM=F',  # Dow
+        'RTY1!': 'RTY=F', # Russell
+        'CL1!': 'CL=F',  # Crude Oil
+        'GC1!': 'GC=F',  # Gold
+        'SI1!': 'SI=F',  # Silver
+        'HG1!': 'HG=F',  # Copper
+        'NG1!': 'NG=F',  # Natural Gas
+        'ZC1!': 'ZC=F',  # Corn
+        'ZS1!': 'ZS=F',  # Soybean
+        'ZW1!': 'ZW=F',  # Wheat
+        'KC1!': 'KC=F',  # Coffee
+        'CT1!': 'CT=F',  # Cotton
+        'CC1!': 'CC=F',  # Cocoa
+        'SB1!': 'SB=F',  # Sugar
+        '6E1!': '6E=F',  # Euro FX
+        '6B1!': '6B=F',  # British Pound
+        '6J1!': '6J=F',  # Japanese Yen
+        '6C1!': '6C=F',  # Canadian Dollar
+        '6A1!': '6A=F',  # Australian Dollar
+        '6N1!': '6N=F',  # New Zealand Dollar
+        '6S1!': '6S=F'   # Swiss Franc
+    }
+
+    # Forex mappings
+    forex_map = {
+        'EURUSD': 'EUR=X',
+        'GBPUSD': 'GBP=X',
+        'USDJPY': 'JPY=X',
+        'AUDUSD': 'AUD=X',
+        'USDCAD': 'CAD=X',
+        'NZDUSD': 'NZD=X',
+        'USDCHF': 'CHF=X',
+        'EURGBP': 'EURGBP=X',
+        'EURJPY': 'EURJPY=X',
+        'GBPJPY': 'GBPJPY=X',
+        'AUDJPY': 'AUDJPY=X',
+        'CADJPY': 'CADJPY=X',
+        'NZDJPY': 'NZDJPY=X',
+        'CHFJPY': 'CHFJPY=X'
+    }
+
+    # Crypto mappings
+    crypto_map = {
+        'BTCUSDT': 'BTC-USD',
+        'ETHUSDT': 'ETH-USD',
+        'BNBUSDT': 'BNB-USD',
+        'ADAUSDT': 'ADA-USD',
+        'DOGEUSDT': 'DOGE-USD',
+        'XRPUSDT': 'XRP-USD',
+        'DOTUSDT': 'DOT-USD',
+        'UNIUSDT': 'UNI-USD',
+        'LINKUSDT': 'LINK-USD',
+        'SOLUSDT': 'SOL-USD'
+    }
+
+    # Handle different market types
+    if any(fut in base_symbol for fut in futures_map.keys()):
+        return futures_map.get(base_symbol, base_symbol)
+
+    if any(x in tv_symbol for x in ['FX:', 'OANDA:', 'FOREX:']):
+        clean_symbol = ''.join(filter(str.isalpha, base_symbol))
+        return forex_map.get(clean_symbol, f"{clean_symbol}=X")
+
+    if 'USDT' in base_symbol:
+        return crypto_map.get(base_symbol, base_symbol.replace('USDT', '-USD'))
+
+    if exchange in exchange_maps:
+        return f"{base_symbol}{exchange_maps[exchange]}"
+
+    return base_symbol
+
+@app.route('/run_script', methods=['POST'])
+def run_script():
+    try:
+        data = request.get_json()
+        script = data.get('script')
+        settings = data.get('settings')
+        chart_data = data.get('data')
+        
+        # Convert chart data to format needed by interpreter
+        ohlcv_data = {
+            'open': [candle['open'] for candle in chart_data],
+            'high': [candle['high'] for candle in chart_data],
+            'low': [candle['low'] for candle in chart_data],
+            'close': [candle['close'] for candle in chart_data],
+            'volume': [candle['volume'] for candle in chart_data],
+            'time': [candle['time'] for candle in chart_data]
+        }
+        
+        # Run script through interpreter
+        results = run_interpreter(script, ohlcv_data, settings)
+        
+        return jsonify(results)
+    except Exception as e:
+        print(f"Error running script: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/codellama-chart-model', methods=['GET'])
+def codellama_chart_model():
+    try:
+        symbol = request.args.get('symbol')
+        if not symbol:
+            return jsonify({'error': 'Symbol is required'}), 400
+
+        yf_symbol = convert_symbol_format(symbol)
+        print(f"\nCodeLlama Chart Analysis for {symbol} (YF: {yf_symbol})")
+        
+        ticker = yf.Ticker(yf_symbol)
+        data = ticker.history(period='2y')[['Open', 'High', 'Low', 'Close', 'Volume']]
+        
+        if data.empty:
+            return jsonify({'error': f'No data available for {yf_symbol}'}), 404
+        
+        analysis_results = {
+            'symbol': yf_symbol,
+            'total_candles': len(data),
+            'latest_price': float(data['Close'].iloc[-1]),
+            'high_52w': float(data['High'].max()),
+            'low_52w': float(data['Low'].min()),
+            'avg_volume': float(data['Volume'].mean()),
+            'price_change': float(data['Close'].iloc[-1] - data['Close'].iloc[0]),
+            'price_change_pct': float((data['Close'].iloc[-1] - data['Close'].iloc[0]) / data['Close'].iloc[0] * 100)
+        }
+        
+        return jsonify(analysis_results)
+
+    except Exception as e:
+        print(f"Error in analysis: {str(e)}")
+        return jsonify({'error': str(e)}), 500
 
 # Market mapping and cache setup
 MARKETS = {
@@ -237,17 +469,18 @@ def not_found_error(error):
 def fetch_stock_details():
     try:
         symbol = request.args.get('symbol')
-        
         if not symbol:
             return jsonify({'error': 'Symbol is required'}), 400
             
-        print(f"Fetching details for symbol: {symbol}")
+        yf_symbol = convert_symbol_format(symbol)
+        print(f"Fetching details for symbol: {symbol} (YF: {yf_symbol})")
         
-        ticker = yf.Ticker(symbol)
+        ticker = get_ticker_with_retry(yf_symbol)
         info = ticker.info
         
         stock_details = {
             'symbol': symbol,
+            'yf_symbol': yf_symbol,
             'price': float(info.get('currentPrice', info.get('regularMarketPrice', 0))),
             'change': float(info.get('regularMarketChange', 0)),
             'changePercent': float(info.get('regularMarketChangePercent', 0)),
@@ -298,6 +531,7 @@ def fetch_stock_details():
     except Exception as e:
         print(f"Error fetching stock details: {str(e)}")
         return jsonify({'error': str(e)}), 500
+
 
 watchlists = []
 
@@ -377,6 +611,20 @@ def fetch_multiple_stocks():
     except Exception as e:
         print(f"Error processing request: {str(e)}")
         return jsonify({'error': str(e)}), 500
+    
+
+@app.route('/analyze', methods=['GET'])
+def analyze():
+    symbol = request.args.get('symbol', 'AAPL')
+    analysis_results = organize_all_data(symbol)
+    return jsonify(analysis_results)
+
+
+@app.route('/save_analysis', methods=['POST'])
+def save_analysis():
+    analysis_data[request.json['symbol']] = request.json
+    return jsonify({'status': 'success'})
+
 
 @app.route('/get_stock_suggestions', methods=['GET'])
 def get_stock_suggestions():
@@ -846,6 +1094,7 @@ def get_market_indices():
         return jsonify(index_data)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
 
 
 if __name__ == '__main__':

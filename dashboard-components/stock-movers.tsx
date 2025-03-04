@@ -1,9 +1,9 @@
 "use client"
 import { Card } from "@/dashboard-components/ui/card"
 import type { ColumnDef } from "@tanstack/react-table"
-import { Table, TableBody, TableCell, TableHeader, TableRow } from "@/components/ui/table"
+import { Table, TableBody, TableCell, TableHeader, TableRow } from "dashboard/components/ui/table"
 import type { StockMover, StockMoversData } from "@/types/stock-movers"
-import { Badge } from "@/components/ui/badge"
+import { Badge } from "dashboard/components/ui/badge"
 import { formatNumber } from "@/lib/format-number"
 import { useState, useEffect } from "react"
 

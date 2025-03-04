@@ -11,10 +11,10 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
-import { Button } from '@/components/ui/button';
+import { Button } from 'dashboard/components/ui/button';
 import { Switch } from '@/components/ui/switch';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from 'dashboard/components/ui/card';
+import { Input } from 'dashboard/components/ui/input';
 
 interface StockSuggestion {
   symbol: string;

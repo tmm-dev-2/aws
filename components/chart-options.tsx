@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button"
+import { Button } from "dashboard/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 export function ChartOptions() {

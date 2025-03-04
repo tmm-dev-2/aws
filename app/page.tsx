@@ -8,22 +8,18 @@ import { DrawingTools } from "components/drawing-tools";
 import { TopPanel } from "components/top-panel";
 import { LeftSidePane } from "components/left-side-pane";
 import dynamic from 'next/dynamic'
-import LoginPage from 'components/auth/LoginPage'; // Import the LoginPage component
-import { X } from 'lucide-react'; // Import the X icon
+import LoginPage from 'components/auth/LoginPage';
+import { X } from 'lucide-react';
 import Technicals from "../components/Technicals";
-import { Resizable } from 're-resizable'; // Import Resizable component
+import { Resizable } from 're-resizable';
 import { initializeApp } from 'firebase/app';
 import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
 import { TradingView } from '../components/tmm-chart'
-import  ActionsBar  from "components/ActionsBar";
+import ActionsBar from "components/ActionsBar";
 import ProfilePage from '../components/ProfilePage';
 import { auth } from '../config/firebase';
-
-
-
-
-
-
+import { AIResults } from '../components/ai-results/ai-results';
+import { Workspace } from "components/space";
 
 
 const firebaseConfig = {
@@ -35,7 +31,6 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID!
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
@@ -85,37 +80,38 @@ export default function Home() {
   const [selectedStrategy, setSelectedStrategy] = useState('none');
   const [candleData, setCandleData] = useState<CandleData[]>([]);
   const [currentStock, setCurrentStock] = useState<Stock>({
-    symbol: '',
+    symbol: 'BTCUSDT',
     price: 0,
     change: 0,
     changePercent: 0,
     lastUpdated: '',
-    companyName: '',
-    exchange: '',
-    industry: ''
+    companyName: 'Bitcoin',
+    exchange: 'BINANCE',
+    industry: 'Cryptocurrency'
   });
-  const [isLoginPageActive, setIsLoginPageActive] = useState(false); // State for login page
+  const [isLoginPageActive, setIsLoginPageActive] = useState(false);
   const [loggedInUser, setLoggedInUser] = useState<User | null>(null);
-  const [showTechnicalsOverlay, setShowTechnicalsOverlay] = useState(false); // Add new state for technicals overlay
+  const [showTechnicalsOverlay, setShowTechnicalsOverlay] = useState(false);
   const [lastChartData, setLastChartData] = useState<{symbol: string, period: string} | null>(null);
   const [selectedLayout, setSelectedLayout] = useState('single');
   const [symbols, setSymbols] = useState(['BTCUSDT']);
-
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [analysisResults, setAnalysisResults] = useState(null);
+  const [showAIResults, setShowAIResults] = useState(false);
 
-    useEffect(() => {
-      const unsubscribe = auth.onAuthStateChanged((user) => {
-        if (user) {
-          setIsAuthenticated(true);
-          setLoggedInUser(user);
-        }
-      });
-    
-      return () => unsubscribe();
-    }, []);
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        setIsAuthenticated(true);
+        setLoggedInUser(user);
+      }
+    });
   
+    return () => unsubscribe();
+  }, []);
+
   const fetchData = async (symbol: string, period: string) => {
-    if (!symbol) return;
+    if (!symbol || symbol === 'undefined') return;
     
     try {
       console.log(`Fetching data for ${symbol} with timeframe ${period}`);
@@ -130,12 +126,15 @@ export default function Home() {
       );
 
       if (!response.ok) {
-        const errorData = await response.json();
-        console.error('Server error:', errorData.error || 'Unknown error'); // Add fallback message
-        return;
+        throw new Error(`Failed to fetch data: ${response.statusText}`);
       }
 
       const rawData = await response.json();
+      
+      if (!rawData || !Array.isArray(rawData) || rawData.length === 0) {
+        throw new Error('No data received from server');
+      }
+
       console.log(`Received ${rawData.length} candles for ${period} timeframe`);
       
       const formattedData = rawData
@@ -174,58 +173,55 @@ export default function Home() {
           lastUpdated: new Date(lastData.time * 1000).toLocaleTimeString(),
         }));
 
-        // Save to Firebase after successful fetch
-        const db = getFirestore();
-        const lastChartRef = doc(db, 'userCharts', loggedInUser?.googleId || 'default');
-        await setDoc(lastChartRef, {
-          symbol,
-          period,
-          timestamp: new Date()
-        });
+        if (loggedInUser?.googleId) {
+          const lastChartRef = doc(db, 'userCharts', loggedInUser.googleId);
+          await setDoc(lastChartRef, {
+            symbol,
+            period,
+            timestamp: new Date()
+          });
+        }
       }
     } catch (error) {
       console.error('Error fetching data:', error);
+      setCurrentStock(prev => ({
+        ...prev,
+        symbol: 'BTCUSDT',
+        exchange: 'BINANCE'
+      }));
     }
   };
 
   const handleChartClick = async () => {
-    // Close all overlay states
     setIsLoginPageActive(false);
     setShowTechnicalsOverlay(false);
-    // Add any other overlay/page states here as needed
+    setShowAIResults(false);
   
     try {
-      const lastChartRef = doc(db, 'userCharts', loggedInUser?.googleId || 'default');
-      const docSnap = await getDoc(lastChartRef);
-      
-      console.log('Retrieved Firebase data:', docSnap.data());
-      
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        console.log('Setting chart data:', data);
+      if (loggedInUser?.googleId) {
+        const lastChartRef = doc(db, 'userCharts', loggedInUser.googleId);
+        const docSnap = await getDoc(lastChartRef);
         
-        // Update period first
-        setSelectedPeriod(data.period);
-        console.log('Period set to:', data.period);
-        
-        // Update stock symbol
-        setCurrentStock(prev => ({
-          ...prev,
-          symbol: data.symbol
-        }));
-        console.log('Symbol set to:', data.symbol);
-        
-        // Fetch and display data
-        await fetchData(data.symbol, data.period);
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          setSelectedPeriod(data.period);
+          setCurrentStock(prev => ({
+            ...prev,
+            symbol: data.symbol
+          }));
+          await fetchData(data.symbol, data.period);
+        }
       }
     } catch (error) {
       console.error('Error fetching last chart:', error);
     }
   };
-  
 
   const handleSymbolChange = (newSymbol: string) => {
-    if (!newSymbol) return;
+    if (!newSymbol || newSymbol === 'undefined') {
+      console.error('Invalid symbol received');
+      return;
+    }
     fetchData(newSymbol, selectedPeriod);
   };
 
@@ -252,7 +248,6 @@ export default function Home() {
 
       const result = await response.json();
       console.log('Script Result:', result);
-      // Handle the result as needed
     } catch (error) {
       console.error('Error running script:', error);
     }
@@ -260,6 +255,7 @@ export default function Home() {
 
   const handleAccountClick = () => {
     setIsLoginPageActive(true);
+    setShowAIResults(false);
   };
 
   const handleLogin = (user: any) => {
@@ -269,6 +265,7 @@ export default function Home() {
 
   const handleShowTechnicals = () => {
     setShowTechnicalsOverlay(true);
+    setShowAIResults(false);
   };
 
   const handleCloseTechnicals = () => {
@@ -294,9 +291,13 @@ export default function Home() {
     setSymbols(newSymbols.slice(0, symbolCount));
   };
 
+  const handleAnalysisResults = () => {
+    setShowAIResults(true);
+  };
+
   return (
     <main className="flex flex-col h-screen bg-[#1E1E1E] text-white overflow-hidden">
-      {!isLoginPageActive && (
+      {!isLoginPageActive && !showAIResults && (
         <TopPanel
           onSymbolChange={handleSymbolChange}
           selectedPeriod={selectedPeriod}
@@ -310,45 +311,59 @@ export default function Home() {
       )}
       
       <div className="flex flex-1 min-h-0">
-        {/* Left section - NO RESIZER between chart and drawing tools */}
         <div className="flex h-full">
           <LeftSidePane onAccountClick={handleAccountClick} onChartClick={handleChartClick} />
           <DrawingTools />
         </div>
-        {/* Middle section with more flexible limits */}
-        <div className="flex flex-col flex-1 min-w-0">
-          <Resizable
-            defaultSize={{ width: '100%', height: '70%' }}
-            minHeight={100}
-            maxHeight="95%"
-            enable={{ bottom: true }}
-            handleClasses={{ bottom: 'h-1 bg-[#2a2a2a] hover:bg-blue-500 cursor-row-resize' }}
-            style={{ overflow: 'hidden' }}
-          >
-            <MainChartContainer
-              layout={selectedLayout}
-              symbols={symbols}
-              selectedPeriod={selectedPeriod}
-              selectedStrategy={selectedStrategy}
-            />
-          </Resizable>
-          
-          {/* Give ScriptEditor proper height and container */}
-          <div className="flex-1 min-h-[200px] overflow-hidden">
-            <ScriptEditor onRunScript={handleRunScript} />
+        
+        {showAIResults ? (
+          <div className="flex-1 relative">
+            <Button
+              className="absolute top-4 right-4 z-50"
+              variant="ghost"
+              size="icon"
+              onClick={() => setShowAIResults(false)}
+            >
+              <X className="h-5 w-5" />
+            </Button>
+            <AIResults />
           </div>
-        </div>
-        {/* Right section with more flexible limits */}
+        ) : (
+          <div className="flex flex-col flex-1 min-w-0">
+            <Resizable
+              defaultSize={{ width: '100%', height: '70%' }}
+              minHeight={300}
+              maxHeight="80%"
+              enable={{ bottom: true }}
+              handleClasses={{ bottom: 'h-1 bg-[#2a2e39] hover:bg-blue-500 cursor-row-resize' }}
+              style={{ overflow: 'hidden' }}
+            >
+              <MainChartContainer
+                layout={selectedLayout}
+                symbols={symbols}
+                selectedPeriod={selectedPeriod}
+                selectedStrategy={selectedStrategy}
+                onAnalysisResults={handleAnalysisResults}
+              />
+            </Resizable>
+            
+            <div className="flex-1 min-h-[200px] overflow-hidden">
+            <Workspace />
+            </div>
+          </div>
+        )}
+
         <Resizable
           defaultSize={{ width: '275px', height: '100%' }}
-          minWidth={100} // Reduced from 200
-          maxWidth={800} // Increased from 500
+          minWidth={100}
+          maxWidth={800}
           enable={{ left: true }}
-          handleClasses={{ left: 'w-1 bg-[#2a2a2a] hover:bg-blue-500 cursor-col-resize' }}
+          handleClasses={{ left: 'w-1 bg-[#2a2e39] hover:bg-blue-500 cursor-col-resize' }}
         >
           <Sidebar 
             currentStock={currentStock} 
-            onShowTechnicals={handleShowTechnicals} 
+            onShowTechnicals={handleShowTechnicals}
+            analysisResults={analysisResults} 
           />
         </Resizable>
       </div>
@@ -367,11 +382,7 @@ export default function Home() {
             onChartClick={handleChartClick}
           />
           <div className="flex-1 min-w-0 overflow-hidden -mr-[1px] bg-[#1E1E1E]">
-            <LoginPage onLogin={(user) => {
-              setLoggedInUser(user)
-              setIsAuthenticated(true)
-              setIsLoginPageActive(false)
-            }} />
+            <LoginPage onLogin={handleLogin} />
           </div>
         </div>
       ) : isLoginPageActive && isAuthenticated ? (
@@ -386,39 +397,38 @@ export default function Home() {
           </div>
         </div>
       ) : null}
-{showTechnicalsOverlay && (
-  <div className="fixed inset-0 z-50 flex">
-    <LeftSidePane 
-      className="w-10 flex-shrink-0 bg-[#252526]" 
-      onAccountClick={handleAccountClick} 
-      onChartClick={handleChartClick}  // Add this line
-    />
-    <div className="flex-1 bg-[#1E1E1E]">
-      <div className="flex justify-end p-4">
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={handleCloseTechnicals}
-          className="text-[#666] hover:text-white hover:bg-[#2a2a2a]"
-        >
-          <X className="h-5 w-5" />
-        </Button>
-      </div>
-      <div className="p-6">
-        <Technicals 
-          symbol={currentStock.symbol} 
-          timeframe={selectedPeriod} 
-          onClose={handleCloseTechnicals}
-        />
-      </div>
-    </div>
-    <div className="w-[275px] flex-shrink-0 border-l border-gray-700 bg-[#252526]">
-      <Sidebar className="h-full" currentStock={currentStock} onShowTechnicals={handleShowTechnicals} />
-    </div>
-  </div>
-)}
 
-      <ActionsBar />
-    </main>
-  );
-}
+      {showTechnicalsOverlay && (
+        <div className="fixed inset-0 z-50 flex">
+          <LeftSidePane 
+            className="w-10 flex-shrink-0 bg-[#252526]" 
+            onAccountClick={handleAccountClick} 
+            onChartClick={handleChartClick}
+          />
+          <div className="flex-1 bg-[#1E1E1E]">
+            <div className="flex justify-end p-4">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={handleCloseTechnicals}
+                className="text-[#666] hover:text-white hover:bg-[#2a2e39]"
+              >
+                <X className="h-5 w-5" />
+              </Button>
+            </div>
+            <div className="p-6">
+              <Technicals 
+                 symbol={currentStock.symbol} 
+                 timeframe={selectedPeriod} 
+                 onClose={handleCloseTechnicals}
+               />
+             </div>
+           </div>
+         </div>
+       )}
+ 
+       <ActionsBar />
+     </main>
+   );
+ }
+                

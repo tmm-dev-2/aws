@@ -1,5 +1,5 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "dashboard/components/ui/card"
+import { Button } from "dashboard/components/ui/button"
 import { Plus } from 'lucide-react'
 
 export function Lists() {
